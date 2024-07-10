@@ -1,37 +1,26 @@
-## DON'T FORGET RESSETING THE CONFIG FILE WHEN UPDATING THE MOD
+## DON'T FORGET TO RESET THE CONFIGURATION FILE WHEN UPDATING THE MOD
 
 # Description
+A Minecraft 1.7.10 mod to optimize by fixing bugs, and changing things on the backend of the game.
 
-Optimizations and Tweaks for FPS/TPS - Fix bugs and tweak various things to help optimize performance in Minecraft 1.7.10. This mod aims to smooth out gameplay and improve framerates through optimizations.
+# Incompatibilities
+The original ArchaicFix doesn't work with my mod due to MixinMapGenStructure on it, use my fork instead: [ArchaicFixFork](https://github.com/quentin452/ArchaicFix).
 
-# Permanent incompat
+# Optimization / Feature List
+[Wiki](https://github.com/quentin452/OptimizationsAndTweaks/wiki)
 
-The original Archaicfix isn't work with my mod due to MixinMapGenStructure ,use my fork instead : [ArchaicFixFork](https://github.com/quentin452/ArchaicFix)
+# Links for my project
+- [GitHub](https://github.com/quentin452/OptimizationsAndTweaks)
+- [Modrinth](https://modrinth.com/mod/optimizationsandtweaks)
+- [CurseForge](https://legacy.curseforge.com/minecraft/mc-mods/optimizationsandtweaks)
 
-# What this mod have for now?
+# Dependencies
+- [UniMixins](https://modrinth.com/mod/unimixins)
+- [FalsePatternLib](https://modrinth.com/mod/fplib)
 
-Go here : [Wiki](https://github.com/quentin452/OptimizationsAndTweaks/wiki)
-
-# Links to descriptions of my projects.
-
-[*Modrinth*](https://modrinth.com/mod/optimizationsandtweaks)
-
-[*Github*](https://github.com/quentin452/OptimizationsAndTweaks)
-
-[*Curseforge*](https://legacy.curseforge.com/minecraft/mc-mods/optimizationsandtweaks)
-
-# Requirement
-
-[Unimixins](https://legacy.curseforge.com/minecraft/mc-mods/unimixins/files/4600285)
-
-[FalsePatternLib](https://legacy.curseforge.com/minecraft/mc-mods/fplib/files/4701057)
-
-# Special Thanks
-
-Special thanks to Falsetweaks code : [HERE](https://github.com/FalsePattern/FalseTweaks)
+# Credits
+- [FalsePattern's False Tweaks](https://github.com/FalsePattern/FalseTweaks)
 
 # Discord
-
-Add me on discord : imacatfr
-
-Discord server : https://discord.gg/ZnmHKJzKkZ
+My Username: imacatfr
+Discord Server: https://discord.gg/ZnmHKJzKkZ
