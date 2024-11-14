@@ -1022,6 +1022,11 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinMobSpawnerGoblinLogic;
+
+    @Config.Comment("Fix Stack overflow crash when angelica is loaded by disabling some methods from GLDebug class from angelica")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinGLDebug;
     @Config.Comment("Reduce tps lags caused by SpawnerAnimals(Can reduce spawn speed of entities)(Require MixinChunk)")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

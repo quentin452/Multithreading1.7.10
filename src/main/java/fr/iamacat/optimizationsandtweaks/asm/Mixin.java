@@ -842,6 +842,11 @@ public enum Mixin implements IMixin {
     client_practicallogistics_MixinEventRegistry(Side.CLIENT,
         require(TargetedMod.PRACTICALLOGISTICS).and(m -> OptimizationsandTweaksConfig.enableMixinEventRegistry),
         "practicallogistics.MixinEventRegistry"),
+
+    common_angelica_MixinGLDebug(Side.COMMON,
+        require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinGLDebug),
+        "angelica.MixinGLDebug"),
+
     client_core_MixinTextureManager(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinTextureManager,
         "core.MixinTextureManager"),
     client_core_MixinEntitySpellParticleFX(Side.CLIENT,
