@@ -3,11 +3,9 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 import java.util.*;
 import java.util.concurrent.*;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.*;
@@ -18,7 +16,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.CountEntitiesTask;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
 
 @Mixin(value = SpawnerAnimals.class, priority = 999)
@@ -142,13 +139,14 @@ public class MixinPatchSpawnerAnimals {
 
     @Unique
     public int optimizationsAndTweaks$countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
-        Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(new CountEntitiesTask(world, type, forSpawnCount));
         int totalEntities = 0;
-        try {
-            totalEntities = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        List<Entity> loadedEntityList = world.loadedEntityList;
+        for (Entity entity : loadedEntityList) {
+            if (entity.isCreatureType(type, forSpawnCount)) {
+                totalEntities++;
+            }
         }
         return totalEntities;
     }
+
 }
