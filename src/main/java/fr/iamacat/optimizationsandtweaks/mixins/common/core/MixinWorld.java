@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.profiler.Profiler;
@@ -1204,6 +1205,10 @@ public abstract class MixinWorld {
         }
     }
 
+    /**
+     * @author
+     * @reason
+     */
     @Overwrite
     public synchronized TileEntity getTileEntity(int x, int y, int z) {
         if (y >= 0 && y < 256) {
@@ -1248,6 +1253,20 @@ public abstract class MixinWorld {
             return tileentity;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * @author quentin452
+     * @reason Made countEntities thread safe
+     */
+    @Overwrite
+    public int countEntities(Class<?> entityType) {
+        synchronized (this.loadedEntityList) {
+            return (int) this.loadedEntityList.stream()
+                .filter(entity -> entityType.isAssignableFrom(entity.getClass()))
+                .filter(entity -> !(entity instanceof EntityLiving) || !((EntityLiving) entity).isNoDespawnRequired())
+                .count();
         }
     }
 }
