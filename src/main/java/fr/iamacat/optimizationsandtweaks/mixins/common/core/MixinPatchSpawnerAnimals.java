@@ -3,7 +3,6 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 import java.util.*;
 import java.util.concurrent.*;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -20,13 +19,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.CountEntitiesTask;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
 
 @Mixin(value = SpawnerAnimals.class, priority = 999)
 public class MixinPatchSpawnerAnimals {
 
     @Unique
     private static final ExecutorService optimizationsAndTweaks$entityCountExecutor = Executors.newFixedThreadPool(
-        Runtime.getRuntime().availableProcessors());
+        Runtime.getRuntime()
+            .availableProcessors());
 
     @Unique
     private ConcurrentHashMap optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMap();
@@ -102,7 +103,8 @@ public class MixinPatchSpawnerAnimals {
     private int optimizationsAndTweaks$spawnCreatures(WorldServer world, EnumCreatureType creatureType) {
         int totalSpawnCount = 0;
         ChunkCoordinates spawnPoint = world.getSpawnPoint();
-        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
+        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(
+            optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
         Collections.shuffle(shuffledChunks);
 
         List<Future<Integer>> futureResults = new ArrayList<>();
@@ -161,7 +163,8 @@ public class MixinPatchSpawnerAnimals {
 
     @Unique
     public int optimizationsAndTweaks$countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
-        CompletionService<Integer> completionService = new ExecutorCompletionService<>(optimizationsAndTweaks$entityCountExecutor);
+        CompletionService<Integer> completionService = new ExecutorCompletionService<>(
+            optimizationsAndTweaks$entityCountExecutor);
         completionService.submit(new CountEntitiesTask(world, type, forSpawnCount));
 
         int totalEntities = 0;
