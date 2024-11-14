@@ -1,9 +1,12 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals;
 
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -17,6 +20,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.common.eventhandler.Event;
 
 public class SpawnCreaturesTask implements Callable<Integer> {
+    public static ConcurrentHashMap optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMap();
 
     private final WorldServer world;
     private final EnumCreatureType creatureType;
@@ -102,5 +106,25 @@ public class SpawnCreaturesTask implements Callable<Integer> {
                 && !world.getBlock(x, y + 1, z)
                     .isNormalCube();
         }
+    }
+
+    public static boolean shouldSpawnCreature(WorldServer world, EnumCreatureType creatureType,
+                                              boolean spawnHostileMobs, boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        return (creatureType.getPeacefulCreature() || spawnPeacefulMobs)
+            && (!creatureType.getPeacefulCreature() || spawnHostileMobs)
+            && (!creatureType.getAnimal() || spawnAnimals)
+            && countEntities(world, creatureType, true)
+            <= creatureType.getMaxNumberOfCreature() * optimizationsAndTweaks$eligibleChunksForSpawning.size()
+            / 256;
+    }
+    public static int countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
+        int totalEntities = 0;
+        List<Entity> loadedEntityList = world.loadedEntityList;
+        for (Entity entity : loadedEntityList) {
+            if (entity.isCreatureType(type, forSpawnCount)) {
+                totalEntities++;
+            }
+        }
+        return totalEntities;
     }
 }
