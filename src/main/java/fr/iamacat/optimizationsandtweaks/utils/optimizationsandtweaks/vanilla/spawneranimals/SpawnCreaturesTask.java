@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
+import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,7 +21,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.common.eventhandler.Event;
 
 public class SpawnCreaturesTask implements Callable<Integer> {
-    public static ConcurrentHashMap optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMap();
+    public static ConcurrentHashMapV8 optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMapV8();
 
     private final WorldServer world;
     private final EnumCreatureType creatureType;

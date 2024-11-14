@@ -91,18 +91,15 @@ public class MixinPatchSpawnerAnimals {
         List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(
             optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
         Collections.shuffle(shuffledChunks);
-
         List<Future<Integer>> futureResults = new ArrayList<>();
-
         for (ChunkCoordIntPair chunkCoords : shuffledChunks) {
-            if (!((Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)).booleanValue()) {
+            if (!(Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)) {
                 ChunkPosition spawnPosition = func_151350_a(world, chunkCoords.chunkXPos, chunkCoords.chunkZPos);
                 SpawnCreaturesTask task = new SpawnCreaturesTask(world, creatureType, spawnPosition, spawnPoint);
                 Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(task);
                 futureResults.add(future);
             }
         }
-
         for (Future<Integer> future : futureResults) {
             try {
                 totalSpawnCount += future.get();
@@ -110,7 +107,6 @@ public class MixinPatchSpawnerAnimals {
                 e.printStackTrace();
             }
         }
-
         return totalSpawnCount;
     }
 
