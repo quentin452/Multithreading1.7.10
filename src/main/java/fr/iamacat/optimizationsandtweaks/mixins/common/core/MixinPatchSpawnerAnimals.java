@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
@@ -44,175 +43,104 @@ public class MixinPatchSpawnerAnimals {
      * @reason optimize findChunksForSpawning
      */
     @Overwrite
-    public int findChunksForSpawning(WorldServer p_77192_1_, boolean p_77192_2_, boolean p_77192_3_, boolean p_77192_4_)
-    {
-        if (!p_77192_2_ && !p_77192_3_)
-        {
+    public int findChunksForSpawning(WorldServer world, boolean spawnHostileMobs, boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        if (!spawnHostileMobs && !spawnPeacefulMobs) {
             return 0;
         }
-        else
-        {
-            this.optimizationsAndTweaks$eligibleChunksForSpawning.clear();
-            int i;
-            int k;
-
-            for (i = 0; i < p_77192_1_.playerEntities.size(); ++i)
-            {
-                EntityPlayer entityplayer = (EntityPlayer)p_77192_1_.playerEntities.get(i);
-                int j = MathHelper.floor_double(entityplayer.posX / 16.0D);
-                k = MathHelper.floor_double(entityplayer.posZ / 16.0D);
-                byte b0 = 8;
-
-                for (int l = -b0; l <= b0; ++l)
-                {
-                    for (int i1 = -b0; i1 <= b0; ++i1)
-                    {
-                        boolean flag3 = l == -b0 || l == b0 || i1 == -b0 || i1 == b0;
-                        ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(l + j, i1 + k);
-
-                        if (!flag3)
-                        {
-                            this.optimizationsAndTweaks$eligibleChunksForSpawning.put(chunkcoordintpair, Boolean.valueOf(false));
-                        }
-                        else if (!this.optimizationsAndTweaks$eligibleChunksForSpawning.containsKey(chunkcoordintpair))
-                        {
-                            this.optimizationsAndTweaks$eligibleChunksForSpawning.put(chunkcoordintpair, Boolean.valueOf(true));
-                        }
-                    }
+        optimizationsAndTweaks$eligibleChunksForSpawning.clear();
+        int totalSpawns = 0;
+        optimizationsAndTweaks$populateEligibleChunksForSpawning(world);
+        for (EnumCreatureType creatureType : EnumCreatureType.values()) {
+            if (optimizationsAndTweaks$shouldSpawnCreature(world, creatureType, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)) {
+                totalSpawns += optimizationsAndTweaks$spawnCreatures(world, creatureType);
+            }
+        }
+        return totalSpawns;
+    }
+    @Unique
+    private void optimizationsAndTweaks$populateEligibleChunksForSpawning(WorldServer world) {
+        for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
+            int playerChunkX = MathHelper.floor_double(player.posX / 16.0D);
+            int playerChunkZ = MathHelper.floor_double(player.posZ / 16.0D);
+            byte chunkRadius = 8;
+            for (int offsetX = -chunkRadius; offsetX <= chunkRadius; offsetX++) {
+                for (int offsetZ = -chunkRadius; offsetZ <= chunkRadius; offsetZ++) {
+                    boolean isEdge = offsetX == -chunkRadius || offsetX == chunkRadius || offsetZ == -chunkRadius || offsetZ == chunkRadius;
+                    ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair(offsetX + playerChunkX, offsetZ + playerChunkZ);
+                    optimizationsAndTweaks$eligibleChunksForSpawning.put(chunkCoords, isEdge);
                 }
             }
-
-            i = 0;
-            ChunkCoordinates chunkcoordinates = p_77192_1_.getSpawnPoint();
-            EnumCreatureType[] aenumcreaturetype = EnumCreatureType.values();
-            k = aenumcreaturetype.length;
-
-            for (int k3 = 0; k3 < k; ++k3)
-            {
-                EnumCreatureType enumcreaturetype = aenumcreaturetype[k3];
-
-                if ((!enumcreaturetype.getPeacefulCreature() || p_77192_3_) && (enumcreaturetype.getPeacefulCreature() || p_77192_2_) && (!enumcreaturetype.getAnimal() || p_77192_4_) && p_77192_1_.countEntities(enumcreaturetype, true) <= enumcreaturetype.getMaxNumberOfCreature() * this.optimizationsAndTweaks$eligibleChunksForSpawning.size() / 256)
-                {
-                    Iterator iterator = this.optimizationsAndTweaks$eligibleChunksForSpawning.keySet().iterator();
-                    ArrayList<ChunkCoordIntPair> tmp = new ArrayList(optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
-                    Collections.shuffle(tmp);
-                    iterator = tmp.iterator();
-                    label110:
-
-                    while (iterator.hasNext())
-                    {
-                        ChunkCoordIntPair chunkcoordintpair1 = (ChunkCoordIntPair)iterator.next();
-
-                        if (!((Boolean)this.optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkcoordintpair1)).booleanValue())
-                        {
-                            ChunkPosition chunkposition = func_151350_a(p_77192_1_, chunkcoordintpair1.chunkXPos, chunkcoordintpair1.chunkZPos);
-                            int j1 = chunkposition.chunkPosX;
-                            int k1 = chunkposition.chunkPosY;
-                            int l1 = chunkposition.chunkPosZ;
-
-                            if (!p_77192_1_.getBlock(j1, k1, l1).isNormalCube() && p_77192_1_.getBlock(j1, k1, l1).getMaterial() == enumcreaturetype.getCreatureMaterial())
-                            {
-                                int i2 = 0;
-                                int j2 = 0;
-
-                                while (j2 < 3)
-                                {
-                                    int k2 = j1;
-                                    int l2 = k1;
-                                    int i3 = l1;
-                                    byte b1 = 6;
-                                    BiomeGenBase.SpawnListEntry spawnlistentry = null;
-                                    IEntityLivingData ientitylivingdata = null;
-                                    int j3 = 0;
-
-                                    while (true)
-                                    {
-                                        if (j3 < 4)
-                                        {
-                                            label103:
-                                            {
-                                                k2 += p_77192_1_.rand.nextInt(b1) - p_77192_1_.rand.nextInt(b1);
-                                                l2 += p_77192_1_.rand.nextInt(1) - p_77192_1_.rand.nextInt(1);
-                                                i3 += p_77192_1_.rand.nextInt(b1) - p_77192_1_.rand.nextInt(b1);
-
-                                                if (canCreatureTypeSpawnAtLocation(enumcreaturetype, p_77192_1_, k2, l2, i3))
-                                                {
-                                                    float f = (float)k2 + 0.5F;
-                                                    float f1 = (float)l2;
-                                                    float f2 = (float)i3 + 0.5F;
-
-                                                    if (p_77192_1_.getClosestPlayer((double)f, (double)f1, (double)f2, 24.0D) == null)
-                                                    {
-                                                        float f3 = f - (float)chunkcoordinates.posX;
-                                                        float f4 = f1 - (float)chunkcoordinates.posY;
-                                                        float f5 = f2 - (float)chunkcoordinates.posZ;
-                                                        float f6 = f3 * f3 + f4 * f4 + f5 * f5;
-
-                                                        if (f6 >= 576.0F)
-                                                        {
-                                                            if (spawnlistentry == null)
-                                                            {
-                                                                spawnlistentry = p_77192_1_.spawnRandomCreature(enumcreaturetype, k2, l2, i3);
-
-                                                                if (spawnlistentry == null)
-                                                                {
-                                                                    break label103;
-                                                                }
-                                                            }
-
-                                                            EntityLiving entityliving;
-
-                                                            try
-                                                            {
-                                                                entityliving = (EntityLiving)spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {p_77192_1_});
-                                                            }
-                                                            catch (Exception exception)
-                                                            {
-                                                                exception.printStackTrace();
-                                                                return i;
-                                                            }
-
-                                                            entityliving.setLocationAndAngles((double)f, (double)f1, (double)f2, p_77192_1_.rand.nextFloat() * 360.0F, 0.0F);
-
-                                                            Event.Result canSpawn = ForgeEventFactory.canEntitySpawn(entityliving, p_77192_1_, f, f1, f2);
-                                                            if (canSpawn == Event.Result.ALLOW || (canSpawn == Event.Result.DEFAULT && entityliving.getCanSpawnHere()))
-                                                            {
-                                                                ++i2;
-                                                                p_77192_1_.spawnEntityInWorld(entityliving);
-                                                                if (!ForgeEventFactory.doSpecialSpawn(entityliving, p_77192_1_, f, f1, f2))
-                                                                {
-                                                                    ientitylivingdata = entityliving.onSpawnWithEgg(ientitylivingdata);
-                                                                }
-
-                                                                if (j2 >= ForgeEventFactory.getMaxSpawnPackSize(entityliving))
-                                                                {
-                                                                    continue label110;
-                                                                }
-                                                            }
-
-                                                            i += i2;
-                                                        }
-                                                    }
-                                                }
-
-                                                ++j3;
-                                                continue;
-                                            }
-                                        }
-
-                                        ++j2;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return i;
         }
     }
+
+    @Unique
+    private boolean optimizationsAndTweaks$shouldSpawnCreature(WorldServer world, EnumCreatureType creatureType, boolean spawnHostileMobs, boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        return (creatureType.getPeacefulCreature() || spawnPeacefulMobs) &&
+            (!creatureType.getPeacefulCreature() || spawnHostileMobs) &&
+            (!creatureType.getAnimal() || spawnAnimals) &&
+            world.countEntities(creatureType, true) <= creatureType.getMaxNumberOfCreature() * optimizationsAndTweaks$eligibleChunksForSpawning.size() / 256;
+    }
+    @Unique
+    private int optimizationsAndTweaks$spawnCreatures(WorldServer world, EnumCreatureType creatureType) {
+        int spawns = 0;
+        ChunkCoordinates spawnPoint = world.getSpawnPoint();
+        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
+        Collections.shuffle(shuffledChunks);
+        for (ChunkCoordIntPair chunkCoords : shuffledChunks) {
+            if (!((Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)).booleanValue()) {
+                ChunkPosition spawnPosition = func_151350_a(world, chunkCoords.chunkXPos, chunkCoords.chunkZPos);
+                spawns += optimizationsAndTweaks$trySpawnCreaturesAtPosition(world, creatureType, spawnPosition, spawnPoint);
+            }
+        }
+        return spawns;
+    }
+
+    @Unique
+    private int optimizationsAndTweaks$trySpawnCreaturesAtPosition(WorldServer world, EnumCreatureType creatureType, ChunkPosition spawnPosition, ChunkCoordinates spawnPoint) {
+        int spawnCount = 0;
+        for (int attempt = 0; attempt < 3; attempt++) {
+            int spawnX = spawnPosition.chunkPosX + world.rand.nextInt(6) - world.rand.nextInt(6);
+            int spawnY = spawnPosition.chunkPosY + world.rand.nextInt(1) - world.rand.nextInt(1);
+            int spawnZ = spawnPosition.chunkPosZ + world.rand.nextInt(6) - world.rand.nextInt(6);
+            if (canCreatureTypeSpawnAtLocation(creatureType, world, spawnX, spawnY, spawnZ) &&
+                optimizationsAndTweaks$isFarEnoughFromSpawnPoint(world, spawnX, spawnY, spawnZ, spawnPoint) &&
+                optimizationsAndTweaks$attemptToSpawnCreature(world, creatureType, spawnX, spawnY, spawnZ)) {
+                spawnCount++;
+            }
+        }
+        return spawnCount;
+    }
+    @Unique
+    private boolean optimizationsAndTweaks$isFarEnoughFromSpawnPoint(WorldServer world, int x, int y, int z, ChunkCoordinates spawnPoint) {
+        float dx = x + 0.5F - spawnPoint.posX;
+        float dy = y - spawnPoint.posY;
+        float dz = z + 0.5F - spawnPoint.posZ;
+        float distanceSquared = dx * dx + dy * dy + dz * dz;
+        return distanceSquared >= 576.0F;
+    }
+    @Unique
+    private boolean optimizationsAndTweaks$attemptToSpawnCreature(WorldServer world, EnumCreatureType creatureType, int x, int y, int z) {
+        BiomeGenBase.SpawnListEntry spawnEntry = world.spawnRandomCreature(creatureType, x, y, z);
+        if (spawnEntry == null) {
+            return false;
+        }
+        try {
+            EntityLiving entity = (EntityLiving) spawnEntry.entityClass.getConstructor(new Class[]{World.class}).newInstance(world);
+            entity.setLocationAndAngles(x + 0.5F, y, z + 0.5F, world.rand.nextFloat() * 360.0F, 0.0F);
+            Event.Result canSpawn = ForgeEventFactory.canEntitySpawn(entity, world, x + 0.5F, y, z + 0.5F);
+            if (canSpawn == Event.Result.ALLOW || (canSpawn == Event.Result.DEFAULT && entity.getCanSpawnHere())) {
+                world.spawnEntityInWorld(entity);
+                ForgeEventFactory.doSpecialSpawn(entity, world, x + 0.5F, y, z + 0.5F);
+                entity.onSpawnWithEgg(null);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
     /**
      * @author quentin452
