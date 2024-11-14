@@ -1,4 +1,4 @@
-package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla;
+package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals;
 
 import java.util.List;
 import java.util.concurrent.Callable;

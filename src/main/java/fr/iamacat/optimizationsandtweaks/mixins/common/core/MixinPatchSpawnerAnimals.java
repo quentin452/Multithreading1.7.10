@@ -3,6 +3,7 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 import java.util.*;
 import java.util.concurrent.*;
 
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
@@ -22,12 +23,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import cpw.mods.fml.common.eventhandler.Event;
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.CountEntitiesTask;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.CountEntitiesTask;
 
 @Mixin(value = SpawnerAnimals.class, priority = 999)
 public class MixinPatchSpawnerAnimals {
 
-    private static final ExecutorService entityCountExecutor = Executors.newFixedThreadPool(2);
+    @Unique
+    private static final ExecutorService optimizationsAndTweaks$entityCountExecutor = Executors.newFixedThreadPool(
+        Runtime.getRuntime().availableProcessors());
+
     @Unique
     private ConcurrentHashMap optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMap();
 
@@ -100,23 +104,33 @@ public class MixinPatchSpawnerAnimals {
 
     @Unique
     private int optimizationsAndTweaks$spawnCreatures(WorldServer world, EnumCreatureType creatureType) {
-        int spawns = 0;
+        int totalSpawnCount = 0;
         ChunkCoordinates spawnPoint = world.getSpawnPoint();
-        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(
-            optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
+        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
         Collections.shuffle(shuffledChunks);
+
+        List<Future<Integer>> futureResults = new ArrayList<>();
+
         for (ChunkCoordIntPair chunkCoords : shuffledChunks) {
             if (!((Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)).booleanValue()) {
                 ChunkPosition spawnPosition = func_151350_a(world, chunkCoords.chunkXPos, chunkCoords.chunkZPos);
-                spawns += optimizationsAndTweaks$trySpawnCreaturesAtPosition(
-                    world,
-                    creatureType,
-                    spawnPosition,
-                    spawnPoint);
+                SpawnCreaturesTask task = new SpawnCreaturesTask(world, creatureType, spawnPosition, spawnPoint);
+                Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(task);
+                futureResults.add(future);
             }
         }
-        return spawns;
+
+        for (Future<Integer> future : futureResults) {
+            try {
+                totalSpawnCount += future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return totalSpawnCount;
     }
+
 
     @Unique
     private int optimizationsAndTweaks$trySpawnCreaturesAtPosition(WorldServer world, EnumCreatureType creatureType,
@@ -205,7 +219,7 @@ public class MixinPatchSpawnerAnimals {
     @Unique
     public int optimizationsAndTweaks$countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
         CountEntitiesTask task = new CountEntitiesTask(world, type, forSpawnCount);
-        Future<Integer> future = entityCountExecutor.submit(task);
+        Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(task);
 
         try {
             return future.get();
