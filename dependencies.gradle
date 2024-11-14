@@ -160,6 +160,7 @@ dependencies {
     transformedMod("com.github.GTNewHorizons:OpenComputers:1.10.0-GTNH:sources")
     transformedMod("com.github.GTNewHorizons:Mantle:0.3.7:sources")
 
+    implementation files("libs/angelica-1.0.0-beta18.jar")
     implementation files("libs/fossilsarcheology-7.3.2.jar")
     implementation files("libs/FamiliarsAPI-1.7.10.jar")
     implementation files("libs/FamiliarsDefaultMobPack-1.7.10.jar")
