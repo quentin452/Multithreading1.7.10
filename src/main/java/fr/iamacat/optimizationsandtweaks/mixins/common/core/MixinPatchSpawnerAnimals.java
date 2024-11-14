@@ -131,34 +131,13 @@ public class MixinPatchSpawnerAnimals {
 
     /**
      * @author quentin452
-     * @reason Optimize canCreatureTypeSpawnAtLocation
+     * @reason Moved to SpawnCreaturesTask
      */
     @Overwrite
     public static boolean canCreatureTypeSpawnAtLocation(EnumCreatureType p_77190_0_, World p_77190_1_, int p_77190_2_,
         int p_77190_3_, int p_77190_4_) {
-        if (p_77190_0_.getCreatureMaterial() == Material.water) {
-            return p_77190_1_.getBlock(p_77190_2_, p_77190_3_, p_77190_4_)
-                .getMaterial()
-                .isLiquid()
-                && p_77190_1_.getBlock(p_77190_2_, p_77190_3_ - 1, p_77190_4_)
-                    .getMaterial()
-                    .isLiquid()
-                && !p_77190_1_.getBlock(p_77190_2_, p_77190_3_ + 1, p_77190_4_)
-                    .isNormalCube();
-        } else if (!World.doesBlockHaveSolidTopSurface(p_77190_1_, p_77190_2_, p_77190_3_ - 1, p_77190_4_)) {
-            return false;
-        } else {
-            Block block = p_77190_1_.getBlock(p_77190_2_, p_77190_3_ - 1, p_77190_4_);
-            boolean spawnBlock = block.canCreatureSpawn(p_77190_0_, p_77190_1_, p_77190_2_, p_77190_3_ - 1, p_77190_4_);
-            return spawnBlock && block != Blocks.bedrock
-                && !p_77190_1_.getBlock(p_77190_2_, p_77190_3_, p_77190_4_)
-                    .isNormalCube()
-                && !p_77190_1_.getBlock(p_77190_2_, p_77190_3_, p_77190_4_)
-                    .getMaterial()
-                    .isLiquid()
-                && !p_77190_1_.getBlock(p_77190_2_, p_77190_3_ + 1, p_77190_4_)
-                    .isNormalCube();
-        }
+        System.out.println("[Don't use canCreatureTypeSpawnAtLocation method (OptimizationsAndTweaks)]");
+        return false;
     }
 
     @Unique
