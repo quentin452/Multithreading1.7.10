@@ -1,9 +1,10 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
+import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask.optimizationsAndTweaks$eligibleChunksForSpawning;
+
 import java.util.*;
 import java.util.concurrent.*;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
@@ -17,8 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
-
-import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask.optimizationsAndTweaks$eligibleChunksForSpawning;
 
 @Mixin(value = SpawnerAnimals.class, priority = 999)
 public class MixinPatchSpawnerAnimals {
@@ -52,12 +51,8 @@ public class MixinPatchSpawnerAnimals {
         int totalSpawns = 0;
         optimizationsAndTweaks$populateEligibleChunksForSpawning(world);
         for (EnumCreatureType creatureType : EnumCreatureType.values()) {
-            if (SpawnCreaturesTask.shouldSpawnCreature(
-                world,
-                creatureType,
-                spawnHostileMobs,
-                spawnPeacefulMobs,
-                spawnAnimals)) {
+            if (SpawnCreaturesTask
+                .shouldSpawnCreature(world, creatureType, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)) {
                 totalSpawns += optimizationsAndTweaks$spawnCreatures(world, creatureType);
             }
         }
@@ -107,6 +102,7 @@ public class MixinPatchSpawnerAnimals {
                 e.printStackTrace();
             }
         }
+
         return totalSpawnCount;
     }
 
@@ -116,7 +112,7 @@ public class MixinPatchSpawnerAnimals {
      */
     @Overwrite
     public static boolean canCreatureTypeSpawnAtLocation(EnumCreatureType p_77190_0_, World p_77190_1_, int p_77190_2_,
-                                                         int p_77190_3_, int p_77190_4_) {
+        int p_77190_3_, int p_77190_4_) {
         System.out.println("[Don't use canCreatureTypeSpawnAtLocation method (OptimizationsAndTweaks)]");
         return false;
     }

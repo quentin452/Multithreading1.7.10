@@ -2,9 +2,7 @@ package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.s
 
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 
-import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -19,8 +17,10 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
 
 public class SpawnCreaturesTask implements Callable<Integer> {
+
     public static ConcurrentHashMapV8 optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMapV8();
 
     private final WorldServer world;
@@ -110,14 +110,15 @@ public class SpawnCreaturesTask implements Callable<Integer> {
     }
 
     public static boolean shouldSpawnCreature(WorldServer world, EnumCreatureType creatureType,
-                                              boolean spawnHostileMobs, boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        boolean spawnHostileMobs, boolean spawnPeacefulMobs, boolean spawnAnimals) {
         return (creatureType.getPeacefulCreature() || spawnPeacefulMobs)
             && (!creatureType.getPeacefulCreature() || spawnHostileMobs)
             && (!creatureType.getAnimal() || spawnAnimals)
             && countEntities(world, creatureType, true)
-            <= creatureType.getMaxNumberOfCreature() * optimizationsAndTweaks$eligibleChunksForSpawning.size()
-            / 256;
+                <= creatureType.getMaxNumberOfCreature() * optimizationsAndTweaks$eligibleChunksForSpawning.size()
+                    / 256;
     }
+
     public static int countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
         int totalEntities = 0;
         List<Entity> loadedEntityList = world.loadedEntityList;
