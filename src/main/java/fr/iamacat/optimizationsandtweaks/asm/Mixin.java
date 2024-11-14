@@ -846,6 +846,9 @@ public enum Mixin implements IMixin {
     common_angelica_MixinGLDebug(Side.COMMON,
         require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinGLDebug),
         "angelica.MixinGLDebug"),
+    common_angelica_MixinHUDCaching(Side.COMMON,
+        require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinHUDCaching),
+        "angelica.MixinHUDCaching"),
 
     client_core_MixinTextureManager(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinTextureManager,
         "core.MixinTextureManager"),

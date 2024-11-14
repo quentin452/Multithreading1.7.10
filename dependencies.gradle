@@ -147,6 +147,7 @@ dependencies {
     implementation "curse.maven:zombie-awareness-237754:2285743-deobf-sources-api"
     implementation "curse.maven:automagy-222153:2285272-deobf-sources-api"
     implementation "curse.maven:tumbleweed-245028:2299772-deobf-sources-api"
+    implementation "curse.maven:gtnhlib-688894:5850851-deobf-sources-api"
     implementation "curse.maven:mlp-mythical-creatures-updated-to-1-7-10-226048:2277522-deobf-sources-api"
 
     runtimeOnly('com.github.GTNewHorizons:BuildCraft:7.1.36:dev')
@@ -197,6 +198,8 @@ dependencies {
     implementation files("libs/Treasure-3.0.8-mc1.7.10.jar")
     implementation files("libs/Ununquadium_mod_1.7.10.jar")
 
+    compileOnly("com.github.GTNewHorizons:ThaumicHorizons:1.6.3:dev")
+    compileOnly("com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev")
 }
 
 jar {
