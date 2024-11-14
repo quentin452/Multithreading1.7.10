@@ -786,13 +786,21 @@ public abstract class MixinWorld {
         return x >= -30000000 && z >= -30000000 && x < 30000000 && z < 30000000;
     }
 
+
     @Unique
     private int optimizationsAndTweaks$getMaxNeighborLightValue(int x, int y, int z) {
-        int max = getBlockLightValue_do(x, y + 1, z, false);
-        max = Math.max(max, getBlockLightValue_do(x + 1, y, z, false));
-        max = Math.max(max, getBlockLightValue_do(x - 1, y, z, false));
-        max = Math.max(max, getBlockLightValue_do(x, y, z + 1, false));
-        max = Math.max(max, getBlockLightValue_do(x, y, z - 1, false));
+        Stack<int[]> stack = new Stack<>();
+        stack.push(new int[]{x, y + 1, z});
+        stack.push(new int[]{x + 1, y, z});
+        stack.push(new int[]{x - 1, y, z});
+        stack.push(new int[]{x, y, z + 1});
+        stack.push(new int[]{x, y, z - 1});
+        int max = 0;
+        while (!stack.isEmpty()) {
+            int[] pos = stack.pop();
+            max = Math.max(max, getBlockLightValue_do(pos[0], pos[1], pos[2], false));
+        }
+
         return max;
     }
 
