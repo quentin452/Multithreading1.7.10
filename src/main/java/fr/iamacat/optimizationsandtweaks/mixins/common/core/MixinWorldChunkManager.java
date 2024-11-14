@@ -1,7 +1,9 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import static net.minecraft.world.biome.BiomeGenBase.*;
+
+import java.util.*;
+
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
@@ -15,19 +17,20 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.WorldTypeEvent;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
-import java.util.*;
-
-import static net.minecraft.world.biome.BiomeGenBase.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mixin(WorldChunkManager.class)
 public class MixinWorldChunkManager {
+
     @Shadow
-    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, taiga, taigaHills, forestHills, jungle, jungleHills));
+    public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(
+        Arrays.asList(forest, plains, taiga, taigaHills, forestHills, jungle, jungleHills));
     @Shadow
     private GenLayer genBiomes;
     /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
@@ -40,15 +43,13 @@ public class MixinWorldChunkManager {
     @Shadow
     private List biomesToSpawnIn;
 
-    protected MixinWorldChunkManager()
-    {
-        this.biomeCache = new BiomeCache((WorldChunkManager)(Object)this);
+    protected MixinWorldChunkManager() {
+        this.biomeCache = new BiomeCache((WorldChunkManager) (Object) this);
         this.biomesToSpawnIn = new ArrayList();
         this.biomesToSpawnIn.addAll(allowedBiomes);
     }
 
-    public MixinWorldChunkManager(long p_i1975_1_, WorldType p_i1975_3_)
-    {
+    public MixinWorldChunkManager(long p_i1975_1_, WorldType p_i1975_3_) {
         this();
         GenLayer[] agenlayer = GenLayer.initializeAllBiomeGenerators(p_i1975_1_, p_i1975_3_);
         agenlayer = getModdedBiomeGenerators(p_i1975_3_, p_i1975_1_, agenlayer);
@@ -56,17 +57,18 @@ public class MixinWorldChunkManager {
         this.biomeIndexLayer = agenlayer[1];
     }
 
-    public MixinWorldChunkManager(World p_i1976_1_)
-    {
-        this(p_i1976_1_.getSeed(), p_i1976_1_.getWorldInfo().getTerrainType());
+    public MixinWorldChunkManager(World p_i1976_1_) {
+        this(
+            p_i1976_1_.getSeed(),
+            p_i1976_1_.getWorldInfo()
+                .getTerrainType());
     }
 
     /**
      * Gets the list of valid biomes for the player to spawn in.
      */
     @Shadow
-    public List getBiomesToSpawnIn()
-    {
+    public List getBiomesToSpawnIn() {
         return this.biomesToSpawnIn;
     }
 
@@ -74,8 +76,7 @@ public class MixinWorldChunkManager {
      * Returns the BiomeGenBase related to the x, z position on the world.
      */
     @Shadow
-    public BiomeGenBase getBiomeGenAt(int p_76935_1_, int p_76935_2_)
-    {
+    public BiomeGenBase getBiomeGenAt(int p_76935_1_, int p_76935_2_) {
         return this.biomeCache.getBiomeGenAt(p_76935_1_, p_76935_2_);
     }
 
@@ -83,32 +84,27 @@ public class MixinWorldChunkManager {
      * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
      */
     @Overwrite
-    public synchronized float[] getRainfall(float[] p_76936_1_, int p_76936_2_, int p_76936_3_, int p_76936_4_, int p_76936_5_)
-    {
+    public synchronized float[] getRainfall(float[] p_76936_1_, int p_76936_2_, int p_76936_3_, int p_76936_4_,
+        int p_76936_5_) {
         IntCache.resetIntCache();
 
-        if (p_76936_1_ == null || p_76936_1_.length < p_76936_4_ * p_76936_5_)
-        {
+        if (p_76936_1_ == null || p_76936_1_.length < p_76936_4_ * p_76936_5_) {
             p_76936_1_ = new float[p_76936_4_ * p_76936_5_];
         }
 
         int[] aint = this.biomeIndexLayer.getInts(p_76936_2_, p_76936_3_, p_76936_4_, p_76936_5_);
 
-        for (int i1 = 0; i1 < p_76936_4_ * p_76936_5_; ++i1)
-        {
-            try
-            {
-                float f = (float)BiomeGenBase.getBiome(aint[i1]).getIntRainfall() / 65536.0F;
+        for (int i1 = 0; i1 < p_76936_4_ * p_76936_5_; ++i1) {
+            try {
+                float f = (float) BiomeGenBase.getBiome(aint[i1])
+                    .getIntRainfall() / 65536.0F;
 
-                if (f > 1.0F)
-                {
+                if (f > 1.0F) {
                     f = 1.0F;
                 }
 
                 p_76936_1_[i1] = f;
-            }
-            catch (Throwable throwable)
-            {
+            } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("DownfallBlock");
                 crashreportcategory.addCrashSection("biome id", i1);
@@ -129,8 +125,7 @@ public class MixinWorldChunkManager {
      */
     @Shadow
     @SideOnly(Side.CLIENT)
-    public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
-    {
+    public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_) {
         return p_76939_1_;
     }
 
@@ -138,28 +133,23 @@ public class MixinWorldChunkManager {
      * Returns an array of biomes for the location input.
      */
     @Overwrite
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] p_76937_1_, int p_76937_2_, int p_76937_3_, int p_76937_4_, int p_76937_5_)
-    {
+    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] p_76937_1_, int p_76937_2_, int p_76937_3_,
+        int p_76937_4_, int p_76937_5_) {
         IntCache.resetIntCache();
 
-        if (p_76937_1_ == null || p_76937_1_.length < p_76937_4_ * p_76937_5_)
-        {
+        if (p_76937_1_ == null || p_76937_1_.length < p_76937_4_ * p_76937_5_) {
             p_76937_1_ = new BiomeGenBase[p_76937_4_ * p_76937_5_];
         }
 
         int[] aint = this.genBiomes.getInts(p_76937_2_, p_76937_3_, p_76937_4_, p_76937_5_);
 
-        try
-        {
-            for (int i1 = 0; i1 < p_76937_4_ * p_76937_5_; ++i1)
-            {
+        try {
+            for (int i1 = 0; i1 < p_76937_4_ * p_76937_5_; ++i1) {
                 p_76937_1_[i1] = BiomeGenBase.getBiome(aint[i1]);
             }
 
             return p_76937_1_;
-        }
-        catch (Throwable throwable)
-        {
+        } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("RawBiomeBlock");
             crashreportcategory.addCrashSection("biomes[] size", p_76937_1_.length);
@@ -176,8 +166,8 @@ public class MixinWorldChunkManager {
      * WorldChunkManager Args: oldBiomeList, x, z, width, depth
      */
     @Overwrite
-    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] p_76933_1_, int p_76933_2_, int p_76933_3_, int p_76933_4_, int p_76933_5_)
-    {
+    public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase[] p_76933_1_, int p_76933_2_, int p_76933_3_,
+        int p_76933_4_, int p_76933_5_) {
         return this.getBiomeGenAt(p_76933_1_, p_76933_2_, p_76933_3_, p_76933_4_, p_76933_5_, true);
     }
 
@@ -186,27 +176,22 @@ public class MixinWorldChunkManager {
      * don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
      */
     @Overwrite
-    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] p_76931_1_, int p_76931_2_, int p_76931_3_, int p_76931_4_, int p_76931_5_, boolean p_76931_6_)
-    {
+    public BiomeGenBase[] getBiomeGenAt(BiomeGenBase[] p_76931_1_, int p_76931_2_, int p_76931_3_, int p_76931_4_,
+        int p_76931_5_, boolean p_76931_6_) {
         IntCache.resetIntCache();
 
-        if (p_76931_1_ == null || p_76931_1_.length < p_76931_4_ * p_76931_5_)
-        {
+        if (p_76931_1_ == null || p_76931_1_.length < p_76931_4_ * p_76931_5_) {
             p_76931_1_ = new BiomeGenBase[p_76931_4_ * p_76931_5_];
         }
 
-        if (p_76931_6_ && p_76931_4_ == 16 && p_76931_5_ == 16 && (p_76931_2_ & 15) == 0 && (p_76931_3_ & 15) == 0)
-        {
+        if (p_76931_6_ && p_76931_4_ == 16 && p_76931_5_ == 16 && (p_76931_2_ & 15) == 0 && (p_76931_3_ & 15) == 0) {
             BiomeGenBase[] abiomegenbase1 = this.biomeCache.getCachedBiomes(p_76931_2_, p_76931_3_);
             System.arraycopy(abiomegenbase1, 0, p_76931_1_, 0, p_76931_4_ * p_76931_5_);
             return p_76931_1_;
-        }
-        else
-        {
+        } else {
             int[] aint = this.biomeIndexLayer.getInts(p_76931_2_, p_76931_3_, p_76931_4_, p_76931_5_);
 
-            for (int i1 = 0; i1 < p_76931_4_ * p_76931_5_; ++i1)
-            {
+            for (int i1 = 0; i1 < p_76931_4_ * p_76931_5_; ++i1) {
                 p_76931_1_[i1] = BiomeGenBase.getBiome(aint[i1]);
             }
 
@@ -218,8 +203,7 @@ public class MixinWorldChunkManager {
      * checks given Chunk's Biomes against List of allowed ones
      */
     @Overwrite
-    public boolean areBiomesViable(int p_76940_1_, int p_76940_2_, int p_76940_3_, List p_76940_4_)
-    {
+    public boolean areBiomesViable(int p_76940_1_, int p_76940_2_, int p_76940_3_, List p_76940_4_) {
         IntCache.resetIntCache();
         int l = p_76940_1_ - p_76940_3_ >> 2;
         int i1 = p_76940_2_ - p_76940_3_ >> 2;
@@ -229,22 +213,17 @@ public class MixinWorldChunkManager {
         int i2 = k1 - i1 + 1;
         int[] aint = this.genBiomes.getInts(l, i1, l1, i2);
 
-        try
-        {
-            for (int j2 = 0; j2 < l1 * i2; ++j2)
-            {
+        try {
+            for (int j2 = 0; j2 < l1 * i2; ++j2) {
                 BiomeGenBase biomegenbase = BiomeGenBase.getBiome(aint[j2]);
 
-                if (!p_76940_4_.contains(biomegenbase))
-                {
+                if (!p_76940_4_.contains(biomegenbase)) {
                     return false;
                 }
             }
 
             return true;
-        }
-        catch (Throwable throwable)
-        {
+        } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Layer");
             crashreportcategory.addCrashSection("Layer", this.genBiomes.toString());
@@ -255,9 +234,10 @@ public class MixinWorldChunkManager {
             throw new ReportedException(crashreport);
         }
     }
+
     @Overwrite
-    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_, Random p_150795_5_)
-    {
+    public ChunkPosition findBiomePosition(int p_150795_1_, int p_150795_2_, int p_150795_3_, List p_150795_4_,
+        Random p_150795_5_) {
         IntCache.resetIntCache();
         int l = p_150795_1_ - p_150795_3_ >> 2;
         int i1 = p_150795_2_ - p_150795_3_ >> 2;
@@ -269,14 +249,12 @@ public class MixinWorldChunkManager {
         ChunkPosition chunkposition = null;
         int j2 = 0;
 
-        for (int k2 = 0; k2 < l1 * i2; ++k2)
-        {
+        for (int k2 = 0; k2 < l1 * i2; ++k2) {
             int l2 = l + k2 % l1 << 2;
             int i3 = i1 + k2 / l1 << 2;
             BiomeGenBase biomegenbase = BiomeGenBase.getBiome(aint[k2]);
 
-            if (p_150795_4_.contains(biomegenbase) && (chunkposition == null || p_150795_5_.nextInt(j2 + 1) == 0))
-            {
+            if (p_150795_4_.contains(biomegenbase) && (chunkposition == null || p_150795_5_.nextInt(j2 + 1) == 0)) {
                 chunkposition = new ChunkPosition(l2, 0, i3);
                 ++j2;
             }
@@ -289,14 +267,12 @@ public class MixinWorldChunkManager {
      * Calls the WorldChunkManager's biomeCache.cleanupCache()
      */
     @Shadow
-    public void cleanupCache()
-    {
+    public void cleanupCache() {
         this.biomeCache.cleanupCache();
     }
 
     @Overwrite(remap = false)
-    public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original)
-    {
+    public GenLayer[] getModdedBiomeGenerators(WorldType worldType, long seed, GenLayer[] original) {
         WorldTypeEvent.InitBiomeGens event = new WorldTypeEvent.InitBiomeGens(worldType, seed, original);
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         return event.newBiomeGens;

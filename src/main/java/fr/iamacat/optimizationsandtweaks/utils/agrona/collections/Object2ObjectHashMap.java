@@ -189,6 +189,7 @@ public class Object2ObjectHashMap<K, V> implements Map<K, V> {
         increaseCapacity();
         return unmapNullValue(oldValue);
     }
+
     private void increaseCapacity() {
         if (size > resizeThreshold) {
             // entries.length = 2 * capacity
@@ -474,6 +475,7 @@ public class Object2ObjectHashMap<K, V> implements Map<K, V> {
 
         return value;
     }
+
     /**
      * {@inheritDoc}
      */

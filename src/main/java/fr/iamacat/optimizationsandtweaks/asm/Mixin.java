@@ -12,8 +12,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Mixin implements IMixin {
-    common_core_MixinWorld(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinWorld , "core.MixinWorld"),
-    common_core_MixinEventBus(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEventBus , "core.MixinEventBus"),
+
+    common_core_MixinWorld(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinWorld, "core.MixinWorld"),
+    common_core_MixinEventBus(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEventBus, "core.MixinEventBus"),
     common_core_MixinEnchantmentHelper(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEnchantmentHelper,
         "core.MixinEnchantmentHelper"),
     common_packagedauto_MixinNeiHandlerPackagedAuto(Side.COMMON,
@@ -70,12 +71,12 @@ public enum Mixin implements IMixin {
         "core.MixinBlockFluidClassic"),
     common_core_MixinChunkProviderServer(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinChunkProviderServer,
         "core.MixinChunkProviderServer"),
-  /*  common_core_MixinEntityRegistry(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEntityRegistry,
-        "core.MixinEntityRegistry"),
-
-   */
-    common_core_MixinWorldType(Side.COMMON,
-        m -> OptimizationsandTweaksConfig.enableMixinWorldType, "core.MixinWorldType"),
+    /*
+     * common_core_MixinEntityRegistry(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEntityRegistry,
+     * "core.MixinEntityRegistry"),
+     */
+    common_core_MixinWorldType(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinWorldType,
+        "core.MixinWorldType"),
     common_core_MixinFMLClientHandler(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinFMLClientHandler,
         "core.MixinFMLClientHandler"),
     common_core_MixinFMLServerHandler(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinFMLServerHandler,
@@ -200,19 +201,22 @@ public enum Mixin implements IMixin {
 
     common_core_MixinEntityTracker(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinEntityTracker,
         "core.MixinEntityTracker"),
-    /*common_core_pathfinding_MixinPathEntity(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
-        "core.pathfinding.MixinPathEntity"),
-    common_core_pathfinding_MixinPathNavigate(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
-        "core.pathfinding.MixinPathNavigate"),
-
+    /*
+     * common_core_pathfinding_MixinPathEntity(Side.COMMON, m ->
+     * OptimizationsandTweaksConfig.enablePathfinderOptimizations,
+     * "core.pathfinding.MixinPathEntity"),
+     * common_core_pathfinding_MixinPathNavigate(Side.COMMON, m ->
+     * OptimizationsandTweaksConfig.enablePathfinderOptimizations,
+     * "core.pathfinding.MixinPathNavigate"),
      */
-    common_core_pathfinding_MixinPathFinder(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
-        "core.pathfinding.MixinPathFinder"),
+    common_core_pathfinding_MixinPathFinder(Side.COMMON,
+        m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations, "core.pathfinding.MixinPathFinder"),
 
     common_core_pathfinding_MixinPathPoint(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
         "core.pathfinding.MixinPathPoint"),
     common_core_MixinWorldServer(Side.COMMON,
-        avoid(TargetedMod.LAGGOOGLES).and(m -> OptimizationsandTweaksConfig.enableMixinWorldServer), "core.MixinWorldServer"),
+        avoid(TargetedMod.LAGGOOGLES).and(m -> OptimizationsandTweaksConfig.enableMixinWorldServer),
+        "core.MixinWorldServer"),
     common_core_MixinStatsComponent(Side.SERVER, m -> OptimizationsandTweaksConfig.enableMixinStatsComponent,
         "core.MixinStatsComponent"),
 
@@ -855,8 +859,8 @@ public enum Mixin implements IMixin {
      * .and(m -> OptimizationsandTweaksConfig.enableMixinPatchSpawnerAnimals),
      * "core.MixinPatchSpawnerAnimals"),
      */
-    common_core_MixinNetHandlerPlayClient(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinNetHandlerPlayClient,
-        "core.MixinNetHandlerPlayClient"),
+    common_core_MixinNetHandlerPlayClient(Side.COMMON,
+        m -> OptimizationsandTweaksConfig.enableMixinNetHandlerPlayClient, "core.MixinNetHandlerPlayClient"),
     common_core_MixinPatchSpawnerAnimals(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinPatchSpawnerAnimals,
         "core.MixinPatchSpawnerAnimals"),
     client_core_MixinOpenGlHelper(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinOpenGlHelper,
@@ -868,7 +872,8 @@ public enum Mixin implements IMixin {
         avoid(TargetedMod.OPTIFINE)
             .and(avoid(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinModelRenderer)),
         "core.MixinModelRenderer"),
-    client_core_MixinStitcher_Slot(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinStitcher, "core.MixinStitcher_Slot"),
+    client_core_MixinStitcher_Slot(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinStitcher,
+        "core.MixinStitcher_Slot"),
 
     client_core_MixinStitcher(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinStitcher, "core.MixinStitcher"),
     client_core_MixinTextureUtil(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinTextureUtil,

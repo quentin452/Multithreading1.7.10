@@ -1,17 +1,13 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import com.google.common.collect.ImmutableSetMultimap;
-import cpw.mods.fml.common.FMLLog;
-import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
-import fr.iamacat.optimizationsandtweaks.eventshandler.TidyChunkBackportEventHandler;
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.ArrayListThreadSafe;
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.HashSetThreadSafe;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.profiler.Profiler;
@@ -25,6 +21,7 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityEvent;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,11 +30,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import com.google.common.collect.ImmutableSetMultimap;
+
+import cpw.mods.fml.common.FMLLog;
+import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
+import fr.iamacat.optimizationsandtweaks.eventshandler.TidyChunkBackportEventHandler;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.ArrayListThreadSafe;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.HashSetThreadSafe;
 
 @Mixin(value = World.class, priority = 999)
 public abstract class MixinWorld {
+
     @Shadow
     public boolean restoringBlockSnapshots = false;
     @Shadow
@@ -101,7 +104,6 @@ public abstract class MixinWorld {
     @Shadow
     public final Profiler theProfiler;
 
-
     @Inject(method = "tick", at = @At(value = "INVOKE"))
     private void onTickInject(CallbackInfo info) {
         if (OptimizationsandTweaksConfig.enableTidyChunkBackport) {
@@ -142,12 +144,17 @@ public abstract class MixinWorld {
     }
 
     /**
-    * @author
-    * @reason
-    */
+     * @author
+     * @reason
+     */
     @Overwrite
     public Block getBlock(int p_147439_1_, int p_147439_2_, int p_147439_3_) {
-        if (p_147439_1_ >= -30000000 && p_147439_3_ >= -30000000 && p_147439_1_ < 30000000 && p_147439_3_ < 30000000 && p_147439_2_ >= 0 && p_147439_2_ < 256 && this.blockExists(p_147439_1_, p_147439_2_, p_147439_3_)) {
+        if (p_147439_1_ >= -30000000 && p_147439_3_ >= -30000000
+            && p_147439_1_ < 30000000
+            && p_147439_3_ < 30000000
+            && p_147439_2_ >= 0
+            && p_147439_2_ < 256
+            && this.blockExists(p_147439_1_, p_147439_2_, p_147439_3_)) {
             Chunk chunk = this.getChunkFromChunkCoords(p_147439_1_ >> 4, p_147439_3_ >> 4);
             if (chunk != null) {
                 return chunk.getBlock(p_147439_1_ & 15, p_147439_2_, p_147439_3_ & 15);
@@ -748,7 +755,8 @@ public abstract class MixinWorld {
     @Overwrite
     public int getBlockLightValue_do(int p_72849_1_, int p_72849_2_, int p_72849_3_, boolean p_72849_4_) {
         if (optimizationsAndTweaks$isWithinBounds(p_72849_1_, p_72849_2_, p_72849_3_)) {
-            if (p_72849_4_ && this.getBlock(p_72849_1_, p_72849_2_, p_72849_3_).getUseNeighborBrightness()) {
+            if (p_72849_4_ && this.getBlock(p_72849_1_, p_72849_2_, p_72849_3_)
+                .getUseNeighborBrightness()) {
                 return optimizationsAndTweaks$getMaxNeighborLightValue(p_72849_1_, p_72849_2_, p_72849_3_);
             } else if (p_72849_2_ < 0) {
                 return 0;
@@ -761,8 +769,7 @@ public abstract class MixinWorld {
                         int lightValue = optimizationsAndTweaks$getChunkBlockLightValue(
                             p_72849_1_ + facing.getFrontOffsetX(),
                             p_72849_2_ + facing.getFrontOffsetY(),
-                            p_72849_3_ + facing.getFrontOffsetZ()
-                        );
+                            p_72849_3_ + facing.getFrontOffsetZ());
                         maxLightValue = Math.max(maxLightValue, lightValue);
                     }
                 }
@@ -773,7 +780,6 @@ public abstract class MixinWorld {
             return 15;
         }
     }
-
 
     @Unique
     private boolean optimizationsAndTweaks$isWithinBounds(int x, int y, int z) {
@@ -839,6 +845,7 @@ public abstract class MixinWorld {
             ((IWorldAccess) worldAccess).playSound(soundName, x, y, z, volume, pitch);
         }
     }
+
     /**
      * @author
      * @reason
@@ -898,7 +905,13 @@ public abstract class MixinWorld {
         EntityPlayer entityplayer = this.getClosestPlayer(l + 0.5D, j1 + 0.5D, i1 + 0.5D, 8.0D);
 
         if (entityplayer != null && entityplayer.getDistanceSq(l + 0.5D, j1 + 0.5D, i1 + 0.5D) > 4.0D) {
-            this.playSoundEffect(l + 0.5D, j1 + 0.5D, i1 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.optimizationsAndTweaks$rand.nextFloat() * 0.2F);
+            this.playSoundEffect(
+                l + 0.5D,
+                j1 + 0.5D,
+                i1 + 0.5D,
+                "ambient.cave.cave",
+                0.7F,
+                0.8F + this.optimizationsAndTweaks$rand.nextFloat() * 0.2F);
             this.ambientTickCountdown = this.optimizationsAndTweaks$rand.nextInt(12000) + 6000;
         }
     }
@@ -908,8 +921,7 @@ public abstract class MixinWorld {
      * @reason
      */
     @Overwrite
-    public void setActivePlayerChunksAndCheckLight()
-    {
+    public void setActivePlayerChunksAndCheckLight() {
         this.activeChunkSet.clear();
         this.theProfiler.startSection("buildList");
         this.activeChunkSet.addAll(getPersistentChunks().keySet());
@@ -919,17 +931,14 @@ public abstract class MixinWorld {
         int k;
         int l;
 
-        for (i = 0; i < this.playerEntities.size(); ++i)
-        {
-            entityplayer = (EntityPlayer)this.playerEntities.get(i);
+        for (i = 0; i < this.playerEntities.size(); ++i) {
+            entityplayer = (EntityPlayer) this.playerEntities.get(i);
             j = MathHelper.floor_double(entityplayer.posX / 16.0D);
             k = MathHelper.floor_double(entityplayer.posZ / 16.0D);
             l = this.func_152379_p();
 
-            for (int i1 = -l; i1 <= l; ++i1)
-            {
-                for (int j1 = -l; j1 <= l; ++j1)
-                {
+            for (int i1 = -l; i1 <= l; ++i1) {
+                for (int j1 = -l; j1 <= l; ++j1) {
                     this.activeChunkSet.add(new ChunkCoordIntPair(i1 + j, j1 + k));
                 }
             }
@@ -937,17 +946,15 @@ public abstract class MixinWorld {
 
         this.theProfiler.endSection();
 
-        if (this.ambientTickCountdown > 0)
-        {
+        if (this.ambientTickCountdown > 0) {
             --this.ambientTickCountdown;
         }
 
         this.theProfiler.startSection("playerCheckLight");
 
-        if (!this.playerEntities.isEmpty())
-        {
+        if (!this.playerEntities.isEmpty()) {
             i = this.optimizationsAndTweaks$rand.nextInt(this.playerEntities.size());
-            entityplayer = (EntityPlayer)this.playerEntities.get(i);
+            entityplayer = (EntityPlayer) this.playerEntities.get(i);
             j = MathHelper.floor_double(entityplayer.posX) + this.optimizationsAndTweaks$rand.nextInt(11) - 5;
             k = MathHelper.floor_double(entityplayer.posY) + this.optimizationsAndTweaks$rand.nextInt(11) - 5;
             l = MathHelper.floor_double(entityplayer.posZ) + this.optimizationsAndTweaks$rand.nextInt(11) - 5;
@@ -965,8 +972,7 @@ public abstract class MixinWorld {
      * @reason
      */
     @Overwrite
-    public void onEntityAdded(Entity p_72923_1_)
-    {
+    public void onEntityAdded(Entity p_72923_1_) {
         for (Object worldAccess : this.worldAccesses) {
             ((IWorldAccess) worldAccess).onEntityCreate(p_72923_1_);
         }
@@ -989,6 +995,7 @@ public abstract class MixinWorld {
         this.theProfiler.endSection();
         this.theProfiler.endSection();
     }
+
     @Unique
     private void optimizationsAndTweaks$updateWeatherEffects() {
         List<Entity> entitiesToRemove = new ArrayListThreadSafe<>();
@@ -1018,7 +1025,8 @@ public abstract class MixinWorld {
         }
 
         if (ForgeModContainer.removeErroringEntities) {
-            FMLLog.getLogger().log(org.apache.logging.log4j.Level.ERROR, crashreport.getCompleteReport());
+            FMLLog.getLogger()
+                .log(org.apache.logging.log4j.Level.ERROR, crashreport.getCompleteReport());
             if (entity != null) {
                 removeEntity(entity);
             }
@@ -1035,19 +1043,22 @@ public abstract class MixinWorld {
                 int chunkX = entity.chunkCoordX;
                 int chunkZ = entity.chunkCoordZ;
                 if (entity.addedToChunk && this.chunkExists(chunkX, chunkZ)) {
-                    this.getChunkFromChunkCoords(chunkX, chunkZ).removeEntity(entity);
+                    this.getChunkFromChunkCoords(chunkX, chunkZ)
+                        .removeEntity(entity);
                 }
                 onEntityRemoved(entity);
             }
         }
         this.unloadedEntityList.clear();
     }
+
     @Unique
     private void optimizationsAndTweaks$updateLoadedEntities() {
         Iterator<Entity> iterator = this.loadedEntityList.iterator();
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity.ridingEntity != null && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
+            if (entity.ridingEntity != null
+                && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
                 entity.ridingEntity.riddenByEntity = null;
                 entity.ridingEntity = null;
             }
@@ -1063,7 +1074,8 @@ public abstract class MixinWorld {
                 int chunkX = entity.chunkCoordX;
                 int chunkZ = entity.chunkCoordZ;
                 if (entity.addedToChunk && this.chunkExists(chunkX, chunkZ)) {
-                    this.getChunkFromChunkCoords(chunkX, chunkZ).removeEntity(entity);
+                    this.getChunkFromChunkCoords(chunkX, chunkZ)
+                        .removeEntity(entity);
                 }
                 iterator.remove();
                 onEntityRemoved(entity);
@@ -1071,13 +1083,15 @@ public abstract class MixinWorld {
             this.theProfiler.endSection();
         }
     }
+
     @Unique
     private void optimizationsAndTweaks$updateTileEntities() {
         this.field_147481_N = true;
         Iterator<TileEntity> iterator = this.loadedTileEntityList.iterator();
         while (iterator.hasNext()) {
             TileEntity tileentity = iterator.next();
-            if (!tileentity.isInvalid() && tileentity.hasWorldObj() && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
+            if (!tileentity.isInvalid() && tileentity.hasWorldObj()
+                && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
                 try {
                     tileentity.updateEntity();
                 } catch (Throwable throwable) {
@@ -1089,7 +1103,8 @@ public abstract class MixinWorld {
                 if (this.chunkExists(tileentity.xCoord >> 4, tileentity.zCoord >> 4)) {
                     Chunk chunk = this.getChunkFromChunkCoords(tileentity.xCoord >> 4, tileentity.zCoord >> 4);
                     if (chunk != null) {
-                        chunk.removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
+                        chunk
+                            .removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
                     }
                 }
             }
@@ -1097,13 +1112,15 @@ public abstract class MixinWorld {
         optimizationsAndTweaks$handlePendingTileEntities();
         this.field_147481_N = false;
     }
+
     @Unique
     private void optimizationsAndTweaks$handleTileEntityCrash(TileEntity tileentity, Throwable throwable) {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking block entity");
         CrashReportCategory crashreportcategory = crashreport.makeCategory("Block entity being ticked");
         tileentity.func_145828_a(crashreportcategory);
         if (ForgeModContainer.removeErroringTileEntities) {
-            FMLLog.getLogger().log(org.apache.logging.log4j.Level.ERROR, crashreport.getCompleteReport());
+            FMLLog.getLogger()
+                .log(org.apache.logging.log4j.Level.ERROR, crashreport.getCompleteReport());
             tileentity.invalidate();
             setBlockToAir(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
         } else {
@@ -1124,7 +1141,10 @@ public abstract class MixinWorld {
                     if (this.chunkExists(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4)) {
                         Chunk chunk1 = this.getChunkFromChunkCoords(tileentity1.xCoord >> 4, tileentity1.zCoord >> 4);
                         if (chunk1 != null) {
-                            chunk1.removeInvalidTileEntity(tileentity1.xCoord & 15, tileentity1.yCoord, tileentity1.zCoord & 15);
+                            chunk1.removeInvalidTileEntity(
+                                tileentity1.xCoord & 15,
+                                tileentity1.yCoord,
+                                tileentity1.zCoord & 15);
                         }
                     }
                 }
@@ -1134,44 +1154,35 @@ public abstract class MixinWorld {
     }
 
     @Shadow
-    public boolean setBlockToAir(int x, int y, int z)
-    {
+    public boolean setBlockToAir(int x, int y, int z) {
         return this.setBlock(x, y, z, Blocks.air, 0, 3);
     }
+
     @Shadow
-    public boolean setBlock(int x, int y, int z, Block blockIn, int metadataIn, int flags)
-    {
-        if (x >= -30000000 && z >= -30000000 && x < 30000000 && z < 30000000)
-        {
-            if (y < 0)
-            {
+    public boolean setBlock(int x, int y, int z, Block blockIn, int metadataIn, int flags) {
+        if (x >= -30000000 && z >= -30000000 && x < 30000000 && z < 30000000) {
+            if (y < 0) {
                 return false;
-            }
-            else if (y >= 256)
-            {
+            } else if (y >= 256) {
                 return false;
-            }
-            else
-            {
+            } else {
                 Chunk chunk = this.getChunkFromChunkCoords(x >> 4, z >> 4);
                 Block block1 = null;
                 net.minecraftforge.common.util.BlockSnapshot blockSnapshot = null;
 
-                if ((flags & 1) != 0)
-                {
+                if ((flags & 1) != 0) {
                     block1 = chunk.getBlock(x & 15, y, z & 15);
                 }
 
-                if (this.captureBlockSnapshots && !this.isRemote)
-                {
-                    blockSnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot((World) (Object)this, x, y, z, flags);
+                if (this.captureBlockSnapshots && !this.isRemote) {
+                    blockSnapshot = net.minecraftforge.common.util.BlockSnapshot
+                        .getBlockSnapshot((World) (Object) this, x, y, z, flags);
                     this.capturedBlockSnapshots.add(blockSnapshot);
                 }
 
                 boolean flag = chunk.func_150807_a(x & 15, y, z & 15, blockIn, metadataIn);
 
-                if (!flag && blockSnapshot != null)
-                {
+                if (!flag && blockSnapshot != null) {
                     this.capturedBlockSnapshots.remove(blockSnapshot);
                     blockSnapshot = null;
                 }
@@ -1188,53 +1199,46 @@ public abstract class MixinWorld {
 
                 return flag;
             }
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
+
     @Overwrite
-    public synchronized TileEntity getTileEntity(int x, int y, int z)
-    {
-        if (y >= 0 && y < 256)
-        {
+    public synchronized TileEntity getTileEntity(int x, int y, int z) {
+        if (y >= 0 && y < 256) {
             TileEntity tileentity = null;
             int l;
             TileEntity tileentity1;
 
-            if (this.field_147481_N)
-            {
-                for (l = 0; l < this.addedTileEntityList.size(); ++l)
-                {
-                    tileentity1 = (TileEntity)this.addedTileEntityList.get(l);
+            if (this.field_147481_N) {
+                for (l = 0; l < this.addedTileEntityList.size(); ++l) {
+                    tileentity1 = (TileEntity) this.addedTileEntityList.get(l);
 
-                    if (!tileentity1.isInvalid() && tileentity1.xCoord == x && tileentity1.yCoord == y && tileentity1.zCoord == z)
-                    {
+                    if (!tileentity1.isInvalid() && tileentity1.xCoord == x
+                        && tileentity1.yCoord == y
+                        && tileentity1.zCoord == z) {
                         tileentity = tileentity1;
                         break;
                     }
                 }
             }
 
-            if (tileentity == null)
-            {
+            if (tileentity == null) {
                 Chunk chunk = this.getChunkFromChunkCoords(x >> 4, z >> 4);
 
-                if (chunk != null)
-                {
+                if (chunk != null) {
                     tileentity = chunk.func_150806_e(x & 15, y, z & 15);
                 }
             }
 
-            if (tileentity == null)
-            {
-                for (l = 0; l < this.addedTileEntityList.size(); ++l)
-                {
-                    tileentity1 = (TileEntity)this.addedTileEntityList.get(l);
+            if (tileentity == null) {
+                for (l = 0; l < this.addedTileEntityList.size(); ++l) {
+                    tileentity1 = (TileEntity) this.addedTileEntityList.get(l);
 
-                    if (!tileentity1.isInvalid() && tileentity1.xCoord == x && tileentity1.yCoord == y && tileentity1.zCoord == z)
-                    {
+                    if (!tileentity1.isInvalid() && tileentity1.xCoord == x
+                        && tileentity1.yCoord == y
+                        && tileentity1.zCoord == z) {
                         tileentity = tileentity1;
                         break;
                     }
@@ -1242,9 +1246,7 @@ public abstract class MixinWorld {
             }
 
             return tileentity;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

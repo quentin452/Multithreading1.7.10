@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
 import fr.iamacat.optimizationsandtweaks.utils.apache.commons.math3.util.FastMath;
 
 @Mixin(EntityLookHelper.class)
@@ -58,12 +57,12 @@ public class MixinEntityLookHelper {
     @Overwrite
     public void setLookPosition(double p_75650_1_, double p_75650_3_, double p_75650_5_, float p_75650_7_,
         float p_75650_8_) {
-            this.posX = p_75650_1_;
-            this.posY = p_75650_3_;
-            this.posZ = p_75650_5_;
-            this.deltaLookYaw = p_75650_7_;
-            this.deltaLookPitch = p_75650_8_;
-            this.isLooking = true;
+        this.posX = p_75650_1_;
+        this.posY = p_75650_3_;
+        this.posZ = p_75650_5_;
+        this.deltaLookYaw = p_75650_7_;
+        this.deltaLookPitch = p_75650_8_;
+        this.isLooking = true;
     }
 
     /**
@@ -125,16 +124,16 @@ public class MixinEntityLookHelper {
 
     @Unique
     private float updateRotation(float p_75652_1_, float p_75652_2_, float p_75652_3_) {
-            float f3 = MathHelper.wrapAngleTo180_float(p_75652_2_ - p_75652_1_);
+        float f3 = MathHelper.wrapAngleTo180_float(p_75652_2_ - p_75652_1_);
 
-            if (f3 > p_75652_3_) {
-                f3 = p_75652_3_;
-            }
+        if (f3 > p_75652_3_) {
+            f3 = p_75652_3_;
+        }
 
-            if (f3 < -p_75652_3_) {
-                f3 = -p_75652_3_;
-            }
+        if (f3 < -p_75652_3_) {
+            f3 = -p_75652_3_;
+        }
 
-            return p_75652_1_ + f3;
+        return p_75652_1_ + f3;
     }
 }

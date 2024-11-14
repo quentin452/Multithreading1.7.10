@@ -1,11 +1,12 @@
 package fr.iamacat.optimizationsandtweaks.noise;
 
-import net.minecraft.world.gen.NoiseGenerator;
-
 import java.util.Arrays;
 import java.util.Random;
 
+import net.minecraft.world.gen.NoiseGenerator;
+
 public class NoiseGeneratorPerlinTwo extends NoiseGenerator {
+
     private final NoiseGeneratorSimplexTwo[] field_151603_a;
     private final int field_151602_b;
 
@@ -31,7 +32,7 @@ public class NoiseGeneratorPerlinTwo extends NoiseGenerator {
     }
 
     public double[] func_151599_a(double[] p_151599_1_, double p_151599_2_, double p_151599_4_, int p_151599_6_,
-                                  int p_151599_7_, double p_151599_8_, double p_151599_10_, double p_151599_12_) {
+        int p_151599_7_, double p_151599_8_, double p_151599_10_, double p_151599_12_) {
         return this.func_151600_a(
             p_151599_1_,
             p_151599_2_,
@@ -45,7 +46,7 @@ public class NoiseGeneratorPerlinTwo extends NoiseGenerator {
     }
 
     public double[] func_151600_a(double[] p_151600_1_, double p_151600_2_, double p_151600_4_, int p_151600_6_,
-                                  int p_151600_7_, double p_151600_8_, double p_151600_10_, double p_151600_12_, double p_151600_14_) {
+        int p_151600_7_, double p_151600_8_, double p_151600_10_, double p_151600_12_, double p_151600_14_) {
         if (p_151600_1_ != null && p_151600_1_.length >= p_151600_6_ * p_151600_7_) {
             Arrays.fill(p_151600_1_, 0.0D);
         } else {

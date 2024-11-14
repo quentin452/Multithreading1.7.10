@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Entity.class)
 public abstract class MixinEntity {
+
     @Shadow
     protected DataWatcher dataWatcher;
     @Shadow
@@ -44,7 +45,6 @@ public abstract class MixinEntity {
         this.boundingBox = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     }
 
-
     @Unique
     private String optimizationsAndTweaks$cachedEntityName = null;
 
@@ -69,6 +69,7 @@ public abstract class MixinEntity {
 
         return translatedName;
     }
+
     /**
      * @author
      * @reason
@@ -79,6 +80,7 @@ public abstract class MixinEntity {
         data = set ? (byte) (data | (1 << flag & 0xff)) : (byte) (data & ~(1 << flag & 0xff));
         this.dataWatcher.updateObject(0, data);
     }
+
     @Overwrite
     public float getBrightness(float p_70013_1_) {
         int i = MathHelper.floor_double(this.posX);

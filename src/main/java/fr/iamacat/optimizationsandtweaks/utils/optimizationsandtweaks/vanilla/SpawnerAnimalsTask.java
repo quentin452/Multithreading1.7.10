@@ -1,12 +1,5 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla;
 
-import fr.iamacat.optimizationsandtweaks.utils.agrona.collections.Object2ObjectHashMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.World;
-
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -14,7 +7,16 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.World;
+
+import fr.iamacat.optimizationsandtweaks.utils.agrona.collections.Object2ObjectHashMap;
+
 public class SpawnerAnimalsTask implements Runnable {
+
     public static final Object2ObjectHashMap optimizationsAndTweaks$eligibleChunksForSpawning = new Object2ObjectHashMap();
     private static final Thread countThread = new Thread(new SpawnerAnimalsTask(), "SpawnerAnimals-Thread");
     private static final Object LOCK = new Object();
@@ -32,7 +34,8 @@ public class SpawnerAnimalsTask implements Runnable {
         this.result = null;
     }
 
-    public SpawnerAnimalsTask(EnumCreatureType creatureType, World world, Object2ObjectHashMap<ChunkCoordIntPair,Boolean> eligibleChunks, AtomicInteger result) {
+    public SpawnerAnimalsTask(EnumCreatureType creatureType, World world,
+        Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks, AtomicInteger result) {
         this.creatureType = creatureType;
         this.world = world;
         this.eligibleChunks = eligibleChunks;
@@ -49,7 +52,11 @@ public class SpawnerAnimalsTask implements Runnable {
 
         CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
             try {
-                return countCreaturesAsync(world.loadedEntityList.iterator(), creatureType, maxCreatureCount, eligibleChunks);
+                return countCreaturesAsync(
+                    world.loadedEntityList.iterator(),
+                    creatureType,
+                    maxCreatureCount,
+                    eligibleChunks);
             } catch (Exception e) {
                 System.err.println("Exception in CompletableFuture: " + e.getMessage());
                 e.printStackTrace();
@@ -62,22 +69,26 @@ public class SpawnerAnimalsTask implements Runnable {
         assert result != null;
         result.set(totalCreatureCount);
     }
-    private int countCreaturesAsync(Iterator<?> entityIterator, EnumCreatureType creatureType,
-                                    int maxCreatureCount, Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
+
+    private int countCreaturesAsync(Iterator<?> entityIterator, EnumCreatureType creatureType, int maxCreatureCount,
+        Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new CreatureCountRecursiveTask(entityIterator, creatureType, maxCreatureCount, eligibleChunks));
-    }
-    private static int optimizationsAndTweaks$getMaxCreatureCount(EnumCreatureType creatureType, Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
-        return creatureType.getMaxNumberOfCreature() * eligibleChunks.size() / 256;
+        return forkJoinPool
+            .invoke(new CreatureCountRecursiveTask(entityIterator, creatureType, maxCreatureCount, eligibleChunks));
     }
 
+    private static int optimizationsAndTweaks$getMaxCreatureCount(EnumCreatureType creatureType,
+        Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
+        return creatureType.getMaxNumberOfCreature() * eligibleChunks.size() / 256;
+    }
 
     public int getTotalCreatureCount() {
         assert result != null;
         return result.get();
     }
 
-    public static boolean optimizationsAndTweaks$shouldSpawnCreature(EnumCreatureType creatureType, World world, Object2ObjectHashMap<ChunkCoordIntPair,Boolean> eligibleChunks) {
+    public static boolean optimizationsAndTweaks$shouldSpawnCreature(EnumCreatureType creatureType, World world,
+        Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
         synchronized (LOCK) {
             if (!threadStarted) {
                 countThread.start();
@@ -85,18 +96,21 @@ public class SpawnerAnimalsTask implements Runnable {
             }
         }
 
-        int totalCreatureCount = new SpawnerAnimalsTask(creatureType, world, eligibleChunks, new AtomicInteger()).getTotalCreatureCount();
+        int totalCreatureCount = new SpawnerAnimalsTask(creatureType, world, eligibleChunks, new AtomicInteger())
+            .getTotalCreatureCount();
         int maxCreatureCount = optimizationsAndTweaks$getMaxCreatureCount(creatureType, eligibleChunks);
         return totalCreatureCount <= maxCreatureCount;
     }
 
     private static class CreatureCountRecursiveTask extends RecursiveTask<Integer> {
+
         private final transient Iterator<?> entityIterator;
         private final EnumCreatureType creatureType;
         private final int maxCreatureCount;
-        private final Object2ObjectHashMap<ChunkCoordIntPair,Boolean> eligibleChunks;
+        private final Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks;
 
-        public CreatureCountRecursiveTask(Iterator<?> entityIterator, EnumCreatureType creatureType, int maxCreatureCount, Object2ObjectHashMap<ChunkCoordIntPair,Boolean> eligibleChunks) {
+        public CreatureCountRecursiveTask(Iterator<?> entityIterator, EnumCreatureType creatureType,
+            int maxCreatureCount, Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
             this.entityIterator = entityIterator;
             this.creatureType = creatureType;
             this.maxCreatureCount = maxCreatureCount;
@@ -118,7 +132,8 @@ public class SpawnerAnimalsTask implements Runnable {
             return totalCreatureCount;
         }
 
-        private boolean isEntityInEligibleChunk(Entity entity, Object2ObjectHashMap<ChunkCoordIntPair,Boolean> eligibleChunks) {
+        private boolean isEntityInEligibleChunk(Entity entity,
+            Object2ObjectHashMap<ChunkCoordIntPair, Boolean> eligibleChunks) {
             double entityPosX = entity.posX;
             double entityPosZ = entity.posZ;
             int chunkX = MathHelper.floor_double(entityPosX) >> 4;

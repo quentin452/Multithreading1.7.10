@@ -214,7 +214,7 @@ public class MixinLoader {
                     .build();
                 for (ArtifactVersion v : allDeps) {
                     if (modVersions.containsKey(v.getLabel()) && (!v.containsVersion(modVersions.get(v.getLabel())))) {
-                            versionMissingMods.add(v);
+                        versionMissingMods.add(v);
                     }
                 }
                 if (!versionMissingMods.isEmpty()) {

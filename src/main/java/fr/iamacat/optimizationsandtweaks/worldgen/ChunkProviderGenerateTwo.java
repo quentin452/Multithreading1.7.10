@@ -3,12 +3,10 @@ package fr.iamacat.optimizationsandtweaks.worldgen;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.*;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import fr.iamacat.optimizationsandtweaks.noise.NoiseGeneratorPerlinTwo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -39,6 +37,7 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import fr.iamacat.optimizationsandtweaks.noise.NoiseGeneratorOctavesTwo;
+import fr.iamacat.optimizationsandtweaks.noise.NoiseGeneratorPerlinTwo;
 
 public class ChunkProviderGenerateTwo implements IChunkProvider {
 
@@ -193,8 +192,13 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
     }
 
     public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] p_147422_3_, byte[] p_147422_4_,
-                                      BiomeGenBase[] p_147422_5_) {
-        ChunkProviderEvent.ReplaceBiomeBlocks event = createReplaceBiomeBlocksEvent(p_147422_1_, p_147422_2_, p_147422_3_, p_147422_4_, p_147422_5_);
+        BiomeGenBase[] p_147422_5_) {
+        ChunkProviderEvent.ReplaceBiomeBlocks event = createReplaceBiomeBlocksEvent(
+            p_147422_1_,
+            p_147422_2_,
+            p_147422_3_,
+            p_147422_4_,
+            p_147422_5_);
         handleReplaceBiomeBlocksEvent(event);
 
         if (event.getResult() == Result.DENY) {
@@ -204,12 +208,19 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
         double d0 = 0.03125D;
         generateStoneNoise(p_147422_1_, p_147422_2_, d0);
 
-        generateTerrainBlocks(p_147422_1_, p_147422_2_, p_147422_3_,p_147422_4_, p_147422_5_);
+        generateTerrainBlocks(p_147422_1_, p_147422_2_, p_147422_3_, p_147422_4_, p_147422_5_);
     }
 
-    private ChunkProviderEvent.ReplaceBiomeBlocks createReplaceBiomeBlocksEvent(int p_147422_1_, int p_147422_2_, Block[] p_147422_3_,
-                                                                                byte[] p_147422_4_, BiomeGenBase[] p_147422_5_) {
-        return new ChunkProviderEvent.ReplaceBiomeBlocks(this, p_147422_1_, p_147422_2_, p_147422_3_, p_147422_4_, p_147422_5_, this.worldObj);
+    private ChunkProviderEvent.ReplaceBiomeBlocks createReplaceBiomeBlocksEvent(int p_147422_1_, int p_147422_2_,
+        Block[] p_147422_3_, byte[] p_147422_4_, BiomeGenBase[] p_147422_5_) {
+        return new ChunkProviderEvent.ReplaceBiomeBlocks(
+            this,
+            p_147422_1_,
+            p_147422_2_,
+            p_147422_3_,
+            p_147422_4_,
+            p_147422_5_,
+            this.worldObj);
     }
 
     private void handleReplaceBiomeBlocksEvent(ChunkProviderEvent.ReplaceBiomeBlocks event) {
@@ -222,7 +233,7 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
     }
 
     private void generateTerrainBlocks(int p_147422_1_, int p_147422_2_, Block[] p_147422_3_, byte[] p_147422_4_,
-                                       BiomeGenBase[] p_147422_5_) {
+        BiomeGenBase[] p_147422_5_) {
         for (int k = 0; k < 16; ++k) {
             for (int l = 0; l < 16; ++l) {
                 BiomeGenBase biomegenbase = p_147422_5_[l + k * 16];
@@ -238,11 +249,9 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
         }
     }
 
-
     public Chunk loadChunk(int p_73158_1_, int p_73158_2_) {
         return this.provideChunk(p_73158_1_, p_73158_2_);
     }
-
 
     public Chunk provideChunk(int p_73154_1_, int p_73154_2_) {
         this.rand.setSeed(p_73154_1_ * 341873128712L + p_73154_2_ * 132897987541L);
@@ -411,6 +420,7 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
     public boolean chunkExists(int p_73149_1_, int p_73149_2_) {
         return true;
     }
+
     private final Random random = new Random();
 
     public void populate(IChunkProvider p_73153_1_, int p_73153_2_, int p_73153_3_) {
@@ -431,7 +441,8 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
             this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.random, p_73153_2_, p_73153_3_);
             flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.random, p_73153_2_, p_73153_3_);
             this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.random, p_73153_2_, p_73153_3_);
-            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.random, p_73153_2_, p_73153_3_);
+            this.scatteredFeatureGenerator
+                .generateStructuresInChunk(this.worldObj, this.random, p_73153_2_, p_73153_3_);
         }
 
         int k1;
@@ -504,9 +515,7 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
         return true;
     }
 
-
     public void saveExtraData() {}
-
 
     public boolean unloadQueuedChunks() {
         return false;
@@ -516,19 +525,20 @@ public class ChunkProviderGenerateTwo implements IChunkProvider {
         return true;
     }
 
-
     public String makeString() {
         return "RandomLevelSource";
     }
 
     public List getPossibleCreatures(EnumCreatureType p_73155_1_, int p_73155_2_, int p_73155_3_, int p_73155_4_) {
         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(p_73155_2_, p_73155_4_);
-        if (p_73155_1_ == EnumCreatureType.monster && this.scatteredFeatureGenerator.func_143030_a(p_73155_2_, p_73155_3_, p_73155_4_)) {
+        if (p_73155_1_ == EnumCreatureType.monster
+            && this.scatteredFeatureGenerator.func_143030_a(p_73155_2_, p_73155_3_, p_73155_4_)) {
             return this.scatteredFeatureGenerator.getScatteredFeatureSpawnList();
         } else {
             return biomegenbase.getSpawnableList(p_73155_1_);
         }
     }
+
     public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_,
         int p_147416_5_) {
         return "Stronghold".equals(p_147416_2_) && this.strongholdGenerator != null

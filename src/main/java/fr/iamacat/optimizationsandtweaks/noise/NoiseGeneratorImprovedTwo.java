@@ -3,6 +3,7 @@ package fr.iamacat.optimizationsandtweaks.noise;
 import java.util.Random;
 
 public class NoiseGeneratorImprovedTwo {
+
     private final int[] permutations;
     public double xCoord;
     public double yCoord;

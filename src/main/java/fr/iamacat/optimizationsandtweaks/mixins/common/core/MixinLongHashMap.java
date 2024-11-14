@@ -1,16 +1,19 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.mixins.Classers;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import net.minecraft.util.LongHashMap;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.mixins.Classers;
 
 @Mixin(LongHashMap.class)
 public class MixinLongHashMap {
+
     @Unique
     private transient Classers.Entry[] optimizationsAndTweaks$hashArray = new Classers.Entry[16];
     @Unique
@@ -166,7 +169,11 @@ public class MixinLongHashMap {
     @Overwrite
     private void createKey(int p_76156_1_, long p_76156_2_, Object p_76156_4_, int p_76156_5_) {
         Classers.Entry entry = this.optimizationsAndTweaks$hashArray[p_76156_5_];
-        this.optimizationsAndTweaks$hashArray[p_76156_5_] = new Classers.Entry(p_76156_1_, p_76156_2_, p_76156_4_, entry);
+        this.optimizationsAndTweaks$hashArray[p_76156_5_] = new Classers.Entry(
+            p_76156_1_,
+            p_76156_2_,
+            p_76156_4_,
+            entry);
 
         if (this.numHashElements++ >= this.capacity) {
             this.resizeTable(2 * this.optimizationsAndTweaks$hashArray.length);

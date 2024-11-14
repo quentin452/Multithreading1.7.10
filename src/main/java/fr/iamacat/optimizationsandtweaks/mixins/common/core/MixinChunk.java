@@ -1,42 +1,33 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Chunk.class)
 public class MixinChunk {
+
     @Shadow
     private static final Logger logger = LogManager.getLogger();
     /** Determines if the chunk is lit or not at a light value greater than 0. */
@@ -166,8 +157,10 @@ public class MixinChunk {
 
     @Unique
     private boolean optimizationsAndTweaks$isTargetEntityValid(Entity sourceEntity, Entity targetEntity,
-                                                               AxisAlignedBB aabb, IEntitySelector entitySelector) {
-        return targetEntity != null && targetEntity != sourceEntity && targetEntity.boundingBox.intersectsWith(aabb) && (entitySelector == null || entitySelector.isEntityApplicable(targetEntity));
+        AxisAlignedBB aabb, IEntitySelector entitySelector) {
+        return targetEntity != null && targetEntity != sourceEntity
+            && targetEntity.boundingBox.intersectsWith(aabb)
+            && (entitySelector == null || entitySelector.isEntityApplicable(targetEntity));
     }
 
     @Unique
@@ -188,8 +181,8 @@ public class MixinChunk {
      * @reason
      */
     @Overwrite
-    public synchronized void getEntitiesOfTypeWithinAAAB(Class<? extends Entity> entityClass, AxisAlignedBB aabb, List<Entity> listToFill,
-                                            IEntitySelector entitySelector) {
+    public synchronized void getEntitiesOfTypeWithinAAAB(Class<? extends Entity> entityClass, AxisAlignedBB aabb,
+        List<Entity> listToFill, IEntitySelector entitySelector) {
         int minY = MathHelper.floor_double((aabb.minY - World.MAX_ENTITY_RADIUS) / 16.0D);
         int maxY = MathHelper.floor_double((aabb.maxY + World.MAX_ENTITY_RADIUS) / 16.0D);
         minY = MathHelper.clamp_int(minY, 0, this.entityLists.length - 1);
@@ -210,55 +203,65 @@ public class MixinChunk {
     }
 
     @Overwrite
-    public synchronized void addEntity(Entity p_76612_1_)
-    {
+    public synchronized void addEntity(Entity p_76612_1_) {
         this.hasEntities = true;
         int i = MathHelper.floor_double(p_76612_1_.posX / 16.0D);
         int j = MathHelper.floor_double(p_76612_1_.posZ / 16.0D);
 
-        if (i != this.xPosition || j != this.zPosition)
-        {
-            logger.warn("Wrong location! " + p_76612_1_ + " (at " + i + ", " + j + " instead of " + this.xPosition + ", " + this.zPosition + ")");
+        if (i != this.xPosition || j != this.zPosition) {
+            logger.warn(
+                "Wrong location! " + p_76612_1_
+                    + " (at "
+                    + i
+                    + ", "
+                    + j
+                    + " instead of "
+                    + this.xPosition
+                    + ", "
+                    + this.zPosition
+                    + ")");
             Thread.dumpStack();
         }
 
         int k = MathHelper.floor_double(p_76612_1_.posY / 16.0D);
 
-        if (k < 0)
-        {
+        if (k < 0) {
             k = 0;
         }
 
-        if (k >= this.entityLists.length)
-        {
+        if (k >= this.entityLists.length) {
             k = this.entityLists.length - 1;
         }
 
-        MinecraftForge.EVENT_BUS.post(new EntityEvent.EnteringChunk(p_76612_1_, this.xPosition, this.zPosition, p_76612_1_.chunkCoordX, p_76612_1_.chunkCoordZ));
+        MinecraftForge.EVENT_BUS.post(
+            new EntityEvent.EnteringChunk(
+                p_76612_1_,
+                this.xPosition,
+                this.zPosition,
+                p_76612_1_.chunkCoordX,
+                p_76612_1_.chunkCoordZ));
         p_76612_1_.addedToChunk = true;
         p_76612_1_.chunkCoordX = this.xPosition;
         p_76612_1_.chunkCoordY = k;
         p_76612_1_.chunkCoordZ = this.zPosition;
         this.entityLists[k].add(p_76612_1_);
     }
+
     @Overwrite
-    public synchronized void removeEntityAtIndex(Entity p_76608_1_, int p_76608_2_)
-    {
-        if (p_76608_2_ < 0)
-        {
+    public synchronized void removeEntityAtIndex(Entity p_76608_1_, int p_76608_2_) {
+        if (p_76608_2_ < 0) {
             p_76608_2_ = 0;
         }
 
-        if (p_76608_2_ >= this.entityLists.length)
-        {
+        if (p_76608_2_ >= this.entityLists.length) {
             p_76608_2_ = this.entityLists.length - 1;
         }
 
         this.entityLists[p_76608_2_].remove(p_76608_1_);
     }
+
     @Overwrite
-    public synchronized void onChunkLoad()
-    {
+    public synchronized void onChunkLoad() {
         this.isChunkLoaded = true;
         this.worldObj.func_147448_a(this.chunkTileEntityMap.values());
 
@@ -271,11 +274,11 @@ public class MixinChunk {
 
             this.worldObj.addLoadedEntities(entityList);
         }
-        MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load((Chunk)(Object)this));
+        MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load((Chunk) (Object) this));
     }
+
     @Overwrite
-    public synchronized void onChunkUnload()
-    {
+    public synchronized void onChunkUnload() {
         this.isChunkLoaded = false;
 
         for (Object o : this.chunkTileEntityMap.values()) {
@@ -286,7 +289,7 @@ public class MixinChunk {
         for (List entityList : this.entityLists) {
             this.worldObj.unloadEntities(entityList);
         }
-        MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload((Chunk)(Object)this));
+        MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload((Chunk) (Object) this));
     }
 
     /**
@@ -298,7 +301,8 @@ public class MixinChunk {
         isTerrainPopulated = true;
         isLightPopulated = true;
 
-        if (worldObj.provider.hasNoSky || !worldObj.checkChunksExist(xPosition * 16 - 1, 0, zPosition * 16 - 1, xPosition * 16 + 1, 63, zPosition * 16 + 1)) {
+        if (worldObj.provider.hasNoSky || !worldObj
+            .checkChunksExist(xPosition * 16 - 1, 0, zPosition * 16 - 1, xPosition * 16 + 1, 63, zPosition * 16 + 1)) {
             isLightPopulated = false;
             return;
         }
@@ -322,6 +326,7 @@ public class MixinChunk {
         worldObj.getChunkFromBlockCoords(xPosition * 16 + xOffset, zPosition * 16 + zOffset);
         func_150801_a(direction);
     }
+
     /**
      * @author
      * @reason
@@ -349,6 +354,7 @@ public class MixinChunk {
             }
         }
     }
+
     /**
      * @author
      * @reason
@@ -381,6 +387,7 @@ public class MixinChunk {
 
         return true;
     }
+
     /**
      * @author
      * @reason
@@ -399,37 +406,48 @@ public class MixinChunk {
 
         return block;
     }
+
     /**
      * @author
      * @reason
      */
     @Overwrite
-    public int func_150808_b(int p_150808_1_, int p_150808_2_, int p_150808_3_)
-    {
+    public int func_150808_b(int p_150808_1_, int p_150808_2_, int p_150808_3_) {
         int x = (xPosition << 4) + p_150808_1_;
         int z = (zPosition << 4) + p_150808_3_;
-        return this.getBlock(p_150808_1_, p_150808_2_, p_150808_3_).getLightOpacity(worldObj, x, p_150808_2_, z);
+        return this.getBlock(p_150808_1_, p_150808_2_, p_150808_3_)
+            .getLightOpacity(worldObj, x, p_150808_2_, z);
     }
+
     @Overwrite
-    public synchronized void populateChunk(IChunkProvider p_76624_1_, IChunkProvider p_76624_2_, int p_76624_3_, int p_76624_4_)
-    {
-        if (!this.isTerrainPopulated && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ + 1) && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ + 1) && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_))
-        {
+    public synchronized void populateChunk(IChunkProvider p_76624_1_, IChunkProvider p_76624_2_, int p_76624_3_,
+        int p_76624_4_) {
+        if (!this.isTerrainPopulated && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ + 1)
+            && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ + 1)
+            && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_)) {
             p_76624_1_.populate(p_76624_2_, p_76624_3_, p_76624_4_);
         }
 
-        if (p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_) && !p_76624_1_.provideChunk(p_76624_3_ - 1, p_76624_4_).isTerrainPopulated && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ + 1) && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ + 1) && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ + 1))
-        {
+        if (p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_)
+            && !p_76624_1_.provideChunk(p_76624_3_ - 1, p_76624_4_).isTerrainPopulated
+            && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ + 1)
+            && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ + 1)
+            && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ + 1)) {
             p_76624_1_.populate(p_76624_2_, p_76624_3_ - 1, p_76624_4_);
         }
 
-        if (p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ - 1) && !p_76624_1_.provideChunk(p_76624_3_, p_76624_4_ - 1).isTerrainPopulated && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ - 1) && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ - 1) && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_))
-        {
+        if (p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ - 1)
+            && !p_76624_1_.provideChunk(p_76624_3_, p_76624_4_ - 1).isTerrainPopulated
+            && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ - 1)
+            && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ - 1)
+            && p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_)) {
             p_76624_1_.populate(p_76624_2_, p_76624_3_, p_76624_4_ - 1);
         }
 
-        if (p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ - 1) && !p_76624_1_.provideChunk(p_76624_3_ - 1, p_76624_4_ - 1).isTerrainPopulated && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ - 1) && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_))
-        {
+        if (p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ - 1)
+            && !p_76624_1_.provideChunk(p_76624_3_ - 1, p_76624_4_ - 1).isTerrainPopulated
+            && p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ - 1)
+            && p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_)) {
             p_76624_1_.populate(p_76624_2_, p_76624_3_ - 1, p_76624_4_ - 1);
         }
     }

@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import com.lulan.shincolle.worldgen.WorldGenPolyGravel;
 
-import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
-
 @Mixin(WorldGenPolyGravel.class)
 public abstract class MixinFixCascadingFromWorldGenPolyGravel extends WorldGenerator {
 

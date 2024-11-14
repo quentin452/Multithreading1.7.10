@@ -1,12 +1,13 @@
 package fr.iamacat.optimizationsandtweaks.noise;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.gen.NoiseGenerator;
-
 import java.util.Arrays;
 import java.util.Random;
 
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.gen.NoiseGenerator;
+
 public class NoiseGeneratorOctavesTwo extends NoiseGenerator {
+
     private final NoiseGeneratorImprovedTwo[] generatorCollection;
     private final int octaves;
 
@@ -20,7 +21,7 @@ public class NoiseGeneratorOctavesTwo extends NoiseGenerator {
     }
 
     public double[] generateNoiseOctaves(double[] p_76304_1_, int p_76304_2_, int p_76304_3_, int p_76304_4_,
-                                         int p_76304_5_, int p_76304_6_, int p_76304_7_, double p_76304_8_, double p_76304_10_, double p_76304_12_) {
+        int p_76304_5_, int p_76304_6_, int p_76304_7_, double p_76304_8_, double p_76304_10_, double p_76304_12_) {
         if (p_76304_1_ == null) {
             p_76304_1_ = new double[p_76304_5_ * p_76304_6_ * p_76304_7_];
         } else {
@@ -60,7 +61,7 @@ public class NoiseGeneratorOctavesTwo extends NoiseGenerator {
     }
 
     public double[] generateNoiseOctaves(double[] p_76305_1_, int p_76305_2_, int p_76305_3_, int p_76305_4_,
-                                         int p_76305_5_, double p_76305_6_, double p_76305_8_, double p_76305_10_) {
+        int p_76305_5_, double p_76305_6_, double p_76305_8_, double p_76305_10_) {
         return this.generateNoiseOctaves(
             p_76305_1_,
             p_76305_2_,

@@ -1,8 +1,6 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPOutputStream2;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
+import static net.minecraft.nbt.CompressedStreamTools.write;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -10,9 +8,10 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.zip.GZIPOutputStream;
 
-import static net.minecraft.nbt.CompressedStreamTools.write;
+import net.minecraft.nbt.NBTTagCompound;
+
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPOutputStream2;
 
 public class CompressTask {
 
@@ -21,6 +20,7 @@ public class CompressTask {
     public CompressTask(NBTTagCompound data) {
         this.data = data;
     }
+
     private static final Executor namedExecutor = Executors.newCachedThreadPool(r -> {
         Thread t = new Thread(r, "CompressTaskThread");
         t.setDaemon(true);

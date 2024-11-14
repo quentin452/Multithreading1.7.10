@@ -178,161 +178,235 @@ public class MixinColoredIron {
         Item LightGreyIronItem = GameRegistry.findItem("LightGreyIron", "LightGreyIron");
         GameRegistry.addShapelessRecipe(
             new ItemStack(RedIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 1));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 1));
         GameRegistry.addShapelessRecipe(
             new ItemStack(OrangeIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 14));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 14));
         GameRegistry.addShapelessRecipe(
             new ItemStack(YellowIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 11));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 11));
         GameRegistry.addShapelessRecipe(
             new ItemStack(LimeIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 10));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 10));
         GameRegistry.addShapelessRecipe(
             new ItemStack(GreenIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 2));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 2));
         GameRegistry.addShapelessRecipe(
             new ItemStack(CyanIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 6));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 6));
         GameRegistry.addShapelessRecipe(
             new ItemStack(LightBlueIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 12));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 12));
         GameRegistry.addShapelessRecipe(
             new ItemStack(BlueIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 4));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 4));
         GameRegistry.addShapelessRecipe(
             new ItemStack(PurpleIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 5));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 5));
         GameRegistry.addShapelessRecipe(
             new ItemStack(MagentaIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 13));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 13));
         GameRegistry.addShapelessRecipe(
             new ItemStack(PinkIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 9));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 9));
         GameRegistry.addShapelessRecipe(
             new ItemStack(BlackIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 0));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 0));
         GameRegistry.addShapelessRecipe(
             new ItemStack(BrownIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 3));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 3));
         GameRegistry.addShapelessRecipe(
             new ItemStack(LightGreyIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 7));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 7));
         GameRegistry.addShapelessRecipe(
             new ItemStack(GreyIron, 1),
-                new ItemStack(Items.iron_ingot, 1), new ItemStack(Items.dye, 1, 8));
+            new ItemStack(Items.iron_ingot, 1),
+            new ItemStack(Items.dye, 1, 8));
         GameRegistry.addShapelessRecipe(new ItemStack(RedIronBlock, 1), new ItemStack(RedIron, 9));
-        GameRegistry
-            .addShapelessRecipe(new ItemStack(OrangeIronBlock, 1), new ItemStack(OrangeIron, 9));
-        GameRegistry
-            .addShapelessRecipe(new ItemStack(YellowIronBlock, 1), new ItemStack(YellowIron, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(OrangeIronBlock, 1), new ItemStack(OrangeIron, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(YellowIronBlock, 1), new ItemStack(YellowIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(LimeIronBlock, 1), new ItemStack(LimeIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(GreenIronBlock, 1), new ItemStack(GreenIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(CyanIronBlock, 1), new ItemStack(CyanIron, 9));
-        GameRegistry
-            .addShapelessRecipe(new ItemStack(LightBlueIronBlock, 1), new ItemStack(LightBlueIron, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(LightBlueIronBlock, 1), new ItemStack(LightBlueIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(BlueIronBlock, 1), new ItemStack(BlueIron, 9));
-        GameRegistry
-            .addShapelessRecipe(new ItemStack(PurpleIronBlock, 1), new ItemStack(PurpleIron, 9));
-        GameRegistry
-            .addShapelessRecipe(new ItemStack(MagentaIronBlock, 1), new ItemStack(MagentaIron, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(PurpleIronBlock, 1), new ItemStack(PurpleIron, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(MagentaIronBlock, 1), new ItemStack(MagentaIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(PinkIronBlock, 1), new ItemStack(PinkIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(BlackIronBlock, 1), new ItemStack(BlackIron, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(BrownIronBlock, 1), new ItemStack(BrownIron, 9));
-        GameRegistry.addShapelessRecipe(
-            new ItemStack(LightGreyIronBlock, 1),
-                new ItemStack(LightGreyIronBlock, 9));
+        GameRegistry.addShapelessRecipe(new ItemStack(LightGreyIronBlock, 1), new ItemStack(LightGreyIronBlock, 9));
         GameRegistry.addShapelessRecipe(new ItemStack(GreyIronBlock, 1), new ItemStack(GreyIron, 9));
         GameRegistry.addRecipe(
             new ItemStack(RedIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 1), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 1),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(OrangeIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 14), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 14),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(YellowIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 11), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 11),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(LimeIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 10), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 10),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(GreenIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 2), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 2),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(CyanIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 6), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 6),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(LightBlueIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 12), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 12),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(BlueIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 4), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 4),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(PurpleIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 5), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 5),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(MagentaIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 13), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 13),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(PinkIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 9), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 9),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(BlackIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 0), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 0),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(BrownIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 3), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 3),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(LightGreyIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 7), 'b', Blocks.iron_block);
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 7),
+            'b',
+            Blocks.iron_block);
         GameRegistry.addRecipe(
             new ItemStack(GreyIronBlock, 1),
-                "ccc", "cbc", "ccc", 'c', new ItemStack(Items.dye, 1, 8), 'b', Blocks.iron_block);
-        GameRegistry.addRecipe(
-            new ItemStack(RedIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(RedIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(OrangeIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(OrangeIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(YellowIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(YellowIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(LimeIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(LimeIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(GreenIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(GreenIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(CyanIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(CyanIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(LightBlueIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(LightBlueIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(BlueIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(BlueIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(PurpleIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(PurpleIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(MagentaIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(MagentaIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(PinkIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(PinkIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(BlackIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(BlackIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(BrownIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(BrownIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(LightGreyIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(LightGreyIron, 8));
-        GameRegistry.addRecipe(
-            new ItemStack(GreyIronBlock, 1),
-                "ccc", "ccc", "ccc", 'c', new ItemStack(GreyIron, 1));
+            "ccc",
+            "cbc",
+            "ccc",
+            'c',
+            new ItemStack(Items.dye, 1, 8),
+            'b',
+            Blocks.iron_block);
+        GameRegistry.addRecipe(new ItemStack(RedIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(RedIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(OrangeIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(OrangeIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(YellowIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(YellowIron, 8));
+        GameRegistry.addRecipe(new ItemStack(LimeIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(LimeIron, 8));
+        GameRegistry.addRecipe(new ItemStack(GreenIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(GreenIron, 8));
+        GameRegistry.addRecipe(new ItemStack(CyanIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(CyanIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(LightBlueIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(LightBlueIron, 8));
+        GameRegistry.addRecipe(new ItemStack(BlueIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(BlueIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(PurpleIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(PurpleIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(MagentaIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(MagentaIron, 8));
+        GameRegistry.addRecipe(new ItemStack(PinkIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(PinkIron, 8));
+        GameRegistry.addRecipe(new ItemStack(BlackIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(BlackIron, 8));
+        GameRegistry.addRecipe(new ItemStack(BrownIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(BrownIron, 8));
+        GameRegistry
+            .addRecipe(new ItemStack(LightGreyIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(LightGreyIron, 8));
+        GameRegistry.addRecipe(new ItemStack(GreyIronBlock, 1), "ccc", "ccc", "ccc", 'c', new ItemStack(GreyIron, 1));
         // GameRegistry.registerItem(grenade, grenade.func_77658_a()); prevent null by disabling this line
     }
 }

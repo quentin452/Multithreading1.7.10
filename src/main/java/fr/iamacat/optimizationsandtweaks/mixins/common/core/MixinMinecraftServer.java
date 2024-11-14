@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetworkSystem;
@@ -43,6 +42,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -590,18 +590,20 @@ public abstract class MixinMinecraftServer {
         if (this.tickCounter % 900 == 0) {
             this.theProfiler.startSection("save");
 
-            ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("SaveThread-%d")
+            ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("SaveThread-%d")
                 .build();
 
-            CompletableFuture<Void> savePlayerDataFuture = CompletableFuture.runAsync(() -> this.serverConfigManager.saveAllPlayerData(), Executors.newCachedThreadPool(namedThreadFactory));
-            CompletableFuture<Void> saveWorldsFuture = CompletableFuture.runAsync(() -> this.saveAllWorlds(true), Executors.newCachedThreadPool(namedThreadFactory));
+            CompletableFuture<Void> savePlayerDataFuture = CompletableFuture.runAsync(
+                () -> this.serverConfigManager.saveAllPlayerData(),
+                Executors.newCachedThreadPool(namedThreadFactory));
+            CompletableFuture<Void> saveWorldsFuture = CompletableFuture
+                .runAsync(() -> this.saveAllWorlds(true), Executors.newCachedThreadPool(namedThreadFactory));
 
-            CompletableFuture.allOf(savePlayerDataFuture, saveWorldsFuture).join();
+            CompletableFuture.allOf(savePlayerDataFuture, saveWorldsFuture)
+                .join();
 
             this.theProfiler.endSection();
         }
-
 
         this.theProfiler.startSection("tallying");
         this.tickTimeArray[this.tickCounter % 100] = System.nanoTime() - i;
@@ -621,7 +623,6 @@ public abstract class MixinMinecraftServer {
         FMLCommonHandler.instance()
             .onPostServerTick();
     }
-
 
     @Shadow
     protected void systemExitNow() {}

@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ConcurrentSkipListSetThreadSafe<E> extends ConcurrentSkipListSet<E> {
+
     private static final long serialVersionUID = -2479143111061671589L;
     private final ConcurrentNavigableMap<E, java.lang.Object> m;
 
@@ -56,11 +57,13 @@ public class ConcurrentSkipListSetThreadSafe<E> extends ConcurrentSkipListSet<E>
     }
 
     public Iterator<E> iterator() {
-        return m.keySet().iterator();
+        return m.keySet()
+            .iterator();
     }
 
     public Iterator<E> descendingIterator() {
-        return m.descendingKeySet().iterator();
+        return m.descendingKeySet()
+            .iterator();
     }
 
     public boolean equals(java.lang.Object var1) {
@@ -69,7 +72,7 @@ public class ConcurrentSkipListSetThreadSafe<E> extends ConcurrentSkipListSet<E>
         } else if (!(var1 instanceof Set)) {
             return false;
         } else {
-            Collection var2 = (Collection)var1;
+            Collection var2 = (Collection) var1;
 
             try {
                 return this.containsAll(var2) && var2.containsAll(this);

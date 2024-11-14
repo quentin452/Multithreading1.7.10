@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HashSetThreadSafe<E> extends AbstractSet<E> implements Set<E>, Cloneable, Serializable {
+
     private static final long serialVersionUID = -5024744406713321676L;
     private transient ConcurrentHashMap<E, Object> map;
     private static final Object PRESENT = new Object();
@@ -30,7 +31,8 @@ public class HashSetThreadSafe<E> extends AbstractSet<E> implements Set<E>, Clon
     }
 
     public Iterator<E> iterator() {
-        return this.map.keySet().iterator();
+        return this.map.keySet()
+            .iterator();
     }
 
     public int size() {
@@ -95,11 +97,13 @@ public class HashSetThreadSafe<E> extends AbstractSet<E> implements Set<E>, Clon
 
     @Override
     public Object[] toArray() {
-        return this.map.keySet().toArray();
+        return this.map.keySet()
+            .toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.map.keySet().toArray(a);
+        return this.map.keySet()
+            .toArray(a);
     }
 }

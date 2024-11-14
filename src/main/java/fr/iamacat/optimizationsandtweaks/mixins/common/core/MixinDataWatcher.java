@@ -1,8 +1,8 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
+import java.io.IOException;
+import java.util.*;
+
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.DataWatcher;
@@ -11,14 +11,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ReportedException;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.io.IOException;
-import java.util.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
 
 @Mixin(value = DataWatcher.class, priority = 999)
 public class MixinDataWatcher {
@@ -47,23 +49,25 @@ public class MixinDataWatcher {
     @Overwrite
     public void addObject(int p_75682_1_, Object p_75682_2_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        Integer integer = (Integer) optimizationsAndTweaks$dataTypes.get(p_75682_2_.getClass());
+            Integer integer = (Integer) optimizationsAndTweaks$dataTypes.get(p_75682_2_.getClass());
 
-        if (integer == null) {
-            throw new IllegalArgumentException("Unknown data type: " + p_75682_2_.getClass());
-        } else if (p_75682_1_ > 31) {
-            throw new IllegalArgumentException("Data value id is too big with " + p_75682_1_ + "! (Max is " + 31 + ")");
-        } else if (this.optimizationsAndTweaks$watchedObjects.containsKey(p_75682_1_)) {
-            throw new IllegalArgumentException("Duplicate id value for " + p_75682_1_ + "!");
-        } else {
-            DataWatcher.WatchableObject watchableobject = new DataWatcher.WatchableObject(
-                integer,
-                p_75682_1_,
-                p_75682_2_);
+            if (integer == null) {
+                throw new IllegalArgumentException("Unknown data type: " + p_75682_2_.getClass());
+            } else if (p_75682_1_ > 31) {
+                throw new IllegalArgumentException(
+                    "Data value id is too big with " + p_75682_1_ + "! (Max is " + 31 + ")");
+            } else if (this.optimizationsAndTweaks$watchedObjects.containsKey(p_75682_1_)) {
+                throw new IllegalArgumentException("Duplicate id value for " + p_75682_1_ + "!");
+            } else {
+                DataWatcher.WatchableObject watchableobject = new DataWatcher.WatchableObject(
+                    integer,
+                    p_75682_1_,
+                    p_75682_2_);
 
-            this.optimizationsAndTweaks$watchedObjects.put(p_75682_1_, watchableobject);
-            this.isBlank = false;
-        } }
+                this.optimizationsAndTweaks$watchedObjects.put(p_75682_1_, watchableobject);
+                this.isBlank = false;
+            }
+        }
     }
 
     /**
@@ -72,9 +76,9 @@ public class MixinDataWatcher {
     @Overwrite
     public void addObjectByDataType(int p_82709_1_, int p_82709_2_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        DataWatcher.WatchableObject watchableobject = new DataWatcher.WatchableObject(p_82709_2_, p_82709_1_, null);
-        this.optimizationsAndTweaks$watchedObjects.put(p_82709_1_, watchableobject);
-        this.isBlank = false;
+            DataWatcher.WatchableObject watchableobject = new DataWatcher.WatchableObject(p_82709_2_, p_82709_1_, null);
+            this.optimizationsAndTweaks$watchedObjects.put(p_82709_1_, watchableobject);
+            this.isBlank = false;
         }
     }
 
@@ -84,10 +88,10 @@ public class MixinDataWatcher {
     @Overwrite
     public byte getWatchableObjectByte(int id) {
         Object obj = getWatchedObject(id).getObject();
-        if(obj instanceof Integer) {
-            return ((Integer)obj).byteValue();
+        if (obj instanceof Integer) {
+            return ((Integer) obj).byteValue();
         }
-        return (Byte)obj;
+        return (Byte) obj;
     }
 
     /**
@@ -97,18 +101,20 @@ public class MixinDataWatcher {
     @Overwrite
     public short getWatchableObjectShort(int p_75693_1_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        return (Short) this.getWatchedObject(p_75693_1_)
-            .getObject();
-    }  }
+            return (Short) this.getWatchedObject(p_75693_1_)
+                .getObject();
+        }
+    }
 
     /**
      * gets a watchable object and returns it as a Integer
      */
     @Overwrite
     public int getWatchableObjectInt(int p_75679_1_) {
-        Object obj = this.getWatchedObject(p_75679_1_).getObject();
+        Object obj = this.getWatchedObject(p_75679_1_)
+            .getObject();
         if (obj instanceof Byte) {
-            return ((Byte)obj).intValue();
+            return ((Byte) obj).intValue();
         } else {
             return (Integer) obj;
         }
@@ -144,19 +150,21 @@ public class MixinDataWatcher {
     @Overwrite
     public DataWatcher.WatchableObject getWatchedObject(int p_75691_1_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        DataWatcher.WatchableObject watchableobject;
+            DataWatcher.WatchableObject watchableobject;
 
-        try {
-            watchableobject = (DataWatcher.WatchableObject) this.optimizationsAndTweaks$watchedObjects.get(p_75691_1_);
-        } catch (Throwable throwable) {
-            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting synched entity data");
-            CrashReportCategory crashreportcategory = crashreport.makeCategory("Synched entity data");
-            crashreportcategory.addCrashSection("Data ID", p_75691_1_);
-            throw new ReportedException(crashreport);
+            try {
+                watchableobject = (DataWatcher.WatchableObject) this.optimizationsAndTweaks$watchedObjects
+                    .get(p_75691_1_);
+            } catch (Throwable throwable) {
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting synched entity data");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Synched entity data");
+                crashreportcategory.addCrashSection("Data ID", p_75691_1_);
+                throw new ReportedException(crashreport);
+            }
+
+            return watchableobject;
         }
-
-        return watchableobject;
-    } }
+    }
 
     /**
      * updates an already existing object
@@ -164,14 +172,15 @@ public class MixinDataWatcher {
     @Overwrite
     public void updateObject(int p_75692_1_, Object p_75692_2_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        DataWatcher.WatchableObject watchableobject = this.getWatchedObject(p_75692_1_);
+            DataWatcher.WatchableObject watchableobject = this.getWatchedObject(p_75692_1_);
 
-        if (ObjectUtils.notEqual(p_75692_2_, watchableobject.getObject())) {
-            watchableobject.setObject(p_75692_2_);
-            this.field_151511_a.func_145781_i(p_75692_1_);
-            watchableobject.setWatched(true);
-            this.objectChanged = true;
-        }  }
+            if (ObjectUtils.notEqual(p_75692_2_, watchableobject.getObject())) {
+                watchableobject.setObject(p_75692_2_);
+                this.field_151511_a.func_145781_i(p_75692_1_);
+                watchableobject.setWatched(true);
+                this.objectChanged = true;
+            }
+        }
     }
 
     /**
@@ -214,25 +223,25 @@ public class MixinDataWatcher {
     @Overwrite
     public List getChanged() {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        ArrayList arraylist = null;
+            ArrayList arraylist = null;
 
-        if (this.objectChanged) {
-            for (Object o : this.optimizationsAndTweaks$watchedObjects.values()) {
-                DataWatcher.WatchableObject watchableobject = (DataWatcher.WatchableObject) o;
+            if (this.objectChanged) {
+                for (Object o : this.optimizationsAndTweaks$watchedObjects.values()) {
+                    DataWatcher.WatchableObject watchableobject = (DataWatcher.WatchableObject) o;
 
-                if (watchableobject.isWatched()) {
-                    watchableobject.setWatched(false);
+                    if (watchableobject.isWatched()) {
+                        watchableobject.setWatched(false);
 
-                    if (arraylist == null) {
-                        arraylist = new ArrayList();
+                        if (arraylist == null) {
+                            arraylist = new ArrayList();
+                        }
+
+                        arraylist.add(watchableobject);
                     }
-
-                    arraylist.add(watchableobject);
                 }
             }
-        }
-        this.objectChanged = false;
-        return arraylist;
+            this.objectChanged = false;
+            return arraylist;
         }
     }
 
@@ -366,16 +375,17 @@ public class MixinDataWatcher {
     @Overwrite
     public void updateWatchedObjectsFromList(List p_75687_1_) {
         synchronized (optimizationsAndTweaks$watchedObjects) {
-        for (Object o : p_75687_1_) {
-            DataWatcher.WatchableObject watchableobject = (DataWatcher.WatchableObject) o;
-            DataWatcher.WatchableObject watchableobject1 = (DataWatcher.WatchableObject) this.optimizationsAndTweaks$watchedObjects
-                .get(watchableobject.getDataValueId());
+            for (Object o : p_75687_1_) {
+                DataWatcher.WatchableObject watchableobject = (DataWatcher.WatchableObject) o;
+                DataWatcher.WatchableObject watchableobject1 = (DataWatcher.WatchableObject) this.optimizationsAndTweaks$watchedObjects
+                    .get(watchableobject.getDataValueId());
 
-            if (watchableobject1 != null) {
-                watchableobject1.setObject(watchableobject.getObject());
-                this.field_151511_a.func_145781_i(watchableobject.getDataValueId());
+                if (watchableobject1 != null) {
+                    watchableobject1.setObject(watchableobject.getObject());
+                    this.field_151511_a.func_145781_i(watchableobject.getDataValueId());
+                }
             }
-        } }
+        }
         this.objectChanged = true;
     }
 

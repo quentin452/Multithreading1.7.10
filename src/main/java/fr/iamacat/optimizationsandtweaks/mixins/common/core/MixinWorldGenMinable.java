@@ -1,11 +1,8 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -51,9 +48,13 @@ public class MixinWorldGenMinable extends WorldGenerator {
     @Overwrite
     public boolean generate(World world, Random random, int x, int y, int z) {
         float angle = random.nextFloat() * (float) Math.PI;
-        double centerX = x + 8 + SIN_TABLE[MathHelper.floor_float(angle * SIN_COS_PRECISION) & (SIN_COS_PRECISION - 1)] * numberOfBlocks / 8.0f;
+        double centerX = x + 8
+            + SIN_TABLE[MathHelper.floor_float(angle * SIN_COS_PRECISION) & (SIN_COS_PRECISION - 1)] * numberOfBlocks
+                / 8.0f;
         double centerY = y + random.nextInt(3) - 2.0;
-        double centerZ = z + 8 + COS_TABLE[MathHelper.floor_float(angle * SIN_COS_PRECISION) & (SIN_COS_PRECISION - 1)] * numberOfBlocks / 8.0f;
+        double centerZ = z + 8
+            + COS_TABLE[MathHelper.floor_float(angle * SIN_COS_PRECISION) & (SIN_COS_PRECISION - 1)] * numberOfBlocks
+                / 8.0f;
 
         for (int l = 0; l <= numberOfBlocks; ++l) {
             double ellipseX = centerX - SIN_TABLE[l] * numberOfBlocks / 8.0;
@@ -67,7 +68,8 @@ public class MixinWorldGenMinable extends WorldGenerator {
     }
 
     @Unique
-    private void optimizationsAndTweaks$generateEllipseLayer(World world, double ellipseX, double ellipseY, double ellipseZ) {
+    private void optimizationsAndTweaks$generateEllipseLayer(World world, double ellipseX, double ellipseY,
+        double ellipseZ) {
         int minX = MathHelper.floor_double(ellipseX - 1.0);
         int maxX = MathHelper.floor_double(ellipseX + 1.0);
         int minY = MathHelper.floor_double(ellipseY - 1.0);
@@ -104,7 +106,8 @@ public class MixinWorldGenMinable extends WorldGenerator {
     }
 
     @Unique
-    private boolean optimizationsAndTweaks$isReplaceableOreGen(World world, int x, int y, int z, Block oreGenBlock, Block block) {
+    private boolean optimizationsAndTweaks$isReplaceableOreGen(World world, int x, int y, int z, Block oreGenBlock,
+        Block block) {
         return block.isReplaceableOreGen(world, x, y, z, oreGenBlock);
     }
 
@@ -116,7 +119,8 @@ public class MixinWorldGenMinable extends WorldGenerator {
         if (replaceBlock != null && oreGenBlock != null && world != null) {
             int currentBlockMeta = world.getBlockMetadata(x, y, z);
 
-            if (world.isAirBlock(x, y, z) || world.getBlock(x, y, z).isReplaceableOreGen(world, x, y, z, oreGenBlock)) {
+            if (world.isAirBlock(x, y, z) || world.getBlock(x, y, z)
+                .isReplaceableOreGen(world, x, y, z, oreGenBlock)) {
                 world.setBlock(x, y, z, replaceBlock, mineableBlockMeta, 2);
                 world.setBlockMetadataWithNotify(x, y, z, currentBlockMeta, 2);
             }
@@ -127,6 +131,7 @@ public class MixinWorldGenMinable extends WorldGenerator {
     private Block optimizationsAndTweaks$getField_150518_c() {
         return field_150518_c;
     }
+
     @Unique
     private Block optimizationsAndTweaks$getBlock(World world, int x, int y, int z) {
         return world.getBlock(x, y, z);

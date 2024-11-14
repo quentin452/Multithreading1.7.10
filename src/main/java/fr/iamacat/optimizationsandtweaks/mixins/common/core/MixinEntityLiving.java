@@ -138,7 +138,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase {
         profiler.endSection();
     }
 
-    public MixinEntityLiving(World p_i1594_1_, World pI15951,EntityLiving entityLiving) {
+    public MixinEntityLiving(World p_i1594_1_, World pI15951, EntityLiving entityLiving) {
         super(p_i1594_1_);
         p_i1595_1_ = pI15951;
         this.entityLiving = entityLiving;

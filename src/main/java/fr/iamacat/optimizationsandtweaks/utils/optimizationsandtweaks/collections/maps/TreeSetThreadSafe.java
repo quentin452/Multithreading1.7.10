@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TreeSetThreadSafe<E> extends AbstractSet<E> implements NavigableSet<E>, Cloneable, Serializable {
+
     private transient NavigableMap<E, Object> m;
     private static final Object PRESENT = new Object();
     private static final long serialVersionUID = -2479143000061671589L;
@@ -26,7 +27,6 @@ public class TreeSetThreadSafe<E> extends AbstractSet<E> implements NavigableSet
         this(new TreeMap<>(comparator));
     }
 
-
     public TreeSetThreadSafe(Collection<? extends E> c) {
         this();
         this.addAll(c);
@@ -39,20 +39,25 @@ public class TreeSetThreadSafe<E> extends AbstractSet<E> implements NavigableSet
 
     @Override
     public Iterator<E> iterator() {
-        lock.readLock().lock();
+        lock.readLock()
+            .lock();
         try {
             return new TreeSetThreadSafe<>(m.keySet()).iterator();
         } finally {
-            lock.readLock().unlock();
+            lock.readLock()
+                .unlock();
         }
     }
 
     public Iterator<E> descendingIterator() {
-        lock.readLock().lock();
+        lock.readLock()
+            .lock();
         try {
-            return m.descendingKeySet().iterator();
+            return m.descendingKeySet()
+                .iterator();
         } finally {
-            lock.readLock().unlock();
+            lock.readLock()
+                .unlock();
         }
     }
 
@@ -70,47 +75,55 @@ public class TreeSetThreadSafe<E> extends AbstractSet<E> implements NavigableSet
 
     @Override
     public boolean contains(Object o) {
-        lock.readLock().lock();
+        lock.readLock()
+            .lock();
         try {
             return m.containsKey(o);
         } finally {
-            lock.readLock().unlock();
+            lock.readLock()
+                .unlock();
         }
     }
 
     @Override
     public boolean add(E e) {
-        lock.writeLock().lock();
+        lock.writeLock()
+            .lock();
         try {
             return m.put(e, PRESENT) == null;
         } finally {
-            lock.writeLock().unlock();
+            lock.writeLock()
+                .unlock();
         }
     }
 
     @Override
     public boolean remove(Object o) {
-        lock.writeLock().lock();
+        lock.writeLock()
+            .lock();
         try {
             return m.remove(o) == PRESENT;
         } finally {
-            lock.writeLock().unlock();
+            lock.writeLock()
+                .unlock();
         }
     }
 
-
     @Override
     public void clear() {
-        lock.writeLock().lock();
+        lock.writeLock()
+            .lock();
         try {
             m.clear();
         } finally {
-            lock.writeLock().unlock();
+            lock.writeLock()
+                .unlock();
         }
     }
 
     public boolean addAll(Collection<? extends E> c) {
-        lock.writeLock().lock();
+        lock.writeLock()
+            .lock();
         try {
             if (this.m.isEmpty() && !c.isEmpty() && c instanceof SortedSet) {
                 NavigableMap<E, Object> map = new TreeMap<>(m.comparator());
@@ -122,7 +135,8 @@ public class TreeSetThreadSafe<E> extends AbstractSet<E> implements NavigableSet
             }
             return super.addAll(c);
         } finally {
-            lock.writeLock().unlock();
+            lock.writeLock()
+                .unlock();
         }
     }
 

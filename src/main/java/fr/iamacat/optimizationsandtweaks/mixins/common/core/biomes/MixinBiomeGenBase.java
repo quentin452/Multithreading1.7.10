@@ -48,23 +48,27 @@ public class MixinBiomeGenBase {
     @Unique
     int optimizationsAndTweaks$l1;
     @Unique
-    int optimizationsAndTweaks$i2 = (optimizationsAndTweaks$j1 * 16 + optimizationsAndTweaks$i1) * optimizationsAndTweaks$k1 + optimizationsAndTweaks$l1;
+    int optimizationsAndTweaks$i2 = (optimizationsAndTweaks$j1 * 16 + optimizationsAndTweaks$i1)
+        * optimizationsAndTweaks$k1 + optimizationsAndTweaks$l1;
+
     /**
      * @author
      * @reason
      */
     @Overwrite
-    public synchronized final void genBiomeTerrain(World p_150560_1_, Random p_150560_2_, Block[] p_150560_3_, byte[] p_150560_4_,
-        int p_150560_5_, int p_150560_6_, double p_150560_7_) {
+    public synchronized final void genBiomeTerrain(World p_150560_1_, Random p_150560_2_, Block[] p_150560_3_,
+        byte[] p_150560_4_, int p_150560_5_, int p_150560_6_, double p_150560_7_) {
         optimizationsAndTweaks$Initialize(p_150560_2_, p_150560_3_, p_150560_5_, p_150560_6_, p_150560_7_);
         for (optimizationsAndTweaks$l1 = 255; optimizationsAndTweaks$l1 >= 0; --optimizationsAndTweaks$l1) {
-            optimizationsAndTweaks$i2 = (optimizationsAndTweaks$j1 * 16 + optimizationsAndTweaks$i1) * optimizationsAndTweaks$k1 + optimizationsAndTweaks$l1;
+            optimizationsAndTweaks$i2 = (optimizationsAndTweaks$j1 * 16 + optimizationsAndTweaks$i1)
+                * optimizationsAndTweaks$k1 + optimizationsAndTweaks$l1;
             if (optimizationsAndTweaks$l1 <= p_150560_2_.nextInt(5)) {
                 optimizationsAndTweaks$genBiomeTerrainSub1(p_150560_3_);
             } else {
                 optimizationsAndTweaks$genBiomeTerrainSub2(p_150560_3_);
 
-                if (optimizationsAndTweaks$block2 != null && optimizationsAndTweaks$block2.getMaterial() != Material.air) {
+                if (optimizationsAndTweaks$block2 != null
+                    && optimizationsAndTweaks$block2.getMaterial() != Material.air) {
                     if (optimizationsAndTweaks$block2 == Blocks.stone) {
                         if (optimizationsAndTweaks$k == -1) {
                             if (optimizationsAndTweaks$l <= 0) {
@@ -73,7 +77,8 @@ public class MixinBiomeGenBase {
                                 optimizationsAndTweaks$genBiomeTerrainSub4();
                             }
 
-                            if (optimizationsAndTweaks$l1 < 63 && (optimizationsAndTweaks$block == null || optimizationsAndTweaks$block.getMaterial() == Material.air)) {
+                            if (optimizationsAndTweaks$l1 < 63 && (optimizationsAndTweaks$block == null
+                                || optimizationsAndTweaks$block.getMaterial() == Material.air)) {
                                 optimizationsAndTweaks$genBiomeTerrainSub5(p_150560_5_, p_150560_6_);
                                 optimizationsAndTweaks$b0 = 0;
                             }
@@ -97,9 +102,10 @@ public class MixinBiomeGenBase {
             }
         }
     }
+
     @Unique
-    public final void optimizationsAndTweaks$Initialize(Random p_150560_2_, Block[] p_150560_3_,
-                                                        int p_150560_5_, int p_150560_6_, double p_150560_7_) {
+    public final void optimizationsAndTweaks$Initialize(Random p_150560_2_, Block[] p_150560_3_, int p_150560_5_,
+        int p_150560_6_, double p_150560_7_) {
         optimizationsAndTweaks$block = this.topBlock;
         optimizationsAndTweaks$b0 = (byte) (this.field_150604_aj & 255);
         optimizationsAndTweaks$block1 = this.fillerBlock;
@@ -112,24 +118,28 @@ public class MixinBiomeGenBase {
 
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub1(Block[] p_150560_3_) {
-                p_150560_3_[optimizationsAndTweaks$i2] = Blocks.bedrock;
+        p_150560_3_[optimizationsAndTweaks$i2] = Blocks.bedrock;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub2(Block[] p_150560_3_) {
         optimizationsAndTweaks$block2 = p_150560_3_[optimizationsAndTweaks$i2];
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub3() {
         optimizationsAndTweaks$block = null;
         optimizationsAndTweaks$b0 = 0;
         optimizationsAndTweaks$block1 = Blocks.stone;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub4() {
         optimizationsAndTweaks$block = this.topBlock;
         optimizationsAndTweaks$b0 = (byte) (this.field_150604_aj & 255);
         optimizationsAndTweaks$block1 = this.fillerBlock;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub5(int p_150560_5_, int p_150560_6_) {
         if (this.getFloatTemperature(p_150560_5_, optimizationsAndTweaks$l1, p_150560_6_) < 0.15F) {
@@ -138,21 +148,25 @@ public class MixinBiomeGenBase {
             optimizationsAndTweaks$block = Blocks.water;
         }
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub6(Block[] p_150560_3_, byte[] p_150560_4_) {
         p_150560_3_[optimizationsAndTweaks$i2] = optimizationsAndTweaks$block;
         p_150560_4_[optimizationsAndTweaks$i2] = optimizationsAndTweaks$b0;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub7(Block[] p_150560_3_) {
         optimizationsAndTweaks$block = null;
         optimizationsAndTweaks$block1 = Blocks.stone;
         p_150560_3_[optimizationsAndTweaks$i2] = Blocks.gravel;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub8(Block[] p_150560_3_) {
         p_150560_3_[optimizationsAndTweaks$i2] = optimizationsAndTweaks$block1;
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub9(Random p_150560_2_, Block[] p_150560_3_) {
         --optimizationsAndTweaks$k;
@@ -163,17 +177,19 @@ public class MixinBiomeGenBase {
             optimizationsAndTweaks$block1 = Blocks.sandstone;
         }
     }
+
     @Unique
     public final void optimizationsAndTweaks$genBiomeTerrainSub10() {
         optimizationsAndTweaks$k = -1;
     }
+
     /**
      * @author
      * @reason
      */
     @Overwrite
-    public void genTerrainBlocks(World p_150573_1_, Random p_150573_2_, Block[] p_150573_3_, byte[] p_150573_4_, int p_150573_5_, int p_150573_6_, double p_150573_7_)
-    {
+    public void genTerrainBlocks(World p_150573_1_, Random p_150573_2_, Block[] p_150573_3_, byte[] p_150573_4_,
+        int p_150573_5_, int p_150573_6_, double p_150573_7_) {
         this.genBiomeTerrain(p_150573_1_, p_150573_2_, p_150573_3_, p_150573_4_, p_150573_5_, p_150573_6_, p_150573_7_);
     }
 

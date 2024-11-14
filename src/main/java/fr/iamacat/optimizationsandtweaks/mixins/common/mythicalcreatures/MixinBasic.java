@@ -1,10 +1,7 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.mythicalcreatures;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -16,17 +13,23 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.EnumHelper;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import twilightsparkle.basic.*;
 import twilightsparkle.basic.TwilightStar;
 import twilightsparkle.basic.mob.*;
 
-import java.util.Random;
-
 @Mixin(Basic.class)
 public class MixinBasic {
+
     @Shadow
     public static int Snap;
     @Shadow
@@ -68,21 +71,27 @@ public class MixinBasic {
     @Shadow
     static Item.ToolMaterial dirt = EnumHelper.addToolMaterial("DirtT", 1, -1, 1.0F, -2.0F, 1);
     @Shadow
-    static ItemArmor.ArmorMaterial armorbetterbone = EnumHelper.addArmorMaterial("Reinforced", 2275, new int[]{12, 32, 28, 12}, 18);
+    static ItemArmor.ArmorMaterial armorbetterbone = EnumHelper
+        .addArmorMaterial("Reinforced", 2275, new int[] { 12, 32, 28, 12 }, 18);
     @Shadow
-    static ItemArmor.ArmorMaterial armortwilicorn = EnumHelper.addArmorMaterial("Twilight", 1775, new int[]{16, 40, 32, 16}, 275);
+    static ItemArmor.ArmorMaterial armortwilicorn = EnumHelper
+        .addArmorMaterial("Twilight", 1775, new int[] { 16, 40, 32, 16 }, 275);
     @Shadow
-    static ItemArmor.ArmorMaterial armordash = EnumHelper.addArmorMaterial("Dash2", 1725, new int[]{14, 36, 28, 14}, 25);
+    static ItemArmor.ArmorMaterial armordash = EnumHelper
+        .addArmorMaterial("Dash2", 1725, new int[] { 14, 36, 28, 14 }, 25);
     @Shadow
-    static ItemArmor.ArmorMaterial armorWOW = EnumHelper.addArmorMaterial("WOW", 958, new int[]{9, 21, 18, 9}, 22);
+    static ItemArmor.ArmorMaterial armorWOW = EnumHelper.addArmorMaterial("WOW", 958, new int[] { 9, 21, 18, 9 }, 22);
     @Shadow
-    static ItemArmor.ArmorMaterial armordark = EnumHelper.addArmorMaterial("Dark", 6245, new int[]{14, 38, 32, 14}, 10);
+    static ItemArmor.ArmorMaterial armordark = EnumHelper
+        .addArmorMaterial("Dark", 6245, new int[] { 14, 38, 32, 14 }, 10);
     @Shadow
-    static ItemArmor.ArmorMaterial armorapple = EnumHelper.addArmorMaterial("Apple2", 675, new int[]{7, 15, 14, 7}, 10);
+    static ItemArmor.ArmorMaterial armorapple = EnumHelper
+        .addArmorMaterial("Apple2", 675, new int[] { 7, 15, 14, 7 }, 10);
     @Shadow
-    static ItemArmor.ArmorMaterial armorbear = EnumHelper.addArmorMaterial("Bear2", 175, new int[]{3, 7, 6, 2}, 15);
+    static ItemArmor.ArmorMaterial armorbear = EnumHelper.addArmorMaterial("Bear2", 175, new int[] { 3, 7, 6, 2 }, 15);
     @Shadow
-    static ItemArmor.ArmorMaterial armorapplejack = EnumHelper.addArmorMaterial("AppleJack2", 2250, new int[]{20, 50, 40, 20}, 8);
+    static ItemArmor.ArmorMaterial armorapplejack = EnumHelper
+        .addArmorMaterial("AppleJack2", 2250, new int[] { 20, 50, 40, 20 }, 8);
     @Shadow
     public static CommonProxy proxy;
     @Shadow
@@ -459,6 +468,7 @@ public class MixinBasic {
     public static final Item rdLegs;
     @Shadow
     public static final Item rdBoots;
+
     /**
      * @author
      * @reason
@@ -775,25 +785,44 @@ public class MixinBasic {
         GameRegistry.addShapelessRecipe(new ItemStack(boneWall, 1), new ItemStack(boneBrick));
         GameRegistry.addShapelessRecipe(new ItemStack(glowBone, 1), new ItemStack(boneWall));
         GameRegistry.addShapelessRecipe(new ItemStack(darkCrystal, 9), new ItemStack(darkCrystalBlock));
-        GameRegistry.addRecipe(new ItemStack(twilicornSword), " T ", " T ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornSword), "T  ", "T  ", "D  ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornSword), "  T", "  T", "  D", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornPick), "TTT", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornSpade), " T ", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornSpade), "T  ", "D  ", "D  ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornSpade), "  T", "  D", "  D", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornAxe), "TT ", "TD ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornAxe), " TT", " TD", "  D", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornHoe), "TT ", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornHoe), " TT", "  D", "  D", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornHelmet), "TTT", "T T", "   ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornHelmet), "   ", "TTT", "T T", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornChest), "T T", "TTT", "TTT", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornLegs), "TTT", "T T", "T T", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornBoots), "T T", "T T", "   ", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornBoots), "   ", "T T", "T T", 'D', twilicornBone, 'T', twilicornBlock);
-        GameRegistry.addRecipe(new ItemStack(twilicornBlock), "TTT", "TTT", "TTT", 'D', twilicornBone, 'T', twilightStar);
-        GameRegistry.addRecipe(new ItemStack(twilicornBow), " TD", "T D", " TD", 'D', twilightStar, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSword), " T ", " T ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSword), "T  ", "T  ", "D  ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSword), "  T", "  T", "  D", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornPick), "TTT", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSpade), " T ", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSpade), "T  ", "D  ", "D  ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornSpade), "  T", "  D", "  D", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornAxe), "TT ", "TD ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornAxe), " TT", " TD", "  D", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornHoe), "TT ", " D ", " D ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornHoe), " TT", "  D", "  D", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornHelmet), "TTT", "T T", "   ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornHelmet), "   ", "TTT", "T T", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornChest), "T T", "TTT", "TTT", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornLegs), "TTT", "T T", "T T", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornBoots), "T T", "T T", "   ", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornBoots), "   ", "T T", "T T", 'D', twilicornBone, 'T', twilicornBlock);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornBlock), "TTT", "TTT", "TTT", 'D', twilicornBone, 'T', twilightStar);
+        GameRegistry
+            .addRecipe(new ItemStack(twilicornBow), " TD", "T D", " TD", 'D', twilightStar, 'T', twilicornBlock);
         GameRegistry.addRecipe(new ItemStack(phoenixBlock), "TTT", "TTT", "TTT", 'T', phoenixFeather);
         GameRegistry.addRecipe(new ItemStack(boneSword), " T ", " T ", " D ", 'D', bowserBone, 'T', phoenixBlock);
         GameRegistry.addRecipe(new ItemStack(boneSword), "T  ", "T  ", "D  ", 'D', bowserBone, 'T', phoenixBlock);
@@ -806,7 +835,17 @@ public class MixinBasic {
         GameRegistry.addRecipe(new ItemStack(boneAxe), " TT", " TD", "  D", 'D', bowserBone, 'T', phoenixBlock);
         GameRegistry.addRecipe(new ItemStack(boneHoe), "TT ", " D ", " D ", 'D', bowserBone, 'T', phoenixBlock);
         GameRegistry.addRecipe(new ItemStack(boneHoe), " TT", "  D", "  D", 'D', bowserBone, 'T', phoenixBlock);
-        GameRegistry.addRecipe(new ItemStack(boneHelmet), "BCB", "ACA", "CCC", 'A', bowserEye, 'B', phoenixBlock, 'C', bowserBone);
+        GameRegistry.addRecipe(
+            new ItemStack(boneHelmet),
+            "BCB",
+            "ACA",
+            "CCC",
+            'A',
+            bowserEye,
+            'B',
+            phoenixBlock,
+            'C',
+            bowserBone);
         GameRegistry.addRecipe(new ItemStack(boneChest), "T T", "TTT", "TTT", 'D', bowserBone, 'T', phoenixBlock);
         GameRegistry.addRecipe(new ItemStack(boneLegs), "TTT", "T T", "T T", 'D', bowserBone, 'T', phoenixBlock);
         GameRegistry.addRecipe(new ItemStack(boneBoots), "T T", "T T", "   ", 'D', bowserBone, 'T', phoenixBlock);
@@ -923,223 +962,260 @@ public class MixinBasic {
         EntityRegistry.registerGlobalEntityID(TwilightMob.class, "TwilightMob", entityId);
         EntityRegistry.instance();
         MobId1 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.TwilightMob.name", "Robot Sombra");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.TwilightMob.name", "Robot Sombra");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(TwilightMob.class, "TwilightMob", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(DemonSpiderEntity.class, "DemonSpiderEntity", entityId);
         EntityRegistry.instance();
         MobId2 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.DemonSpiderEntity.name", "Black Widow Spider");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.DemonSpiderEntity.name", "Black Widow Spider");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(DemonSpiderEntity.class, "DemonSpiderEntity", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyLeviathan.class, "MyLeviathan", entityId);
         EntityRegistry.instance();
         MobId3 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyLeviathan.name", "Leviathan");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyLeviathan.name", "Leviathan");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyLeviathan.class, "MyLeviathan", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MyThunderHooves.class, "MyThunderHooves", entityId);
         EntityRegistry.instance();
         MobId4 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyThunderHooves.name", "Chief ThunderHooves");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyThunderHooves.name", "Chief ThunderHooves");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyThunderHooves.class, "MyThunderHooves", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyTwilicorn.class, "MyTwilicorn", entityId);
         EntityRegistry.instance();
         MobId5 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyTwilicorn.name", "Twilight Sparkle");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyTwilicorn.name", "Twilight Sparkle");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyTwilicorn.class, "MyTwilicorn", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyKingbowser.class, "MyKingbowser", entityId);
         EntityRegistry.instance();
         MobId6 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyKingbowser.name", "KingBowser9000");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyKingbowser.name", "KingBowser9000");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyKingbowser.class, "MyKingbowser", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyCentipede.class, "MyCentipede", entityId);
         EntityRegistry.instance();
         MobId7 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyCentipede.name", "{MLP} Centipede");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyCentipede.name", "{MLP} Centipede");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyCentipede.class, "MyCentipede", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyMLPHydra.class, "MyMLPHydra", entityId);
         EntityRegistry.instance();
         MobId8 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyMLPHydra.name", "Hydra");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyMLPHydra.name", "Hydra");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyMLPHydra.class, "MyMLPHydra", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyWindigo.class, "MyWindigo", entityId);
         EntityRegistry.instance();
         MobId9 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyWindigo.name", "Windigo");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyWindigo.name", "Windigo");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyWindigo.class, "MyWindigo", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyMoose.class, "MyMoose", entityId);
         EntityRegistry.instance();
         MobId10 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyMoose.name", "Baby Ramming Moose");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyMoose.name", "Baby Ramming Moose");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyMoose.class, "MyMoose", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyMLPBuffalo.class, "MyMLPBuffalo", entityId);
         EntityRegistry.instance();
         MobId11 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyMLPBuffalo.name", "Buffalo");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyMLPBuffalo.name", "Buffalo");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyMLPBuffalo.class, "MyMLPBuffalo", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyDarkness.class, "MyDarkness", entityId);
         EntityRegistry.instance();
         MobId12 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyDarkness.name", "Leech");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyDarkness.name", "Leech");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyDarkness.class, "MyDarkness", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyFlameDragon.class, "MyFlameDragon", entityId);
         EntityRegistry.instance();
         MobId13 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyFlameDragon.name", "Garble");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyFlameDragon.name", "Garble");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyFlameDragon.class, "MyFlameDragon", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MyMooseBig.class, "MyMooseBig", entityId);
         EntityRegistry.instance();
         MobId14 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyMooseBig.name", "Adult Ramming Moose");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyMooseBig.name", "Adult Ramming Moose");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyMooseBig.class, "MyMooseBig", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyCragadile.class, "MyCragadile", entityId);
         EntityRegistry.instance();
         MobId15 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyCragadile.name", "Cragadile");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyCragadile.name", "Cragadile");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyCragadile.class, "MyCragadile", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MyBear.class, "MyBear", entityId);
         EntityRegistry.instance();
         MobId16 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyBear.name", "Bear");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyBear.name", "Bear");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyBear.class, "MyBear", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyToughGuy.class, "MyToughGuy", entityId);
         EntityRegistry.instance();
         MobId17 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyToughGuy.name", "Tough Guy");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyToughGuy.name", "Tough Guy");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyToughGuy.class, "MyToughGuy", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyMavis.class, "MyMavis", entityId);
         EntityRegistry.instance();
         MobId18 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyMavis.name", "Mavis");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyMavis.name", "Mavis");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyMavis.class, "MyMavis", entityId, this, 32, 1, false);
         EntityRegistry.registerGlobalEntityID(MyUrsaMAJOR.class, "MyUrsaMAJOR", entityId);
         EntityRegistry.instance();
         MobId19 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyUrsaMAJOR.name", "Ursa Major");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyUrsaMAJOR.name", "Ursa Major");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyUrsaMAJOR.class, "MyUrsaMAJOR", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyPhoenix.class, "MyPhoenix", entityId);
         EntityRegistry.instance();
         MobId20 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyPhoenix.name", "Phoenix");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyPhoenix.name", "Phoenix");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyPhoenix.class, "MyPhoenix", entityId, this, 72, 1, true);
         EntityRegistry.registerGlobalEntityID(MyDash.class, "MyDash", entityId);
         EntityRegistry.instance();
         MobId21 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyDash.name", "Rainbow Dash");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyDash.name", "Rainbow Dash");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyDash.class, "MyDash", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyManticore.class, "MyManticore", entityId);
         EntityRegistry.instance();
         MobId22 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyManticore.name", "Manticore");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyManticore.name", "Manticore");
         EntityRegistry.instance();
-        EntityRegistry.registerModEntity(MyManticore.class, "MyManticore", entityId ,this, 64, 1, false);
+        EntityRegistry.registerModEntity(MyManticore.class, "MyManticore", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyRainbowCentipede.class, "MyRainbowCentipede", entityId);
         EntityRegistry.instance();
         MobId23 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyRainbowCentipede.name", "Rainbow Centipede");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyRainbowCentipede.name", "Rainbow Centipede");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyRainbowCentipede.class, "MyRainbowCentipede", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyAJ.class, "MyAJ", entityId);
         EntityRegistry.instance();
         MobId24 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyAJ.name", "AppleJack");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyAJ.name", "AppleJack");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyAJ.class, "MyAJ", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MyArcticScorpion.class, "MyArcticScorpion", entityId);
         EntityRegistry.instance();
         MobId25 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyArcticScorpion.name", "Arctic Scorpion");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyArcticScorpion.name", "Arctic Scorpion");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyArcticScorpion.class, "MyArcticScorpion", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MyTimberWolf.class, "MyTimberWolf", entityId);
         EntityRegistry.instance();
         MobId26 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyTimberWolf.name", "Timber Wolf");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyTimberWolf.name", "Timber Wolf");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyTimberWolf.class, "MyTimberWolf", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyParasprite.class, "MyParasprite", entityId);
         EntityRegistry.instance();
         MobId27 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyParasprite.name", "Parasprite");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyParasprite.name", "Parasprite");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyParasprite.class, "MyParasprite", entityId, this, 16, 1, false);
         EntityRegistry.registerGlobalEntityID(MyTwilightMagic.class, "MyTwilightMagic", entityId);
         EntityRegistry.instance();
         MobId28 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyTwilightMagic.name", "Twilicorn Magic");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyTwilightMagic.name", "Twilicorn Magic");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyTwilightMagic.class, "MyTwilightMagic", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyCockatrice.class, "MyCockatrice", entityId);
         EntityRegistry.instance();
         MobId29 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyCockatrice.name", "Cockatrice");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyCockatrice.name", "Cockatrice");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyCockatrice.class, "MyCockatrice", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyIronWill.class, "MyIronWill", entityId);
         EntityRegistry.instance();
         MobId30 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyIronWill.name", "Iron Will");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyIronWill.name", "Iron Will");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyIronWill.class, "MyIronWill", entityId, this, 64, 1, false);
         EntityRegistry.registerGlobalEntityID(MyCrabzilla.class, "MyCrabzilla", entityId);
         EntityRegistry.instance();
         MobId31 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyCrabzilla.name", "Crabzilla");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyCrabzilla.name", "Crabzilla");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyCrabzilla.class, "MyCrabzilla", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyDashCloud.class, "MyDashCloud", entityId);
         EntityRegistry.instance();
         MobId32 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyDashCloud.name", "Lightning Cloud");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyDashCloud.name", "Lightning Cloud");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyDashCloud.class, "MyDashCloud", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MySkullBoss.class, "MySkullBoss", entityId);
         EntityRegistry.instance();
         MobId33 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MySkullBoss.name", "Skull Of Doom");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MySkullBoss.name", "Skull Of Doom");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MySkullBoss.class, "MySkullBoss", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MySkull.class, "MySkull", entityId);
         EntityRegistry.instance();
         MobId34 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MySkullBoss.name", "Skull");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MySkullBoss.name", "Skull");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MySkull.class, "MySkull", entityId, this, 128, 1, false);
         EntityRegistry.registerGlobalEntityID(MyYakPrince.class, "MyYakPrince", entityId);
         EntityRegistry.instance();
         MobId35 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyYakPrince.name", "Prince Rutherford");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyYakPrince.name", "Prince Rutherford");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyYakPrince.class, "MyYakPrince", entityId, this, 72, 1, false);
         EntityRegistry.registerGlobalEntityID(MySpikezilla.class, "MySpikezilla", entityId);
         EntityRegistry.instance();
         MobId36 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MySpikezilla.name", "Spikezilla");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MySpikezilla.name", "Spikezilla");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MySpikezilla.class, "MySpikezilla", entityId, this, 256, 1, false);
         EntityRegistry.registerGlobalEntityID(MyRhinoceros.class, "MyRhinoceros", entityId);
         EntityRegistry.instance();
         MobId37 = entityId;
-        LanguageRegistry.instance().addStringLocalization("entity.MyRhinoceros.name", "Rhinoceros");
+        LanguageRegistry.instance()
+            .addStringLocalization("entity.MyRhinoceros.name", "Rhinoceros");
         EntityRegistry.instance();
         EntityRegistry.registerModEntity(MyRhinoceros.class, "MyRhinoceros", entityId, this, 64, 1, false);
         EntityRegistry.addSpawn(MyThunderHooves.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.forest);
@@ -1173,7 +1249,8 @@ public class MixinBasic {
         EntityRegistry.addSpawn(MyArcticScorpion.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.icePlains);
         EntityRegistry.addSpawn(MyArcticScorpion.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.frozenOcean);
         EntityRegistry.addSpawn(MyArcticScorpion.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.frozenRiver);
-        EntityRegistry.addSpawn(MyArcticScorpion.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.extremeHillsPlus);
+        EntityRegistry
+            .addSpawn(MyArcticScorpion.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.extremeHillsPlus);
         EntityRegistry.addSpawn(MyBear.class, 10, 2, 20, EnumCreatureType.ambient, BiomeGenBase.forest);
         EntityRegistry.addSpawn(MyBear.class, 10, 2, 15, EnumCreatureType.ambient, BiomeGenBase.birchForest);
         EntityRegistry.addSpawn(MyBear.class, 15, 4, 25, EnumCreatureType.ambient, BiomeGenBase.roofedForest);
@@ -1238,7 +1315,8 @@ public class MixinBasic {
         EntityRegistry.addSpawn(MyParasprite.class, 40, 4, 40, EnumCreatureType.creature, BiomeGenBase.roofedForest);
         EntityRegistry.addSpawn(MyParasprite.class, 40, 4, 40, EnumCreatureType.creature, BiomeGenBase.forestHills);
         EntityRegistry.addSpawn(MyParasprite.class, 40, 4, 40, EnumCreatureType.creature, BiomeGenBase.birchForest);
-        EntityRegistry.addSpawn(MyParasprite.class, 40, 4, 40, EnumCreatureType.creature, BiomeGenBase.birchForestHills);
+        EntityRegistry
+            .addSpawn(MyParasprite.class, 40, 4, 40, EnumCreatureType.creature, BiomeGenBase.birchForestHills);
         EntityRegistry.addSpawn(MyParasprite.class, 30, 3, 30, EnumCreatureType.creature, BiomeGenBase.savanna);
         EntityRegistry.addSpawn(MyParasprite.class, 20, 2, 20, EnumCreatureType.creature, BiomeGenBase.savannaPlateau);
         EntityRegistry.addSpawn(MyParasprite.class, 30, 1, 36, EnumCreatureType.creature, BiomeGenBase.plains);
@@ -1258,7 +1336,8 @@ public class MixinBasic {
         EntityRegistry.addSpawn(MyIronWill.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.mushroomIsland);
         EntityRegistry.addSpawn(MyIronWill.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.mushroomIslandShore);
         EntityRegistry.addSpawn(MyCrabzilla.class, 1, 1, 1, EnumCreatureType.creature, BiomeGenBase.mushroomIsland);
-        EntityRegistry.addSpawn(MyCrabzilla.class, 1, 1, 1, EnumCreatureType.creature, BiomeGenBase.mushroomIslandShore);
+        EntityRegistry
+            .addSpawn(MyCrabzilla.class, 1, 1, 1, EnumCreatureType.creature, BiomeGenBase.mushroomIslandShore);
         EntityRegistry.addSpawn(MySkull.class, 5, 1, 2, EnumCreatureType.ambient, BiomeGenBase.hell);
         EntityRegistry.addSpawn(MySkull.class, 5, 1, 2, EnumCreatureType.ambient, BiomeGenBase.stoneBeach);
         EntityRegistry.addSpawn(MySkullBoss.class, 1, 1, 1, EnumCreatureType.ambient, BiomeGenBase.hell);
@@ -1279,42 +1358,115 @@ public class MixinBasic {
         EntityRegistry.addSpawn(MyRhinoceros.class, 5, 1, 1, EnumCreatureType.ambient, BiomeGenBase.mesaPlateau_F);
         EntityRegistry.addSpawn(MyRhinoceros.class, 4, 1, 1, EnumCreatureType.ambient, BiomeGenBase.mesaPlateau);
     }
+
     static {
-        boneSword = (new BoneSword(6107, betterbone)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bonesword").setTextureName("KingBowserMod:bonesword");
-        bonePick = (new BonePick(6109, betterbone)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bonepick").setTextureName("KingBowserMod:bonepick");
-        boneHoe = (new BoneHoe(6110, betterbone)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bonehoe").setTextureName("KingBowserMod:bonehoe");
-        boneAxe = (new BoneAxe(6111, betterbone)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("boneaxe").setTextureName("KingBowserMod:boneaxe");
-        boneSpade = (new BoneSpade(6112, betterbone)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bonespade").setTextureName("KingBowserMod:bonespade");
-        twilicornSword = (new TwilicornSword(6113, twilight)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("twilicornsword").setTextureName("KingBowserMod:twilightsword");
-        twilicornPick = (new TwilicornPick(6114, twilight)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("twilicornpick").setTextureName("KingBowserMod:twilightpick");
-        twilicornHoe = (new TwilicornHoe(6115, twilight)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("twilicornhoe").setTextureName("KingBowserMod:twilighthoe");
-        twilicornAxe = (new TwilicornAxe(6116, twilight)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("twilicornaxe").setTextureName("KingBowserMod:twilightaxe");
-        twilicornSpade = (new TwilicornSpade(6117, twilight)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("twilicornspade").setTextureName("KingBowserMod:twilightspade");
-        yoshiSword = (new YoshiSword(6121, WOW)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("yoshiSword").setTextureName("KingBowserMod:yoshisword");
-        appleSword = (new AppleSword(6129, apple)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("appleSword").setTextureName("KingBowserMod:applesword");
-        applePick = (new ApplePick(6130, apple)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("applePick").setTextureName("KingBowserMod:applepick");
-        appleHoe = (new AppleHoe(6131, apple)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("appleHoe").setTextureName("KingBowserMod:applehoe");
-        appleAxe = (new AppleAxe(6132, apple)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("appleAxe").setTextureName("KingBowserMod:appleaxe");
-        appleSpade = (new AppleSpade(6133, apple)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("appleSpade").setTextureName("KingBowserMod:applespade");
-        dashSword = (new DashSword(6134, dash)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("dashSword").setTextureName("KingBowserMod:dashsword");
-        bearSword = (new BearSword(6135, bear)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bearSword").setTextureName("KingBowserMod:bearsword");
-        bearPick = (new BearPick(6136, bear)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bearPick").setTextureName("KingBowserMod:bearpick");
-        bearHoe = (new BearHoe(6137, bear)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bearHoe").setTextureName("KingBowserMod:bearhoe");
-        bearAxe = (new BearAxe(6138, bear)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bearAxe").setTextureName("KingBowserMod:bearaxe");
-        bearSpade = (new BearSpade(6139, bear)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("bearSpade").setTextureName("KingBowserMod:bearspade");
-        cragHammer = (new CragHammer(6140, crag)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("cragHammer").setTextureName("KingBowserMod:craghammer");
-        alicornSword = (new ItemAlicornSword(6141, alicorn)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("alicornSword").setTextureName("KingBowserMod:alicornitem");
-        dagger = (new ItemDagger(6142, random2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("dagger").setTextureName("KingBowserMod:dagger");
-        digger = (new ItemDigger(6143, random2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("digger").setTextureName("KingBowserMod:digger");
-        ajSword = (new AJSword(6144, applejack)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ajSword").setTextureName("KingBowserMod:ajsword");
-        ajPick = (new AJPick(6145, applejack)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("ajPick").setTextureName("KingBowserMod:ajpick");
-        ajHoe = (new AJHoe(6146, applejack)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("ajHoe").setTextureName("KingBowserMod:ajhoe");
-        ajAxe = (new AJAxe(6147, applejack)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("ajAxe").setTextureName("KingBowserMod:ajaxe");
-        ajSpade = (new AJSpade(6148, applejack)).setCreativeTab(CreativeTabs.tabTools).setUnlocalizedName("ajSpade").setTextureName("KingBowserMod:ajspade");
-        crystalSword = (new CrystalSword(6149, crystal)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("crystalSword").setTextureName("KingBowserMod:crystalsword");
-        ursaClaws = (new ItemGiantClaw(6150, ursa)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ursaClaws").setTextureName("KingBowserMod:beartooth");
-        dirtSword = (new DirtSword(6151, dirt)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("dirtSword").setTextureName("KingBowserMod:dirtsword");
-        boneBlock = (new BoneBlock(1000)).setHardness(4.0F).setStepSound(Block.soundTypeMetal).setBlockName("boneBlock").setCreativeTab(CreativeTabs.tabBlock).setResistance(40.0F);
+        boneSword = (new BoneSword(6107, betterbone)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bonesword")
+            .setTextureName("KingBowserMod:bonesword");
+        bonePick = (new BonePick(6109, betterbone)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bonepick")
+            .setTextureName("KingBowserMod:bonepick");
+        boneHoe = (new BoneHoe(6110, betterbone)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bonehoe")
+            .setTextureName("KingBowserMod:bonehoe");
+        boneAxe = (new BoneAxe(6111, betterbone)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("boneaxe")
+            .setTextureName("KingBowserMod:boneaxe");
+        boneSpade = (new BoneSpade(6112, betterbone)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bonespade")
+            .setTextureName("KingBowserMod:bonespade");
+        twilicornSword = (new TwilicornSword(6113, twilight)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("twilicornsword")
+            .setTextureName("KingBowserMod:twilightsword");
+        twilicornPick = (new TwilicornPick(6114, twilight)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("twilicornpick")
+            .setTextureName("KingBowserMod:twilightpick");
+        twilicornHoe = (new TwilicornHoe(6115, twilight)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("twilicornhoe")
+            .setTextureName("KingBowserMod:twilighthoe");
+        twilicornAxe = (new TwilicornAxe(6116, twilight)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("twilicornaxe")
+            .setTextureName("KingBowserMod:twilightaxe");
+        twilicornSpade = (new TwilicornSpade(6117, twilight)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("twilicornspade")
+            .setTextureName("KingBowserMod:twilightspade");
+        yoshiSword = (new YoshiSword(6121, WOW)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("yoshiSword")
+            .setTextureName("KingBowserMod:yoshisword");
+        appleSword = (new AppleSword(6129, apple)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("appleSword")
+            .setTextureName("KingBowserMod:applesword");
+        applePick = (new ApplePick(6130, apple)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("applePick")
+            .setTextureName("KingBowserMod:applepick");
+        appleHoe = (new AppleHoe(6131, apple)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("appleHoe")
+            .setTextureName("KingBowserMod:applehoe");
+        appleAxe = (new AppleAxe(6132, apple)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("appleAxe")
+            .setTextureName("KingBowserMod:appleaxe");
+        appleSpade = (new AppleSpade(6133, apple)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("appleSpade")
+            .setTextureName("KingBowserMod:applespade");
+        dashSword = (new DashSword(6134, dash)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("dashSword")
+            .setTextureName("KingBowserMod:dashsword");
+        bearSword = (new BearSword(6135, bear)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bearSword")
+            .setTextureName("KingBowserMod:bearsword");
+        bearPick = (new BearPick(6136, bear)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bearPick")
+            .setTextureName("KingBowserMod:bearpick");
+        bearHoe = (new BearHoe(6137, bear)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bearHoe")
+            .setTextureName("KingBowserMod:bearhoe");
+        bearAxe = (new BearAxe(6138, bear)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bearAxe")
+            .setTextureName("KingBowserMod:bearaxe");
+        bearSpade = (new BearSpade(6139, bear)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("bearSpade")
+            .setTextureName("KingBowserMod:bearspade");
+        cragHammer = (new CragHammer(6140, crag)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("cragHammer")
+            .setTextureName("KingBowserMod:craghammer");
+        alicornSword = (new ItemAlicornSword(6141, alicorn)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("alicornSword")
+            .setTextureName("KingBowserMod:alicornitem");
+        dagger = (new ItemDagger(6142, random2)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("dagger")
+            .setTextureName("KingBowserMod:dagger");
+        digger = (new ItemDigger(6143, random2)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("digger")
+            .setTextureName("KingBowserMod:digger");
+        ajSword = (new AJSword(6144, applejack)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ajSword")
+            .setTextureName("KingBowserMod:ajsword");
+        ajPick = (new AJPick(6145, applejack)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("ajPick")
+            .setTextureName("KingBowserMod:ajpick");
+        ajHoe = (new AJHoe(6146, applejack)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("ajHoe")
+            .setTextureName("KingBowserMod:ajhoe");
+        ajAxe = (new AJAxe(6147, applejack)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("ajAxe")
+            .setTextureName("KingBowserMod:ajaxe");
+        ajSpade = (new AJSpade(6148, applejack)).setCreativeTab(CreativeTabs.tabTools)
+            .setUnlocalizedName("ajSpade")
+            .setTextureName("KingBowserMod:ajspade");
+        crystalSword = (new CrystalSword(6149, crystal)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("crystalSword")
+            .setTextureName("KingBowserMod:crystalsword");
+        ursaClaws = (new ItemGiantClaw(6150, ursa)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ursaClaws")
+            .setTextureName("KingBowserMod:beartooth");
+        dirtSword = (new DirtSword(6151, dirt)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("dirtSword")
+            .setTextureName("KingBowserMod:dirtsword");
+        boneBlock = (new BoneBlock(1000)).setHardness(4.0F)
+            .setStepSound(Block.soundTypeMetal)
+            .setBlockName("boneBlock")
+            .setCreativeTab(CreativeTabs.tabBlock)
+            .setResistance(40.0F);
         boneOre = new BoneOre(1001);
         boneBrick = new BoneBrick(1002);
         glowBone = new GlowBone(1003);
@@ -1407,33 +1559,78 @@ public class MixinBasic {
         Snap = 0;
         FishSize = 5;
         hydraspawned = 0;
-        boneHelmet = (new BoneHelmet(5555, armorbetterbone, CommonProxy.addArmor("reinforced"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("boneHelmet");
-        boneChest = (new BoneChest(armorbetterbone, CommonProxy.addArmor("reinforced"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("boneChest");
-        boneLegs = (new BoneLegs(armorbetterbone, CommonProxy.addArmor("reinforced"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("boneLegs");
-        boneBoots = (new BoneBoots(armorbetterbone, CommonProxy.addArmor("reinforced"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("boneBoots");
-        twilicornHelmet = (new TwilicornHelmet(armortwilicorn, CommonProxy.addArmor("twilight"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("twilicornHelmet");
-        twilicornChest = (new TwilicornChest(armortwilicorn, CommonProxy.addArmor("twilight"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("twilicornChest");
-        twilicornLegs = (new TwilicornLegs(armortwilicorn, CommonProxy.addArmor("twilight"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("twilicornLegs");
-        twilicornBoots = (new TwilicornBoots(armortwilicorn, CommonProxy.addArmor("twilight"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("twilicornBoots");
-        darkHelmet = (new DarkHelmet(armordark, CommonProxy.addArmor("dark"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("darkHelmet");
-        darkChest = (new DarkChest(armordark, CommonProxy.addArmor("dark"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("darkChest");
-        darkLegs = (new DarkLegs(armordark, CommonProxy.addArmor("dark"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("darkLegs");
-        darkBoots = (new DarkBoots(armordark, CommonProxy.addArmor("dark"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("darkBoots");
-        appleHelmet = (new AppleHelmet(armorapple, CommonProxy.addArmor("apple2"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("appleHelmet");
-        appleChest = (new AppleChest(armorapple, CommonProxy.addArmor("apple2"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("appleChest");
-        appleLegs = (new AppleLegs(armorapple, CommonProxy.addArmor("apple2"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("appleLegs");
-        appleBoots = (new AppleBoots(armorapple, CommonProxy.addArmor("apple2"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("appleBoots");
-        bearHelmet = (new BearHelmet(armorbear, CommonProxy.addArmor("bear2"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bearHelmet");
-        bearChest = (new BearChest(armorbear, CommonProxy.addArmor("bear2"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bearChest");
-        bearLegs = (new BearLegs(armorbear, CommonProxy.addArmor("bear2"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bearLegs");
-        bearBoots = (new BearBoots(armorbear, CommonProxy.addArmor("bear2"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("bearBoots");
-        ajHelmet = (new AJHelmet(armorapplejack, CommonProxy.addArmor("applejack2"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ajHelmet");
-        ajChest = (new AJChest(armorapplejack, CommonProxy.addArmor("applejack2"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ajChest");
-        ajLegs = (new AJLegs(armorapplejack, CommonProxy.addArmor("applejack2"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ajLegs");
-        ajBoots = (new AJBoots(armorapplejack, CommonProxy.addArmor("applejack2"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("ajBoots");
-        rdHelmet = (new RDHelmet(armordash, CommonProxy.addArmor("dash2"), 0)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("rdHelmet");
-        rdChest = (new RDChest(armordash, CommonProxy.addArmor("dash2"), 1)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("rdChest");
-        rdLegs = (new RDLegs(armordash, CommonProxy.addArmor("dash2"), 2)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("rdLegs");
-        rdBoots = (new RDBoots(armordash, CommonProxy.addArmor("dash2"), 3)).setCreativeTab(CreativeTabs.tabCombat).setUnlocalizedName("rdBoots");
+        boneHelmet = (new BoneHelmet(5555, armorbetterbone, CommonProxy.addArmor("reinforced"), 0))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("boneHelmet");
+        boneChest = (new BoneChest(armorbetterbone, CommonProxy.addArmor("reinforced"), 1))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("boneChest");
+        boneLegs = (new BoneLegs(armorbetterbone, CommonProxy.addArmor("reinforced"), 2))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("boneLegs");
+        boneBoots = (new BoneBoots(armorbetterbone, CommonProxy.addArmor("reinforced"), 3))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("boneBoots");
+        twilicornHelmet = (new TwilicornHelmet(armortwilicorn, CommonProxy.addArmor("twilight"), 0))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("twilicornHelmet");
+        twilicornChest = (new TwilicornChest(armortwilicorn, CommonProxy.addArmor("twilight"), 1))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("twilicornChest");
+        twilicornLegs = (new TwilicornLegs(armortwilicorn, CommonProxy.addArmor("twilight"), 2))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("twilicornLegs");
+        twilicornBoots = (new TwilicornBoots(armortwilicorn, CommonProxy.addArmor("twilight"), 3))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("twilicornBoots");
+        darkHelmet = (new DarkHelmet(armordark, CommonProxy.addArmor("dark"), 0)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("darkHelmet");
+        darkChest = (new DarkChest(armordark, CommonProxy.addArmor("dark"), 1)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("darkChest");
+        darkLegs = (new DarkLegs(armordark, CommonProxy.addArmor("dark"), 2)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("darkLegs");
+        darkBoots = (new DarkBoots(armordark, CommonProxy.addArmor("dark"), 3)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("darkBoots");
+        appleHelmet = (new AppleHelmet(armorapple, CommonProxy.addArmor("apple2"), 0))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("appleHelmet");
+        appleChest = (new AppleChest(armorapple, CommonProxy.addArmor("apple2"), 1))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("appleChest");
+        appleLegs = (new AppleLegs(armorapple, CommonProxy.addArmor("apple2"), 2))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("appleLegs");
+        appleBoots = (new AppleBoots(armorapple, CommonProxy.addArmor("apple2"), 3))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("appleBoots");
+        bearHelmet = (new BearHelmet(armorbear, CommonProxy.addArmor("bear2"), 0))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bearHelmet");
+        bearChest = (new BearChest(armorbear, CommonProxy.addArmor("bear2"), 1)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bearChest");
+        bearLegs = (new BearLegs(armorbear, CommonProxy.addArmor("bear2"), 2)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bearLegs");
+        bearBoots = (new BearBoots(armorbear, CommonProxy.addArmor("bear2"), 3)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("bearBoots");
+        ajHelmet = (new AJHelmet(armorapplejack, CommonProxy.addArmor("applejack2"), 0))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ajHelmet");
+        ajChest = (new AJChest(armorapplejack, CommonProxy.addArmor("applejack2"), 1))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ajChest");
+        ajLegs = (new AJLegs(armorapplejack, CommonProxy.addArmor("applejack2"), 2))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ajLegs");
+        ajBoots = (new AJBoots(armorapplejack, CommonProxy.addArmor("applejack2"), 3))
+            .setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("ajBoots");
+        rdHelmet = (new RDHelmet(armordash, CommonProxy.addArmor("dash2"), 0)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("rdHelmet");
+        rdChest = (new RDChest(armordash, CommonProxy.addArmor("dash2"), 1)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("rdChest");
+        rdLegs = (new RDLegs(armordash, CommonProxy.addArmor("dash2"), 2)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("rdLegs");
+        rdBoots = (new RDBoots(armordash, CommonProxy.addArmor("dash2"), 3)).setCreativeTab(CreativeTabs.tabCombat)
+            .setUnlocalizedName("rdBoots");
     }
 }

@@ -3,10 +3,7 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.CompressTask;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.nbt.*;
@@ -18,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPOutputStream2;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.CompressTask;
 
 @Mixin(CompressedStreamTools.class)
 public abstract class MixinCompressedStreamTools {

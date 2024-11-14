@@ -92,12 +92,12 @@ public class MixinEventHandlerNEP {
         List list = world.getEntitiesWithinAABB(
             entityClass,
             AxisAlignedBB.getBoundingBox(
-                    vilX - vilR - villageBuffer,
-                    vilY - 4,
-                    vilZ - vilR - villageBuffer,
-                    vilX + vilR + villageBuffer,
-                    vilY + 4,
-                    vilZ + vilR + villageBuffer));
+                vilX - vilR - villageBuffer,
+                vilY - 4,
+                vilZ - vilR - villageBuffer,
+                vilX + vilR + villageBuffer,
+                vilY + 4,
+                vilZ + vilR + villageBuffer));
         return list != null ? list.size() : 0;
     }
 

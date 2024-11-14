@@ -54,36 +54,70 @@ public abstract class MixinBiomeBlobGen extends WorldGenerator {
             int var37 = MathHelper.floor_double(var24 + var28 / 2.0);
 
             if (world.checkChunksExist(var32, var33, var34, var35, var36, var37)) {
-                optimizationsAndTweaks$processBlocks(world, var32, var33, var34, var35, var36, var37, var20, var22, var24, var28, var30);
+                optimizationsAndTweaks$processBlocks(
+                    world,
+                    var32,
+                    var33,
+                    var34,
+                    var35,
+                    var36,
+                    var37,
+                    var20,
+                    var22,
+                    var24,
+                    var28,
+                    var30);
             }
         }
     }
 
     @Unique
     private void optimizationsAndTweaks$processBlocks(World world, int var32, int var33, int var34, int var35,
-                                                      int var36, int var37, double var20, double var22, double var24, double var28, double var30) {
+        int var36, int var37, double var20, double var22, double var24, double var28, double var30) {
         for (int var38 = var32; var38 <= var35; ++var38) {
             double var39 = (var38 + 0.5 - var20) / (var28 / 2.0);
             if (var39 * var39 < 1.0) {
-                optimizationsAndTweaks$processYAxis(world, var33, var34, var36, var37, var38, var39, var20, var22, var24, var28, var30);
+                optimizationsAndTweaks$processYAxis(
+                    world,
+                    var33,
+                    var34,
+                    var36,
+                    var37,
+                    var38,
+                    var39,
+                    var20,
+                    var22,
+                    var24,
+                    var28,
+                    var30);
             }
         }
     }
 
     @Unique
     private void optimizationsAndTweaks$processYAxis(World world, int var33, int var34, int var36, int var37, int var38,
-                                                     double var39, double var20, double var22, double var24, double var28, double var30) {
+        double var39, double var20, double var22, double var24, double var28, double var30) {
         for (int var41 = var33; var41 <= var36; ++var41) {
             double var42 = (var41 + 0.5 - var22) / (var30 / 2.0);
             if (var39 * var39 + var42 * var42 < 1.0) {
-                optimizationsAndTweaks$processZAxis(world, var34, var37, var38, var41, var42, var20, var24, var28, var39);
+                optimizationsAndTweaks$processZAxis(
+                    world,
+                    var34,
+                    var37,
+                    var38,
+                    var41,
+                    var42,
+                    var20,
+                    var24,
+                    var28,
+                    var39);
             }
         }
     }
 
     @Unique
     private void optimizationsAndTweaks$processZAxis(World world, int var34, int var37, int var38, int var41,
-                                                     double var42, double var20, double var24, double var28, double var39) {
+        double var42, double var20, double var24, double var28, double var39) {
         for (int var44 = var34; var44 <= var37; ++var44) {
             double var45 = (var44 + 0.5 - var24) / (var28 / 2.0);
             if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0) {

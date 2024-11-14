@@ -1,5 +1,7 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
+import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.BlockGrass2.optimizationsAndTweaks$spreadGrass;
+
 import java.util.Random;
 
 import net.minecraft.block.BlockGrass;
@@ -7,12 +9,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.BlockGrass2.optimizationsAndTweaks$spreadGrass;
 
 @Mixin(BlockGrass.class)
 public class MixinBlockGrass {
@@ -26,8 +25,8 @@ public class MixinBlockGrass {
             return;
         }
 
-        if (worldIn.getBlockLightValue(x, y + 1, z) < LIGHT_THRESHOLD_GRASS_TO_DIRT &&
-            worldIn.getBlockLightOpacity(x, y + 1, z) > 2) {
+        if (worldIn.getBlockLightValue(x, y + 1, z) < LIGHT_THRESHOLD_GRASS_TO_DIRT
+            && worldIn.getBlockLightOpacity(x, y + 1, z) > 2) {
             worldIn.setBlock(x, y, z, Blocks.dirt);
         } else if (worldIn.getBlockLightValue(x, y + 1, z) >= LIGHT_THRESHOLD_SPREAD_GRASS) {
             optimizationsAndTweaks$spreadGrass(worldIn, x, y, z, random);
@@ -35,4 +34,3 @@ public class MixinBlockGrass {
         ci.cancel();
     }
 }
-

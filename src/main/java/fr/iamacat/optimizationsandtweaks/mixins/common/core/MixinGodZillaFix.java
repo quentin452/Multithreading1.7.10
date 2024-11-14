@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import cpw.mods.fml.common.FMLLog;
-import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
 
 @Mixin(ForgeInternalHandler.class)
 public abstract class MixinGodZillaFix {
@@ -25,11 +24,11 @@ public abstract class MixinGodZillaFix {
         if (event.entity instanceof EntityItem) {
             EntityItem entityItem = (EntityItem) event.entity;
             ItemStack itemStack = entityItem.getEntityItem();
-                if (itemStack == null || itemStack.getItem() == null) {
-                    return;
-                }
-            } else {
-                FMLLog.warning(message, params);
+            if (itemStack == null || itemStack.getItem() == null) {
+                return;
+            }
+        } else {
+            FMLLog.warning(message, params);
         }
     }
 }

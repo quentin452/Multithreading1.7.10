@@ -2,7 +2,6 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -10,7 +9,6 @@ import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -23,10 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockLeaves.class)
 public abstract class MixinBlockLeaves extends BlockLeavesBase implements IShearable {
+
     @Unique
     private static final int SEARCH_RADIUS = 4;
     @Unique
     private static final int AREA_SIZE = 2 * SEARCH_RADIUS + 1;
+
     protected MixinBlockLeaves(Material p_i45433_1_, boolean p_i45433_2_) {
         super(p_i45433_1_, p_i45433_2_);
     }
@@ -48,7 +48,8 @@ public abstract class MixinBlockLeaves extends BlockLeavesBase implements IShear
             int chunkX = x >> 4;
             int chunkZ = z >> 4;
 
-            if (worldIn.getChunkFromChunkCoords(chunkX, chunkZ).getTopFilledSegment() >= y >> 4) {
+            if (worldIn.getChunkFromChunkCoords(chunkX, chunkZ)
+                .getTopFilledSegment() >= y >> 4) {
                 int[] blockArray = optimizationsAndTweaks$initializeBlockArray(areaSize);
 
                 optimizationsAndTweaks$populateBlockArray(worldIn, x, y, z, areaSize, halfArea, blockArray);
@@ -79,7 +80,7 @@ public abstract class MixinBlockLeaves extends BlockLeavesBase implements IShear
 
     @Unique
     private void optimizationsAndTweaks$populateBlockArray(World worldIn, int x, int y, int z, int areaSize,
-                                                           int halfArea, int[] blockArray) {
+        int halfArea, int[] blockArray) {
         int searchRadius = 4;
         Block[][][] cachedBlocks = new Block[2 * searchRadius + 1][2 * searchRadius + 1][2 * searchRadius + 1];
 
@@ -105,9 +106,16 @@ public abstract class MixinBlockLeaves extends BlockLeavesBase implements IShear
                     int cachedZ = zOffset + searchRadius;
 
                     Block block = cachedBlocks[cachedX][cachedY][cachedZ];
-                    int index = (xOffset + halfArea) * areaSize * areaSize + (yOffset + halfArea) * areaSize + zOffset + halfArea;
+                    int index = (xOffset + halfArea) * areaSize * areaSize + (yOffset + halfArea) * areaSize
+                        + zOffset
+                        + halfArea;
 
-                    blockArray[index] = optimizationsAndTweaks$determineBlockArrayValue(block, worldIn, x + xOffset, y + yOffset, z + zOffset);
+                    blockArray[index] = optimizationsAndTweaks$determineBlockArrayValue(
+                        block,
+                        worldIn,
+                        x + xOffset,
+                        y + yOffset,
+                        z + zOffset);
                 }
             }
         }
@@ -139,11 +147,15 @@ public abstract class MixinBlockLeaves extends BlockLeavesBase implements IShear
     }
 
     @Unique
-    private void optimizationsAndTweaks$propagateDecayToNeighbors(int[] blockArray, int index, int areaSize, int iteration) {
-        for (int offset : new int[]{-1, 1}) {
+    private void optimizationsAndTweaks$propagateDecayToNeighbors(int[] blockArray, int index, int areaSize,
+        int iteration) {
+        for (int offset : new int[] { -1, 1 }) {
             optimizationsAndTweaks$propagateDecayToNeighbor(blockArray, index + offset, iteration);
             optimizationsAndTweaks$propagateDecayToNeighbor(blockArray, index + offset * areaSize, iteration);
-            optimizationsAndTweaks$propagateDecayToNeighbor(blockArray, index + offset * areaSize * areaSize, iteration);
+            optimizationsAndTweaks$propagateDecayToNeighbor(
+                blockArray,
+                index + offset * areaSize * areaSize,
+                iteration);
         }
     }
 

@@ -347,13 +347,11 @@ public abstract class MixinMinecraft implements IPlayerUsage {
 
             try {
                 this.loadWorld(null);
-            } catch (Throwable throwable1) {
-            }
+            } catch (Throwable throwable1) {}
 
             try {
                 GLAllocation.deleteTexturesAndDisplayLists();
-            } catch (Throwable throwable) {
-            }
+            } catch (Throwable throwable) {}
 
             this.mcSoundHandler.unloadSounds();
         } finally {
@@ -401,14 +399,8 @@ public abstract class MixinMinecraft implements IPlayerUsage {
     @Shadow
     private ByteBuffer func_152340_a(InputStream imageStream) throws IOException {
         BufferedImage bufferedimage = ImageIO.read(imageStream);
-        int[] aint = bufferedimage.getRGB(
-            0,
-            0,
-            bufferedimage.getWidth(),
-            bufferedimage.getHeight(),
-                null,
-            0,
-            bufferedimage.getWidth());
+        int[] aint = bufferedimage
+            .getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), null, 0, bufferedimage.getWidth());
         ByteBuffer bytebuffer = ByteBuffer.allocate(4 * aint.length);
         for (int k : aint) {
             bytebuffer.putInt(k << 8 | k >> 24 & 255);
@@ -570,7 +562,7 @@ public abstract class MixinMinecraft implements IPlayerUsage {
                 try {
                     return String.format(
                         p_74535_1_,
-                            GameSettings.getKeyDisplayString(gameSettings.keyBindInventory.getKeyCode()));
+                        GameSettings.getKeyDisplayString(gameSettings.keyBindInventory.getKeyCode()));
                 } catch (Exception exception) {
                     return "Error: " + exception.getLocalizedMessage();
                 }
@@ -783,10 +775,10 @@ public abstract class MixinMinecraft implements IPlayerUsage {
     @Shadow
     public void setIngameFocus() {
         if (Display.isActive() && (!this.inGameHasFocus)) {
-                this.inGameHasFocus = true;
-                this.mouseHelper.grabMouseCursor();
-                this.displayGuiScreen(null);
-                this.leftClickCounter = 10000;
+            this.inGameHasFocus = true;
+            this.mouseHelper.grabMouseCursor();
+            this.displayGuiScreen(null);
+            this.leftClickCounter = 10000;
         }
     }
 
@@ -820,7 +812,7 @@ public abstract class MixinMinecraft implements IPlayerUsage {
                     displaymode2 = (DisplayMode) iterator1.next();
 
                     if (displaymode2.getBitsPerPixel() == 32 && displaymode2.getWidth() == displaymode1.getWidth()
-                            && displaymode2.getHeight() == displaymode1.getHeight()) {
+                        && displaymode2.getHeight() == displaymode1.getHeight()) {
                         flag = false;
                         break;
                     }
@@ -833,8 +825,8 @@ public abstract class MixinMinecraft implements IPlayerUsage {
                         displaymode2 = (DisplayMode) iterator1.next();
 
                         if (displaymode2.getBitsPerPixel() == 32
-                                && displaymode2.getWidth() == displaymode1.getWidth() / 2
-                                && displaymode2.getHeight() == displaymode1.getHeight() / 2) {
+                            && displaymode2.getWidth() == displaymode1.getWidth() / 2
+                            && displaymode2.getHeight() == displaymode1.getHeight() / 2) {
                             displaymode = displaymode2;
                             break;
                         }
@@ -1577,8 +1569,7 @@ public abstract class MixinMinecraft implements IPlayerUsage {
 
                 while (true) {
                     if (!this.gameSettings.keyBindAttack.isPressed()) {
-                        while (this.gameSettings.keyBindUseItem.isPressed()) {
-                        }
+                        while (this.gameSettings.keyBindUseItem.isPressed()) {}
 
                         while (true) {
                             if (this.gameSettings.keyBindPickBlock.isPressed()) {

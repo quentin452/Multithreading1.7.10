@@ -1,23 +1,25 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.thaumcraft;
 
+import static fr.iamacat.optimizationsandtweaks.utilsformods.thaumcraft.ThaumcraftCraftingManager2.*;
+
+import java.util.*;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-
-import java.util.*;
-
-import static fr.iamacat.optimizationsandtweaks.utilsformods.thaumcraft.ThaumcraftCraftingManager2.*;
 
 @Mixin(ThaumcraftCraftingManager.class)
 public class MixinThaumcraftCraftingManager {
@@ -33,7 +35,7 @@ public class MixinThaumcraftCraftingManager {
      */
     @Overwrite
     public static AspectList generateTags(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTags(item,meta);
+        return optimizationsAndTweaks$generateTags(item, meta);
     }
 
     /**
@@ -42,9 +44,8 @@ public class MixinThaumcraftCraftingManager {
      */
     @Overwrite
     private static AspectList generateTagsFromRecipes(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTagsFromRecipes(item,meta);
+        return optimizationsAndTweaks$generateTagsFromRecipes(item, meta);
     }
-
 
     /**
      * /**
@@ -55,7 +56,7 @@ public class MixinThaumcraftCraftingManager {
     @Overwrite
     private static AspectList getAspectsFromIngredients(ArrayList<ItemStack> ingredients, ItemStack recipeOut,
         ArrayList<List> history) {
-        return optimizationsAndTweaks$getAspectsFromIngredients(ingredients,recipeOut);
+        return optimizationsAndTweaks$getAspectsFromIngredients(ingredients, recipeOut);
     }
 
     /**
@@ -64,7 +65,7 @@ public class MixinThaumcraftCraftingManager {
      */
     @Overwrite
     private static AspectList generateTagsFromCraftingRecipes(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTagsFromCraftingRecipes(item,meta);
+        return optimizationsAndTweaks$generateTagsFromCraftingRecipes(item, meta);
     }
 
     /**
@@ -206,22 +207,24 @@ public class MixinThaumcraftCraftingManager {
      */
     @Overwrite
     private static AspectList generateTagsFromCrucibleRecipes(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTagsFromCrucibleRecipes(item,meta);
+        return optimizationsAndTweaks$generateTagsFromCrucibleRecipes(item, meta);
     }
+
     /**
      * @author
      * @reason
      */
     @Overwrite
     private static AspectList generateTagsFromArcaneRecipes(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTagsFromArcaneRecipes(item,meta);
+        return optimizationsAndTweaks$generateTagsFromArcaneRecipes(item, meta);
     }
+
     /**
      * @author
      * @reason
      */
     @Overwrite
     private static AspectList generateTagsFromInfusionRecipes(Item item, int meta, ArrayList<List> history) {
-        return optimizationsAndTweaks$generateTagsFromInfusionRecipes(item,meta);
+        return optimizationsAndTweaks$generateTagsFromInfusionRecipes(item, meta);
     }
 }

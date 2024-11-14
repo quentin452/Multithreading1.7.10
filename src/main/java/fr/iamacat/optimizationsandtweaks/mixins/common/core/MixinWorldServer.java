@@ -1,12 +1,12 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.HashSetThreadSafe;
-import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.WorldServerTwo;
+import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.WorldServerTwo.*;
+import static net.minecraftforge.common.ChestGenHooks.BONUS_CHEST;
+
+import java.util.*;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.scoreboard.ScoreboardSaveData;
@@ -15,14 +15,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerManager;
 import net.minecraft.util.IntHashMap;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,14 +29,11 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-
-import static fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.WorldServerTwo.*;
-import static net.minecraftforge.common.ChestGenHooks.BONUS_CHEST;
+import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.WorldServerTwo;
 
 @Mixin(value = WorldServer.class, priority = 999)
 public abstract class MixinWorldServer extends World {
+
     @Unique
     private WorldServer optimizationsAndTweaks$worldServer;
     @Shadow
@@ -54,7 +50,7 @@ public abstract class MixinWorldServer extends World {
     private IntHashMap entityIdMap;
 
     public MixinWorldServer(MinecraftServer p_i45284_1_, ISaveHandler p_i45284_2_, String p_i45284_3_, int p_i45284_4_,
-                            WorldSettings p_i45284_5_, Profiler p_i45284_6_) {
+        WorldSettings p_i45284_5_, Profiler p_i45284_6_) {
         super(p_i45284_2_, p_i45284_3_, p_i45284_5_, WorldProvider.getProviderForDimension(p_i45284_4_), p_i45284_6_);
         this.mcServer = p_i45284_1_;
         this.theEntityTracker = new EntityTracker(optimizationsAndTweaks$worldServer);
@@ -74,7 +70,8 @@ public abstract class MixinWorldServer extends World {
             this.mapStorage.setData("scoreboard", scoreboardsavedata);
         }
 
-        if (!(optimizationsAndTweaks$worldServer instanceof WorldServerMulti)) // Forge: We fix the global mapStorage, which causes us to share
+        if (!(optimizationsAndTweaks$worldServer instanceof WorldServerMulti)) // Forge: We fix the global mapStorage,
+                                                                               // which causes us to share
         // scoreboards early. So don't associate the save data with the
         // temporary scoreboard
         {
@@ -90,11 +87,13 @@ public abstract class MixinWorldServer extends World {
      */
     @Overwrite
     public synchronized List<NextTickListEntry> getPendingBlockUpdates(Chunk p_72920_1_, boolean p_72920_2_) {
-        List<NextTickListEntry> pendingBlockUpdates = optimizationsAndTweaks$collectPendingBlockUpdates((WorldServer)(Object)this,p_72920_1_, p_72920_2_);
+        List<NextTickListEntry> pendingBlockUpdates = optimizationsAndTweaks$collectPendingBlockUpdates(
+            (WorldServer) (Object) this,
+            p_72920_1_,
+            p_72920_2_);
         optimizationsAndTweaks$removeProcessedEntries(p_72920_2_);
         return pendingBlockUpdates;
     }
-
 
     /**
      * @author
@@ -106,27 +105,46 @@ public abstract class MixinWorldServer extends World {
         super.updateWeather();
 
         if (this.prevRainingStrength != this.rainingStrength) {
-            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(7, this.rainingStrength), this.provider.dimensionId);
+            this.mcServer.getConfigurationManager()
+                .sendPacketToAllPlayersInDimension(
+                    new S2BPacketChangeGameState(7, this.rainingStrength),
+                    this.provider.dimensionId);
         }
 
         if (this.prevThunderingStrength != this.thunderingStrength) {
-            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(8, this.thunderingStrength), this.provider.dimensionId);
+            this.mcServer.getConfigurationManager()
+                .sendPacketToAllPlayersInDimension(
+                    new S2BPacketChangeGameState(8, this.thunderingStrength),
+                    this.provider.dimensionId);
         }
 
         if (flag != this.isRaining()) {
             if (flag) {
-                this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(2, 0.0F), this.provider.dimensionId);
+                this.mcServer.getConfigurationManager()
+                    .sendPacketToAllPlayersInDimension(
+                        new S2BPacketChangeGameState(2, 0.0F),
+                        this.provider.dimensionId);
             } else {
-                this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(1, 0.0F), this.provider.dimensionId);
+                this.mcServer.getConfigurationManager()
+                    .sendPacketToAllPlayersInDimension(
+                        new S2BPacketChangeGameState(1, 0.0F),
+                        this.provider.dimensionId);
             }
 
-            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(7, this.rainingStrength), this.provider.dimensionId);
-            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(8, this.thunderingStrength), this.provider.dimensionId);
+            this.mcServer.getConfigurationManager()
+                .sendPacketToAllPlayersInDimension(
+                    new S2BPacketChangeGameState(7, this.rainingStrength),
+                    this.provider.dimensionId);
+            this.mcServer.getConfigurationManager()
+                .sendPacketToAllPlayersInDimension(
+                    new S2BPacketChangeGameState(8, this.thunderingStrength),
+                    this.provider.dimensionId);
         }
     }
 
     @Overwrite
-    public void scheduleBlockUpdate(int p_147464_1_, int p_147464_2_, int p_147464_3_, Block p_147464_4_, int p_147464_5_) {
+    public void scheduleBlockUpdate(int p_147464_1_, int p_147464_2_, int p_147464_3_, Block p_147464_4_,
+        int p_147464_5_) {
         this.scheduleBlockUpdateWithPriority(p_147464_1_, p_147464_2_, p_147464_3_, p_147464_4_, p_147464_5_, 0);
     }
 
@@ -151,7 +169,7 @@ public abstract class MixinWorldServer extends World {
 
         for (Object o : this.activeChunkSet) {
             ChunkCoordIntPair chunkCoordIntPair = (ChunkCoordIntPair) o;
-            optimizationsAndTweaks$processChunk(this,chunkCoordIntPair);
+            optimizationsAndTweaks$processChunk(this, chunkCoordIntPair);
         }
     }
 
@@ -210,12 +228,14 @@ public abstract class MixinWorldServer extends World {
 
     @Shadow
     public void createBonusChest() {
-        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(ChestGenHooks.getItems(BONUS_CHEST, rand), ChestGenHooks.getCount(BONUS_CHEST, rand));
+        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(
+            ChestGenHooks.getItems(BONUS_CHEST, rand),
+            ChestGenHooks.getCount(BONUS_CHEST, rand));
 
-        for (int i = 0; i <10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             int j = this.worldInfo.getSpawnX() + this.rand.nextInt(6) - this.rand.nextInt(6);
             int k = this.worldInfo.getSpawnZ() + this.rand.nextInt(6) - this.rand.nextInt(6);
-            int l = this.getTopSolidOrLiquidBlock(j, k) +1;
+            int l = this.getTopSolidOrLiquidBlock(j, k) + 1;
 
             if (worldgeneratorbonuschest.generate(this, this.rand, j, l, k)) {
                 break;
@@ -224,12 +244,22 @@ public abstract class MixinWorldServer extends World {
     }
 
     @Overwrite
-    public synchronized void scheduleBlockUpdateWithPriority(int p_147454_1_, int p_147454_2_, int p_147454_3_, Block p_147454_4_, int p_147454_5_, int p_147454_6_) {
-      WorldServerTwo.scheduleBlockUpdateWithPriority(this,p_147454_1_, p_147454_2_, p_147454_3_, p_147454_4_, p_147454_5_, p_147454_6_);
+    public synchronized void scheduleBlockUpdateWithPriority(int p_147454_1_, int p_147454_2_, int p_147454_3_,
+        Block p_147454_4_, int p_147454_5_, int p_147454_6_) {
+        WorldServerTwo.scheduleBlockUpdateWithPriority(
+            this,
+            p_147454_1_,
+            p_147454_2_,
+            p_147454_3_,
+            p_147454_4_,
+            p_147454_5_,
+            p_147454_6_);
     }
 
     @Overwrite
-    public synchronized void func_147446_b(int p_147446_1_, int p_147446_2_, int p_147446_3_, Block p_147446_4_, int p_147446_5_, int p_147446_6_) {
-        WorldServerTwo.func_147446_b(this,p_147446_1_, p_147446_2_, p_147446_3_, p_147446_4_, p_147446_5_, p_147446_6_);
+    public synchronized void func_147446_b(int p_147446_1_, int p_147446_2_, int p_147446_3_, Block p_147446_4_,
+        int p_147446_5_, int p_147446_6_) {
+        WorldServerTwo
+            .func_147446_b(this, p_147446_1_, p_147446_2_, p_147446_3_, p_147446_4_, p_147446_5_, p_147446_6_);
     }
 }

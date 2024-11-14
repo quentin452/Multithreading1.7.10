@@ -1,9 +1,6 @@
 package fr.iamacat.optimizationsandtweaks.noise;
 
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class NoiseGeneratorSimplexTwo {
 
@@ -113,7 +110,7 @@ public class NoiseGeneratorSimplexTwo {
     }
 
     public void func_151606_a(double[] p_151606_1_, double p_151606_2_, double p_151606_4_, int p_151606_6_,
-                              int p_151606_7_, double p_151606_8_, double p_151606_10_, double p_151606_12_) {
+        int p_151606_7_, double p_151606_8_, double p_151606_10_, double p_151606_12_) {
 
         for (int l = 0; l < p_151606_7_; ++l) {
             double d5 = (p_151606_4_ + l) * p_151606_10_ + this.field_151613_c;

@@ -1,5 +1,7 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core.pathfinding;
 
+import java.util.concurrent.CompletableFuture;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -13,14 +15,14 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.concurrent.CompletableFuture;
-
 @Mixin(PathNavigate.class)
 public class MixinPathNavigate {
+
     @Shadow
     private EntityLiving theEntity;
     @Shadow
@@ -60,6 +62,7 @@ public class MixinPathNavigate {
      */
     @Shadow
     private boolean canSwim;
+
     /**
      * @author
      * @reason
@@ -74,41 +77,42 @@ public class MixinPathNavigate {
     }
 
     @Shadow
-    public PathEntity getPathToEntityLiving(Entity p_75494_1_)
-    {
-        return !this.canNavigate() ? null : this.worldObj.getPathEntityToEntity(this.theEntity, p_75494_1_, this.getPathSearchRange(), this.canPassOpenWoodenDoors, this.canPassClosedWoodenDoors, this.avoidsWater, this.canSwim);
+    public PathEntity getPathToEntityLiving(Entity p_75494_1_) {
+        return !this.canNavigate() ? null
+            : this.worldObj.getPathEntityToEntity(
+                this.theEntity,
+                p_75494_1_,
+                this.getPathSearchRange(),
+                this.canPassOpenWoodenDoors,
+                this.canPassClosedWoodenDoors,
+                this.avoidsWater,
+                this.canSwim);
     }
+
     @Shadow
-    private boolean canNavigate()
-    {
-        return this.theEntity.onGround || this.canSwim && this.isInLiquid() || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.ridingEntity instanceof EntityChicken;
+    private boolean canNavigate() {
+        return this.theEntity.onGround || this.canSwim && this.isInLiquid()
+            || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie
+                && this.theEntity.ridingEntity instanceof EntityChicken;
     }
+
     @Shadow
-    public boolean setPath(PathEntity p_75484_1_, double p_75484_2_)
-    {
-        if (p_75484_1_ == null)
-        {
+    public boolean setPath(PathEntity p_75484_1_, double p_75484_2_) {
+        if (p_75484_1_ == null) {
             this.currentPath = null;
             return false;
-        }
-        else
-        {
-            if (!p_75484_1_.isSamePath(this.currentPath))
-            {
+        } else {
+            if (!p_75484_1_.isSamePath(this.currentPath)) {
                 this.currentPath = p_75484_1_;
             }
 
-            if (this.noSunPathfind)
-            {
+            if (this.noSunPathfind) {
                 this.removeSunnyPath();
             }
 
-            if (this.currentPath.getCurrentPathLength() == 0)
-            {
+            if (this.currentPath.getCurrentPathLength() == 0) {
                 return false;
-            }
-            else
-            {
+            } else {
                 this.speed = p_75484_2_;
                 Vec3 vec3 = this.getEntityPosition();
                 this.ticksAtLastPos = this.totalTicks;
@@ -119,66 +123,66 @@ public class MixinPathNavigate {
             }
         }
     }
+
     @Shadow
-    private void removeSunnyPath()
-    {
-        if (!this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.theEntity.posX), (int)(this.theEntity.boundingBox.minY + 0.5D), MathHelper.floor_double(this.theEntity.posZ)))
-        {
-            for (int i = 0; i < this.currentPath.getCurrentPathLength(); ++i)
-            {
+    private void removeSunnyPath() {
+        if (!this.worldObj.canBlockSeeTheSky(
+            MathHelper.floor_double(this.theEntity.posX),
+            (int) (this.theEntity.boundingBox.minY + 0.5D),
+            MathHelper.floor_double(this.theEntity.posZ))) {
+            for (int i = 0; i < this.currentPath.getCurrentPathLength(); ++i) {
                 PathPoint pathpoint = this.currentPath.getPathPointFromIndex(i);
 
-                if (this.worldObj.canBlockSeeTheSky(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord))
-                {
+                if (this.worldObj.canBlockSeeTheSky(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord)) {
                     this.currentPath.setCurrentPathLength(i - 1);
                     return;
                 }
             }
         }
     }
+
     @Shadow
-    private Vec3 getEntityPosition()
-    {
+    private Vec3 getEntityPosition() {
         return Vec3.createVectorHelper(this.theEntity.posX, this.getPathableYPos(), this.theEntity.posZ);
     }
-@Shadow
-private int getPathableYPos()
-{
-    if (this.theEntity.isInWater() && this.canSwim)
-    {
-        int i = (int)this.theEntity.boundingBox.minY;
-        Block block = this.worldObj.getBlock(MathHelper.floor_double(this.theEntity.posX), i, MathHelper.floor_double(this.theEntity.posZ));
-        int j = 0;
 
-        do
-        {
-            if (block != Blocks.flowing_water && block != Blocks.water)
-            {
-                return i;
-            }
+    @Shadow
+    private int getPathableYPos() {
+        if (this.theEntity.isInWater() && this.canSwim) {
+            int i = (int) this.theEntity.boundingBox.minY;
+            Block block = this.worldObj.getBlock(
+                MathHelper.floor_double(this.theEntity.posX),
+                i,
+                MathHelper.floor_double(this.theEntity.posZ));
+            int j = 0;
 
-            ++i;
-            block = this.worldObj.getBlock(MathHelper.floor_double(this.theEntity.posX), i, MathHelper.floor_double(this.theEntity.posZ));
-            ++j;
+            do {
+                if (block != Blocks.flowing_water && block != Blocks.water) {
+                    return i;
+                }
+
+                ++i;
+                block = this.worldObj.getBlock(
+                    MathHelper.floor_double(this.theEntity.posX),
+                    i,
+                    MathHelper.floor_double(this.theEntity.posZ));
+                ++j;
+            } while (j <= 16);
+
+            return (int) this.theEntity.boundingBox.minY;
+        } else {
+            return (int) (this.theEntity.boundingBox.minY + 0.5D);
         }
-        while (j <= 16);
+    }
 
-        return (int)this.theEntity.boundingBox.minY;
+    @Shadow
+    private boolean isInLiquid() {
+        return this.theEntity.isInWater() || this.theEntity.handleLavaMovement();
     }
-    else
-    {
-        return (int)(this.theEntity.boundingBox.minY + 0.5D);
+
+    @Shadow
+    public float getPathSearchRange() {
+        return (float) this.pathSearchRange.getAttributeValue();
     }
-}
-@Shadow
-private boolean isInLiquid()
-{
-    return this.theEntity.isInWater() || this.theEntity.handleLavaMovement();
-}
-@Shadow
-public float getPathSearchRange()
-{
-    return (float)this.pathSearchRange.getAttributeValue();
-}
 
 }

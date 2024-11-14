@@ -3,7 +3,6 @@ package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 import java.util.*;
 import java.util.concurrent.*;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;

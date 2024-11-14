@@ -7,7 +7,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -40,7 +39,6 @@ public class ThaumcraftWorldGenerator {
         }
         return count;
     }
-
 
     public static int optimizationsAndTweaks$countFoliageAroundPlayer(World world, int x, int y, int z) {
         int chunkX = x >> 4;

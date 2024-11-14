@@ -1,16 +1,19 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.tidychunkbackport;
 
-import com.falsepattern.lib.compat.ChunkPos;
-import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.world.World;
+
+import com.falsepattern.lib.compat.ChunkPos;
+
+import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
 
 public class TidyChunkBackportWorldContext {
 

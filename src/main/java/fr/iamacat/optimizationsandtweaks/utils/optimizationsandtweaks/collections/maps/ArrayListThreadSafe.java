@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, Serializable {
+
     private static final long serialVersionUID = 8683452581122892189L;
     private static final int DEFAULT_CAPACITY = 10;
     private static final Object[] EMPTY_ELEMENTDATA = new Object[0];
@@ -57,8 +58,8 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
     }
 
     public void ensureCapacity(int minCapacity) {
-        while (minCapacity > this.elementData.length() &&
-            (this.elementData.get(0) != DEFAULTCAPACITY_EMPTY_ELEMENTDATA || minCapacity > 10)) {
+        while (minCapacity > this.elementData.length()
+            && (this.elementData.get(0) != DEFAULTCAPACITY_EMPTY_ELEMENTDATA || minCapacity > 10)) {
             this.grow(minCapacity);
         }
     }
@@ -110,13 +111,13 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         AtomicReferenceArray<Object> es = this.elementData;
         int i;
         if (o == null) {
-            for(i = start; i < end; ++i) {
+            for (i = start; i < end; ++i) {
                 if (es.get(i) == null) {
                     return i;
                 }
             }
         } else {
-            for(i = start; i < end; ++i) {
+            for (i = start; i < end; ++i) {
                 if (o.equals(es.get(i))) {
                     return i;
                 }
@@ -135,13 +136,13 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         AtomicReferenceArray<Object> es = this.elementData;
         int i;
         if (o == null) {
-            for(i = end - 1; i >= start; --i) {
+            for (i = end - 1; i >= start; --i) {
                 if (es.get(i) == null) {
                     return i;
                 }
             }
         } else {
-            for(i = end - 1; i >= start; --i) {
+            for (i = end - 1; i >= start; --i) {
                 if (o.equals(es.get(i))) {
                     return i;
                 }
@@ -164,7 +165,6 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             throw new InternalError(var2);
         }
     }
-
 
     @Override
     public Object[] toArray() {
@@ -258,7 +258,8 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             return false;
         } else {
             int expectedModCount = this.modCount;
-            boolean equal = o.getClass() == ArrayListThreadSafe.class ? this.equalsArrayList((ArrayListThreadSafe)o) : this.equalsRange((List)o, 0, size.get());
+            boolean equal = o.getClass() == ArrayListThreadSafe.class ? this.equalsArrayList((ArrayListThreadSafe) o)
+                : this.equalsRange((List) o, 0, size.get());
             this.checkForComodification(expectedModCount);
             return equal;
         }
@@ -273,7 +274,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             throw new ConcurrentModificationException();
         } else {
             Iterator oit;
-            for(oit = other.iterator(); from < to; ++from) {
+            for (oit = other.iterator(); from < to; ++from) {
                 if (!oit.hasNext() || !Objects.equals(es[from], oit.next())) {
                     return false;
                 }
@@ -316,6 +317,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         other.checkForComodification(otherModCount);
         return equal;
     }
+
     private void checkForComodification(int expectedModCount) {
         if (this.modCount != expectedModCount) {
             throw new ConcurrentModificationException();
@@ -394,7 +396,6 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         return true;
     }
 
-
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         this.rangeCheckForAdd(index);
@@ -421,6 +422,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             return true;
         }
     }
+
     private static Object[] copyAtomicArrayToArray(AtomicReferenceArray<Object> atomicArray, Object[] array) {
         for (int i = 0; i < atomicArray.length(); i++) {
             array[i] = atomicArray.get(i);
@@ -457,7 +459,6 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             }
         }
     }
-
 
     private void shiftTailOverGap(AtomicReferenceArray<Object> es, int lo, int hi) {
         int newSize = size.get() - (hi - lo);
@@ -558,6 +559,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             this.elementData = new AtomicReferenceArray<>(0);
         }
     }
+
     @Override
     public ListIterator<E> listIterator(int index) {
         this.rangeCheckForAdd(index);
@@ -633,8 +635,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
 
         AtomicReferenceArray<Object> es = this.elementData;
 
-        for (; i < end && !filter.test(elementAt(es, i)); ++i) {
-        }
+        for (; i < end && !filter.test(elementAt(es, i)); ++i) {}
 
         if (i < end) {
             int beg = i;
@@ -707,7 +708,6 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         }
     }
 
-
     @Override
     public void sort(Comparator<? super E> c) {
         int expectedModCount = this.modCount;
@@ -732,11 +732,10 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         }
     }
 
-
-    void checkInvariants() {
-    }
+    void checkInvariants() {}
 
     private class ListItr extends ArrayListThreadSafe<E>.Itr implements ListIterator<E> {
+
         ListItr(int index) {
             super();
             this.cursor = index;
@@ -800,6 +799,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
     }
 
     private class Itr implements Iterator<E> {
+
         int cursor;
         int lastRet = -1;
         int expectedModCount;
@@ -878,6 +878,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
     }
 
     private static class SubList<E> extends AbstractList<E> implements RandomAccess {
+
         private final ArrayListThreadSafe<E> root;
         private final ArrayListThreadSafe.SubList<E> parent;
         private final int offset;
@@ -1013,13 +1014,17 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             }
             return array;
         }
+
         @Override
         public <T> T[] toArray(T[] a) {
             this.checkForComodification();
             int size = this.size;
             if (a.length < size) {
                 @SuppressWarnings("unchecked")
-                T[] newArray = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
+                T[] newArray = (T[]) Array.newInstance(
+                    a.getClass()
+                        .getComponentType(),
+                    size);
                 for (int i = 0; i < size; i++) {
                     newArray[i] = (T) this.root.elementData.get(this.offset + i);
                 }
@@ -1040,7 +1045,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             } else if (!(o instanceof List)) {
                 return false;
             } else {
-                boolean equal = this.root.equalsRange((List)o, this.offset, this.offset + this.size);
+                boolean equal = this.root.equalsRange((List) o, this.offset, this.offset + this.size);
                 this.checkForComodification();
                 return equal;
             }
@@ -1082,6 +1087,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             this.checkForComodification();
             this.rangeCheckForAdd(index);
             return new ListIterator<E>() {
+
                 int cursor = index;
                 int lastRet = -1;
                 int expectedModCount;
@@ -1100,7 +1106,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                     if (i >= ArrayListThreadSafe.SubList.this.size) {
                         throw new NoSuchElementException();
                     } else {
-                        Object[] elementData = new AtomicReferenceArray[]{SubList.this.root.elementData};
+                        Object[] elementData = new AtomicReferenceArray[] { SubList.this.root.elementData };
                         if (ArrayListThreadSafe.SubList.this.offset + i >= elementData.length) {
                             throw new ConcurrentModificationException();
                         } else {
@@ -1120,7 +1126,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                     if (i < 0) {
                         throw new NoSuchElementException();
                     } else {
-                        Object[] elementData = new AtomicReferenceArray[]{SubList.this.root.elementData};
+                        Object[] elementData = new AtomicReferenceArray[] { SubList.this.root.elementData };
                         if (ArrayListThreadSafe.SubList.this.offset + i >= elementData.length) {
                             throw new ConcurrentModificationException();
                         } else {
@@ -1136,13 +1142,14 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                     int size = ArrayListThreadSafe.SubList.this.size;
                     int i = this.cursor;
                     if (i < size) {
-                        Object[] es = new AtomicReferenceArray[]{SubList.this.root.elementData};
+                        Object[] es = new AtomicReferenceArray[] { SubList.this.root.elementData };
                         if (ArrayListThreadSafe.SubList.this.offset + i >= es.length) {
                             throw new ConcurrentModificationException();
                         }
 
-                        while(i < size && ArrayListThreadSafe.SubList.this.root.modCount == this.expectedModCount) {
-                            action.accept(ArrayListThreadSafe.elementAt(es, ArrayListThreadSafe.SubList.this.offset + i));
+                        while (i < size && ArrayListThreadSafe.SubList.this.root.modCount == this.expectedModCount) {
+                            action
+                                .accept(ArrayListThreadSafe.elementAt(es, ArrayListThreadSafe.SubList.this.offset + i));
                             ++i;
                         }
 
@@ -1185,7 +1192,8 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                         this.checkForComodification();
 
                         try {
-                            ArrayListThreadSafe.SubList.this.root.set(ArrayListThreadSafe.SubList.this.offset + this.lastRet, e);
+                            ArrayListThreadSafe.SubList.this.root
+                                .set(ArrayListThreadSafe.SubList.this.offset + this.lastRet, e);
                         } catch (IndexOutOfBoundsException var3) {
                             throw new ConcurrentModificationException();
                         }
@@ -1245,7 +1253,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                 slist.size += sizeChange;
                 slist.modCount = this.root.modCount;
                 slist = slist.parent;
-            } while(slist != null);
+            } while (slist != null);
 
         }
 
@@ -1253,6 +1261,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
         public Spliterator<E> spliterator() {
             this.checkForComodification();
             return new Spliterator<E>() {
+
                 private int index;
                 private int fence;
                 private int expectedModCount;
@@ -1266,7 +1275,8 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                     int hi;
                     if ((hi = this.fence) < 0) {
                         this.expectedModCount = ArrayListThreadSafe.SubList.this.modCount;
-                        hi = this.fence = ArrayListThreadSafe.SubList.this.offset + ArrayListThreadSafe.SubList.this.size;
+                        hi = this.fence = ArrayListThreadSafe.SubList.this.offset
+                            + ArrayListThreadSafe.SubList.this.size;
                     }
 
                     return hi;
@@ -1308,13 +1318,12 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                     }
                 }
 
-
                 @Override
                 public void forEachRemaining(Consumer<? super E> action) {
                     Objects.requireNonNull(action);
                     ArrayListThreadSafe<E> lst = ArrayListThreadSafe.SubList.this.root;
                     Object[] a;
-                    if ((a = new AtomicReferenceArray[]{lst.elementData}) != null) {
+                    if ((a = new AtomicReferenceArray[] { lst.elementData }) != null) {
                         int hi;
                         int mc;
                         if ((hi = this.fence) < 0) {
@@ -1326,7 +1335,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
 
                         int i;
                         if ((i = this.index) >= 0 && (this.index = hi) <= a.length) {
-                            while(i < hi) {
+                            while (i < hi) {
                                 E e = (E) a[i];
                                 action.accept(e);
                                 ++i;
@@ -1353,6 +1362,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
     }
 
     final class ArrayListSpliterator implements Spliterator<E> {
+
         private int index;
         private int fence;
         private int expectedModCount;
@@ -1377,7 +1387,8 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
             int hi = this.getFence();
             int lo = this.index;
             int mid = lo + hi >>> 1;
-            return lo >= mid ? null : ArrayListThreadSafe.this.new ArrayListSpliterator(lo, this.index = mid, this.expectedModCount);
+            return lo >= mid ? null
+                : ArrayListThreadSafe.this.new ArrayListSpliterator(lo, this.index = mid, this.expectedModCount);
         }
 
         public boolean tryAdvance(Consumer<? super E> action) {
@@ -1388,7 +1399,7 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                 int i = this.index;
                 if (i < hi) {
                     this.index = i + 1;
-                    Object[] elementData = new AtomicReferenceArray[]{ArrayListThreadSafe.this.elementData};
+                    Object[] elementData = new AtomicReferenceArray[] { ArrayListThreadSafe.this.elementData };
                     E e = (E) elementData[i];
                     action.accept(e);
                     if (ArrayListThreadSafe.this.modCount != this.expectedModCount) {
@@ -1401,7 +1412,6 @@ public class ArrayListThreadSafe<E> extends AbstractList<E> implements List<E>, 
                 }
             }
         }
-
 
         @Override
         public void forEachRemaining(Consumer<? super E> action) {

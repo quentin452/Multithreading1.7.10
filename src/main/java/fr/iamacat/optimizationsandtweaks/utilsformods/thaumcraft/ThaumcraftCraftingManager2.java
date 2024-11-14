@@ -1,5 +1,9 @@
 package fr.iamacat.optimizationsandtweaks.utilsformods.thaumcraft;
 
+import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
+
+import java.util.*;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -8,19 +12,17 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.*;
 import thaumcraft.common.lib.utils.Utils;
 
-import java.util.*;
-
-import static thaumcraft.common.lib.crafting.ThaumcraftCraftingManager.getObjectTags;
-
 public class ThaumcraftCraftingManager2 {
 
     public static Set optimizationsAndTweaks$history2 = new HashSet();
+
     public static AspectList optimizationsAndTweaks$getTags(ItemStack itemstack) {
         Item item;
         int meta;
@@ -47,6 +49,7 @@ public class ThaumcraftCraftingManager2 {
         }
         return tags;
     }
+
     public static AspectList capAspects(AspectList sourcetags, int amount) {
         if (sourcetags == null) {
             return sourcetags;
@@ -84,7 +87,6 @@ public class ThaumcraftCraftingManager2 {
         }
         return ret;
     }
-
 
     public static AspectList optimizationsAndTweaks$generateTagsFromCrucibleRecipes(Item item, int meta) {
         CrucibleRecipe cr = ThaumcraftApi.getCrucibleRecipe(new ItemStack(item, 1, meta));
@@ -143,8 +145,8 @@ public class ThaumcraftCraftingManager2 {
                 if (recipe.getRecipeOutput() != null) {
                     int idR = recipe.getRecipeOutput()
                         .getItemDamage() == 32767 ? 0
-                        : recipe.getRecipeOutput()
-                        .getItemDamage();
+                            : recipe.getRecipeOutput()
+                                .getItemDamage();
                     int idS = Math.max(meta, 0);
                     if (recipe.getRecipeOutput()
                         .getItem() == item && idR == idS) {
@@ -223,7 +225,9 @@ public class ThaumcraftCraftingManager2 {
                                     }
                                 }
                             }
-                            AspectList ph = optimizationsAndTweaks$getAspectsFromIngredients(ingredients, recipe.getRecipeOutput());
+                            AspectList ph = optimizationsAndTweaks$getAspectsFromIngredients(
+                                ingredients,
+                                recipe.getRecipeOutput());
                             Aspect[] arr$;
                             int i$;
                             Aspect as;
@@ -268,7 +272,7 @@ public class ThaumcraftCraftingManager2 {
         try {
             tmeta = (!Objects.requireNonNull(new ItemStack(item, 1, meta).getItem())
                 .isDamageable() && Objects.requireNonNull(new ItemStack(item, 1, meta).getItem())
-                .getHasSubtypes()) ? meta : 32767;
+                    .getHasSubtypes()) ? meta : 32767;
         } catch (Exception ignored) {}
 
         optimizationsAndTweaks$history2.add(item);
@@ -286,7 +290,8 @@ public class ThaumcraftCraftingManager2 {
         }
     }
 
-    public static AspectList optimizationsAndTweaks$getAspectsFromIngredients(ArrayList<ItemStack> ingredients, ItemStack recipeOut) {
+    public static AspectList optimizationsAndTweaks$getAspectsFromIngredients(ArrayList<ItemStack> ingredients,
+        ItemStack recipeOut) {
         AspectList out = new AspectList();
         AspectList mid = new AspectList();
         for (ItemStack is : ingredients) {
@@ -294,7 +299,7 @@ public class ThaumcraftCraftingManager2 {
             if (Objects.requireNonNull(is.getItem())
                 .getContainerItem() != null
                 && is.getItem()
-                .getContainerItem() != is.getItem()) {
+                    .getContainerItem() != is.getItem()) {
                 AspectList objC = optimizationsAndTweaks$generateTags(
                     is.getItem()
                         .getContainerItem(),
@@ -328,6 +333,7 @@ public class ThaumcraftCraftingManager2 {
         }
         return out;
     }
+
     public static AspectList optimizationsAndTweaks$generateTagsFromInfusionRecipes(Item item, int meta) {
         InfusionRecipe cr = ThaumcraftApi.getInfusionRecipe(new ItemStack(item, 1, meta));
         if (cr == null) {
@@ -349,7 +355,9 @@ public class ThaumcraftCraftingManager2 {
             }
 
             AspectList out = new AspectList();
-            AspectList ot2 = optimizationsAndTweaks$getAspectsFromIngredients(ingredients, (ItemStack) cr.getRecipeOutput());
+            AspectList ot2 = optimizationsAndTweaks$getAspectsFromIngredients(
+                ingredients,
+                (ItemStack) cr.getRecipeOutput());
 
             Aspect[] aspectsFromOt2 = ot2.getAspects();
             for (Aspect as : aspectsFromOt2) {
@@ -393,7 +401,7 @@ public class ThaumcraftCraftingManager2 {
     private static boolean optimizationsAndTweaks$isValidRecipe(IRecipe recipe, Item item, int meta) {
         if (recipe == null || recipe.getRecipeOutput() == null
             || recipe.getRecipeOutput()
-            .getItem() == null) {
+                .getItem() == null) {
             return false;
         }
         ItemStack outputStack = recipe.getRecipeOutput()
@@ -401,7 +409,6 @@ public class ThaumcraftCraftingManager2 {
         ItemStack comparisonStack = new ItemStack(item, 1, meta);
         return ItemStack.areItemStacksEqual(outputStack, comparisonStack);
     }
-
 
     private static AspectList optimizationsAndTweaks$processRecipeAndGetAspects(IRecipe recipe) {
         AspectList aspectList = new AspectList();
@@ -439,7 +446,6 @@ public class ThaumcraftCraftingManager2 {
         }
     }
 
-
     private static void optimizationsAndTweaks$processShapelessRecipe(ShapelessRecipes recipe, AspectList aspectList) {
         List<?> items = Collections.singletonList(recipe.recipeItems);
         for (Object item : items) {
@@ -473,9 +479,8 @@ public class ThaumcraftCraftingManager2 {
         }
     }
 
-
     private static void optimizationsAndTweaks$processShapelessOreRecipe(ShapelessOreRecipe recipe,
-                                                                         AspectList aspectList) {
+        AspectList aspectList) {
         List<?> items = Collections.singletonList(recipe.getInput());
         for (Object item : items) {
             if (item instanceof ItemStack) {
@@ -489,7 +494,6 @@ public class ThaumcraftCraftingManager2 {
             }
         }
     }
-
 
     private static void optimizationsAndTweaks$refineAndSetMinValueAspect(AspectList ph, int minValue) {
         if (ph != null && ph.visSize() > 0) {

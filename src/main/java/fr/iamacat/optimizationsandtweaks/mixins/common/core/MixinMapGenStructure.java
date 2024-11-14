@@ -1,7 +1,6 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -102,6 +101,7 @@ public abstract class MixinMapGenStructure extends MapGenBase {
             .func_143043_a(p_143026_3_.func_143021_a(p_143026_1_, p_143026_2_), p_143026_1_, p_143026_2_);
         this.field_143029_e.markDirty();
     }
+
     /**
      * @author
      * @reason
@@ -110,10 +110,12 @@ public abstract class MixinMapGenStructure extends MapGenBase {
     protected StructureStart func_143028_c(int p_143028_1_, int p_143028_2_, int p_143028_3_) {
         for (Object object : this.structureMap.values()) {
             StructureStart structurestart = (StructureStart) object;
-            if (structurestart.isSizeableStructure() && structurestart.getBoundingBox().intersectsWith(p_143028_1_, p_143028_3_, p_143028_1_, p_143028_3_)) {
+            if (structurestart.isSizeableStructure() && structurestart.getBoundingBox()
+                .intersectsWith(p_143028_1_, p_143028_3_, p_143028_1_, p_143028_3_)) {
                 for (Object o : structurestart.getComponents()) {
                     StructureComponent structurecomponent = (StructureComponent) o;
-                    if (structurecomponent.getBoundingBox().isVecInside(p_143028_1_, p_143028_2_, p_143028_3_)) {
+                    if (structurecomponent.getBoundingBox()
+                        .isVecInside(p_143028_1_, p_143028_2_, p_143028_3_)) {
                         return structurestart;
                     }
                 }

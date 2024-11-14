@@ -27,10 +27,11 @@ public class MixinBlockTickingWater extends BlockDynamicLiquid {
     public void onBlockAdded(World var1, int var2, int var3, int var4) {
         if (var1.getBlock(var2, var3, var4) != Blocks.water) {
             super.onBlockAdded(var1, var2, var3, var4);
-            if (this.blockMaterial == Material.water && (var1.provider.isHellWorld) && (var1.getBlock(var2, var3, var4) != Blocks.air)) {
-                    var1.setBlock(var2, var3, var4, Blocks.air, 0, 2);
-                    var1.playAuxSFX(1004, var2, var3, var4, 0);
-                    var1.playAuxSFX(2000, var2, var3, var4, 4);
+            if (this.blockMaterial == Material.water && (var1.provider.isHellWorld)
+                && (var1.getBlock(var2, var3, var4) != Blocks.air)) {
+                var1.setBlock(var2, var3, var4, Blocks.air, 0, 2);
+                var1.playAuxSFX(1004, var2, var3, var4, 0);
+                var1.playAuxSFX(2000, var2, var3, var4, 4);
             }
         }
     }

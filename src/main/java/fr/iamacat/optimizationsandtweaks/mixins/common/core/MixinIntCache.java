@@ -1,7 +1,7 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.minecraft.world.gen.layer.IntCache;
 

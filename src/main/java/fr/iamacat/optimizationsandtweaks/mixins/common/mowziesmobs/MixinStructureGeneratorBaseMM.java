@@ -1,19 +1,21 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.mowziesmobs;
 
-import coolalias.structuregenapi.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import coolalias.structuregenapi.util.*;
 
 @Mixin(StructureGeneratorBase.class)
 public abstract class MixinStructureGeneratorBaseMM extends WorldGenerator {
@@ -101,6 +103,7 @@ public abstract class MixinStructureGeneratorBaseMM extends WorldGenerator {
             }
         }
     }
+
     /**
      * @author
      * @reason
@@ -108,7 +111,11 @@ public abstract class MixinStructureGeneratorBaseMM extends WorldGenerator {
     @Overwrite(remap = false)
     private final boolean generateLayer(World world, Random random, int posX, int posY, int posZ, int rotations) {
 
-        if (this.blockArray == null || this.blockArray.length == 0 || this.blockArray[0] == null || this.blockArray[0].length == 0 || this.blockArray[0][0] == null || this.blockArray[0][0].length == 0) {
+        if (this.blockArray == null || this.blockArray.length == 0
+            || this.blockArray[0] == null
+            || this.blockArray[0].length == 0
+            || this.blockArray[0][0] == null
+            || this.blockArray[0][0].length == 0) {
             LogHelper.warning("Invalid block array.");
             return false;
         }
@@ -165,7 +172,8 @@ public abstract class MixinStructureGeneratorBaseMM extends WorldGenerator {
                                 return false;
                             }
                         } else if (Math.abs(realID) > 4095) {
-                            LogHelper.warning("Invalid block ID. Initial ID: " + fakeID + ", returned id from getRealID: " + realID);
+                            LogHelper.warning(
+                                "Invalid block ID. Initial ID: " + fakeID + ", returned id from getRealID: " + realID);
                         } else {
                             int customData2 = this.blockArray[y][x][z].length > 3 ? this.blockArray[y][x][z][3] : 0;
                             int meta = this.blockArray[y][x][z].length > 1 ? this.blockArray[y][x][z][1] : 0;
@@ -191,11 +199,19 @@ public abstract class MixinStructureGeneratorBaseMM extends WorldGenerator {
         Block worldBlock = world.getBlock(x, y, z);
         if (realBlock != null && worldBlock != null && (realID >= 0 || worldBlock == realBlock)) {
             if (realBlock != worldBlock && !GenHelper.materialsMatch(realBlock, worldBlock)) {
-                LogHelper.info("Incorrect location for structure removal, aborting. Last block id checked: world " + worldBlock + ", real " + realID + ", fake " + fakeID);
+                LogHelper.info(
+                    "Incorrect location for structure removal, aborting. Last block id checked: world " + worldBlock
+                        + ", real "
+                        + realID
+                        + ", fake "
+                        + fakeID);
                 return false;
             } else {
                 world.setBlockToAir(x, y, z);
-                List<Entity> list = world.getEntitiesWithinAABB(Entity.class, GenHelper.getHangingEntityAxisAligned(x, y, z, Direction.directionToFacing[rotations]).expand(1.0, 1.0, 1.0));
+                List<Entity> list = world.getEntitiesWithinAABB(
+                    Entity.class,
+                    GenHelper.getHangingEntityAxisAligned(x, y, z, Direction.directionToFacing[rotations])
+                        .expand(1.0, 1.0, 1.0));
 
                 for (Entity entity : list) {
                     if (!(entity instanceof EntityPlayer)) {
