@@ -16,6 +16,6 @@ public abstract class MixinStatList {
     private static void onRegisterStat(EntityList.EntityEggInfo eggInfo, CallbackInfoReturnable<StatBase> info) {
         StatBase stat = info.getReturnValue();
         String statId = stat.statId;
-        System.out.println("[Registered stat ID] " + statId);
+        System.out.println("[OptimizationsAndTweaks Registered stat ID] " + statId);
     }
 }
