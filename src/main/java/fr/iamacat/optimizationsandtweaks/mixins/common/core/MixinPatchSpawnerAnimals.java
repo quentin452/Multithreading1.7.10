@@ -163,20 +163,15 @@ public class MixinPatchSpawnerAnimals {
 
     @Unique
     public int optimizationsAndTweaks$countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
-        CompletionService<Integer> completionService = new ExecutorCompletionService<>(
-            optimizationsAndTweaks$entityCountExecutor);
-        completionService.submit(new CountEntitiesTask(world, type, forSpawnCount));
-
+        Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(new CountEntitiesTask(world, type, forSpawnCount));
         int totalEntities = 0;
         try {
-            for (int i = 0; i < 1; i++) {
-                Future<Integer> resultFuture = completionService.take();
-                totalEntities += resultFuture.get();
-            }
+            totalEntities = future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return totalEntities;
     }
+
 
 }
