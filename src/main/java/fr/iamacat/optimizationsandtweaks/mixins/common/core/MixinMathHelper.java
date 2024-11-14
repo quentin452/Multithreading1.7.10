@@ -361,7 +361,7 @@ public class MixinMathHelper {
      */
     @Overwrite
     @SideOnly(Side.CLIENT)
-    private static int calculateLogBaseTwoDeBruijn(int value) {
+    public static int calculateLogBaseTwoDeBruijn(int value) {
         value = (value > 0) ? value : 1;
         return multiplyDeBruijnBitPosition[(int) (value * 125613361L >> 27) & 31];
     }
