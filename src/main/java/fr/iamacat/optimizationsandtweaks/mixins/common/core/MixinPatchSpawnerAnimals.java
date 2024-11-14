@@ -6,23 +6,19 @@ import java.util.concurrent.*;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.event.ForgeEventFactory;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import cpw.mods.fml.common.eventhandler.Event;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.CountEntitiesTask;
 
 @Mixin(value = SpawnerAnimals.class, priority = 999)
@@ -131,59 +127,6 @@ public class MixinPatchSpawnerAnimals {
         return totalSpawnCount;
     }
 
-
-    @Unique
-    private int optimizationsAndTweaks$trySpawnCreaturesAtPosition(WorldServer world, EnumCreatureType creatureType,
-        ChunkPosition spawnPosition, ChunkCoordinates spawnPoint) {
-        int spawnCount = 0;
-        for (int attempt = 0; attempt < 3; attempt++) {
-            int spawnX = spawnPosition.chunkPosX + world.rand.nextInt(6) - world.rand.nextInt(6);
-            int spawnY = spawnPosition.chunkPosY + world.rand.nextInt(1) - world.rand.nextInt(1);
-            int spawnZ = spawnPosition.chunkPosZ + world.rand.nextInt(6) - world.rand.nextInt(6);
-            if (canCreatureTypeSpawnAtLocation(creatureType, world, spawnX, spawnY, spawnZ)
-                && optimizationsAndTweaks$isFarEnoughFromSpawnPoint(world, spawnX, spawnY, spawnZ, spawnPoint)
-                && optimizationsAndTweaks$attemptToSpawnCreature(world, creatureType, spawnX, spawnY, spawnZ)) {
-                spawnCount++;
-            }
-        }
-        return spawnCount;
-    }
-
-    @Unique
-    private boolean optimizationsAndTweaks$isFarEnoughFromSpawnPoint(WorldServer world, int x, int y, int z,
-        ChunkCoordinates spawnPoint) {
-        float dx = x + 0.5F - spawnPoint.posX;
-        float dy = y - spawnPoint.posY;
-        float dz = z + 0.5F - spawnPoint.posZ;
-        float distanceSquared = dx * dx + dy * dy + dz * dz;
-        return distanceSquared >= 576.0F;
-    }
-
-    @Unique
-    private boolean optimizationsAndTweaks$attemptToSpawnCreature(WorldServer world, EnumCreatureType creatureType,
-        int x, int y, int z) {
-        BiomeGenBase.SpawnListEntry spawnEntry = world.spawnRandomCreature(creatureType, x, y, z);
-        if (spawnEntry == null) {
-            return false;
-        }
-        try {
-            EntityLiving entity = (EntityLiving) spawnEntry.entityClass.getConstructor(new Class[] { World.class })
-                .newInstance(world);
-            entity.setLocationAndAngles(x + 0.5F, y, z + 0.5F, world.rand.nextFloat() * 360.0F, 0.0F);
-            Event.Result canSpawn = ForgeEventFactory.canEntitySpawn(entity, world, x + 0.5F, y, z + 0.5F);
-            if (canSpawn == Event.Result.ALLOW || (canSpawn == Event.Result.DEFAULT && entity.getCanSpawnHere())) {
-                world.spawnEntityInWorld(entity);
-                ForgeEventFactory.doSpecialSpawn(entity, world, x + 0.5F, y, z + 0.5F);
-                entity.onSpawnWithEgg(null);
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
     /**
      * @author quentin452
      * @reason Optimize canCreatureTypeSpawnAtLocation
@@ -218,14 +161,19 @@ public class MixinPatchSpawnerAnimals {
 
     @Unique
     public int optimizationsAndTweaks$countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
-        CountEntitiesTask task = new CountEntitiesTask(world, type, forSpawnCount);
-        Future<Integer> future = optimizationsAndTweaks$entityCountExecutor.submit(task);
+        CompletionService<Integer> completionService = new ExecutorCompletionService<>(optimizationsAndTweaks$entityCountExecutor);
+        completionService.submit(new CountEntitiesTask(world, type, forSpawnCount));
 
+        int totalEntities = 0;
         try {
-            return future.get();
+            for (int i = 0; i < 1; i++) {
+                Future<Integer> resultFuture = completionService.take();
+                totalEntities += resultFuture.get();
+            }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return 0;
         }
+        return totalEntities;
     }
+
 }
