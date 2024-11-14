@@ -172,6 +172,4 @@ public class MixinPatchSpawnerAnimals {
         }
         return totalEntities;
     }
-
-
 }
