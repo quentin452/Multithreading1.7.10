@@ -1,19 +1,25 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.concurrent.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import cpw.mods.fml.common.eventhandler.Event;
@@ -136,5 +142,65 @@ public class SpawnCreaturesTask implements Callable<Integer> {
             }
         }
         return totalEntities;
+    }
+    public static void optimizationsAndTweaks$populateEligibleChunksForSpawning(WorldServer world) {
+        for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
+            int playerChunkX = MathHelper.floor_double(player.posX / 16.0D);
+            int playerChunkZ = MathHelper.floor_double(player.posZ / 16.0D);
+            byte chunkRadius = 8;
+            for (int offsetX = -chunkRadius; offsetX <= chunkRadius; offsetX++) {
+                for (int offsetZ = -chunkRadius; offsetZ <= chunkRadius; offsetZ++) {
+                    boolean isEdge = offsetX == -chunkRadius || offsetX == chunkRadius
+                        || offsetZ == -chunkRadius
+                        || offsetZ == chunkRadius;
+                    ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair(
+                        offsetX + playerChunkX,
+                        offsetZ + playerChunkZ);
+                    optimizationsAndTweaks$eligibleChunksForSpawning.put(chunkCoords, isEdge);
+                }
+            }
+        }
+    }
+    protected static ChunkPosition func_151350_a(World p_151350_0_, int p_151350_1_, int p_151350_2_) {
+        Chunk chunk = p_151350_0_.getChunkFromChunkCoords(p_151350_1_, p_151350_2_);
+        int k = p_151350_1_ * 16 + p_151350_0_.rand.nextInt(16);
+        int l = p_151350_2_ * 16 + p_151350_0_.rand.nextInt(16);
+        int i1 = p_151350_0_.rand
+            .nextInt(chunk == null ? p_151350_0_.getActualHeight() : chunk.getTopFilledSegment() + 16 - 1);
+        return new ChunkPosition(k, i1, l);
+    }
+
+    public static int optimizationsAndTweaks$spawnCreatures(WorldServer world, EnumCreatureType creatureType) {
+        int totalSpawnCount = 0;
+        ChunkCoordinates spawnPoint = world.getSpawnPoint();
+        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(
+            optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
+        Collections.shuffle(shuffledChunks);
+
+        for (ChunkCoordIntPair chunkCoords : shuffledChunks) {
+            if (!(Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)) {
+                ChunkPosition spawnPosition = func_151350_a(world, chunkCoords.chunkXPos, chunkCoords.chunkZPos);
+                int spawnCount = new SpawnCreaturesTask(world, creatureType, spawnPosition, spawnPoint).call();
+                totalSpawnCount += spawnCount;
+            }
+        }
+
+        return totalSpawnCount;
+    }
+    public static int findChunksForSpawningAsync(WorldServer world, boolean spawnHostileMobs, boolean spawnPeacefulMobs,
+                                                 boolean spawnAnimals) {
+        if (!spawnHostileMobs && !spawnPeacefulMobs) {
+            return 0;
+        }
+        SpawnCreaturesTask.optimizationsAndTweaks$eligibleChunksForSpawning.clear();
+        int totalSpawns = 0;
+        SpawnCreaturesTask.optimizationsAndTweaks$populateEligibleChunksForSpawning(world);
+        for (EnumCreatureType creatureType : EnumCreatureType.values()) {
+            if (SpawnCreaturesTask.shouldSpawnCreature(world, creatureType, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)) {
+                totalSpawns += SpawnCreaturesTask.optimizationsAndTweaks$spawnCreatures(world, creatureType);
+
+            }
+        }
+        return totalSpawns;
     }
 }
