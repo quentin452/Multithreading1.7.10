@@ -1,7 +1,6 @@
 package fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -27,8 +26,10 @@ import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.Concurren
 
 public class SpawnCreaturesTask implements Callable<Integer> {
 
-    public static ConcurrentHashMapV8 optimizationsAndTweaks$eligibleChunksForSpawning = new ConcurrentHashMapV8();
-
+    public static ConcurrentHashMapV8<ChunkCoordIntPair, Boolean> eligibleChunksForSpawning = new ConcurrentHashMapV8<>();
+    private static final ExecutorService executor = Executors.newFixedThreadPool(
+        Runtime.getRuntime()
+            .availableProcessors());
     private final WorldServer world;
     private final EnumCreatureType creatureType;
     private final ChunkPosition spawnPosition;
@@ -43,7 +44,7 @@ public class SpawnCreaturesTask implements Callable<Integer> {
     }
 
     @Override
-    public Integer call() {
+    public Integer call() throws Exception {
         int spawnCount = 0;
         for (int attempt = 0; attempt < 3; attempt++) {
             int spawnX = spawnPosition.chunkPosX + world.rand.nextInt(6) - world.rand.nextInt(6);
@@ -121,8 +122,7 @@ public class SpawnCreaturesTask implements Callable<Integer> {
             && (!creatureType.getPeacefulCreature() || spawnHostileMobs)
             && (!creatureType.getAnimal() || spawnAnimals)
             && countEntities(world, creatureType, true)
-                <= creatureType.getMaxNumberOfCreature() * optimizationsAndTweaks$eligibleChunksForSpawning.size()
-                    / 256;
+                <= creatureType.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256;
     }
 
     public static int countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
@@ -143,7 +143,8 @@ public class SpawnCreaturesTask implements Callable<Integer> {
         }
         return totalEntities;
     }
-    public static void optimizationsAndTweaks$populateEligibleChunksForSpawning(WorldServer world) {
+
+    public static void populateEligibleChunksForSpawning(WorldServer world) {
         for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
             int playerChunkX = MathHelper.floor_double(player.posX / 16.0D);
             int playerChunkZ = MathHelper.floor_double(player.posZ / 16.0D);
@@ -156,11 +157,12 @@ public class SpawnCreaturesTask implements Callable<Integer> {
                     ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair(
                         offsetX + playerChunkX,
                         offsetZ + playerChunkZ);
-                    optimizationsAndTweaks$eligibleChunksForSpawning.put(chunkCoords, isEdge);
+                    eligibleChunksForSpawning.put(chunkCoords, isEdge);
                 }
             }
         }
     }
+
     protected static ChunkPosition func_151350_a(World p_151350_0_, int p_151350_1_, int p_151350_2_) {
         Chunk chunk = p_151350_0_.getChunkFromChunkCoords(p_151350_1_, p_151350_2_);
         int k = p_151350_1_ * 16 + p_151350_0_.rand.nextInt(16);
@@ -170,37 +172,45 @@ public class SpawnCreaturesTask implements Callable<Integer> {
         return new ChunkPosition(k, i1, l);
     }
 
-    public static int optimizationsAndTweaks$spawnCreatures(WorldServer world, EnumCreatureType creatureType) {
-        int totalSpawnCount = 0;
-        ChunkCoordinates spawnPoint = world.getSpawnPoint();
-        List<ChunkCoordIntPair> shuffledChunks = new ArrayList<>(
-            optimizationsAndTweaks$eligibleChunksForSpawning.keySet());
-        Collections.shuffle(shuffledChunks);
-
-        for (ChunkCoordIntPair chunkCoords : shuffledChunks) {
-            if (!(Boolean) optimizationsAndTweaks$eligibleChunksForSpawning.get(chunkCoords)) {
-                ChunkPosition spawnPosition = func_151350_a(world, chunkCoords.chunkXPos, chunkCoords.chunkZPos);
-                int spawnCount = new SpawnCreaturesTask(world, creatureType, spawnPosition, spawnPoint).call();
-                totalSpawnCount += spawnCount;
+    public static CompletableFuture<Integer> findChunksForSpawningAsync(WorldServer world, boolean spawnHostileMobs,
+                                                                        boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (!spawnHostileMobs && !spawnPeacefulMobs) {
+                return 0;
             }
-        }
-
-        return totalSpawnCount;
-    }
-    public static int findChunksForSpawningAsync(WorldServer world, boolean spawnHostileMobs, boolean spawnPeacefulMobs,
-                                                 boolean spawnAnimals) {
-        if (!spawnHostileMobs && !spawnPeacefulMobs) {
-            return 0;
-        }
-        SpawnCreaturesTask.optimizationsAndTweaks$eligibleChunksForSpawning.clear();
-        int totalSpawns = 0;
-        SpawnCreaturesTask.optimizationsAndTweaks$populateEligibleChunksForSpawning(world);
-        for (EnumCreatureType creatureType : EnumCreatureType.values()) {
-            if (SpawnCreaturesTask.shouldSpawnCreature(world, creatureType, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)) {
-                totalSpawns += SpawnCreaturesTask.optimizationsAndTweaks$spawnCreatures(world, creatureType);
-
+            eligibleChunksForSpawning.clear();
+            populateEligibleChunksForSpawning(world);
+            List<ChunkCoordIntPair> chunkCoordsList = new ArrayList<>(eligibleChunksForSpawning.keySet());
+            List<Future<Integer>> futures = new ArrayList<>();
+            for (EnumCreatureType creatureType : EnumCreatureType.values()) {
+                if (shouldSpawnCreature(world, creatureType, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)) {
+                    for (ChunkCoordIntPair chunkCoords : chunkCoordsList) {
+                        Boolean isEdge = eligibleChunksForSpawning.get(chunkCoords);
+                        if (isEdge != null && !isEdge) {
+                            int chunkX = chunkCoords.chunkXPos;
+                            int chunkZ = chunkCoords.chunkZPos;
+                            ChunkPosition spawnPosition = func_151350_a(world, chunkX, chunkZ);
+                            SpawnCreaturesTask task = new SpawnCreaturesTask(
+                                world,
+                                creatureType,
+                                spawnPosition,
+                                world.getSpawnPoint());
+                            futures.add(executor.submit(task));
+                        }
+                    }
+                }
             }
-        }
-        return totalSpawns;
+            return futures.stream()
+                .mapToInt(future -> {
+                    try {
+                        return future.get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                })
+                .sum();
+        });
     }
+
 }

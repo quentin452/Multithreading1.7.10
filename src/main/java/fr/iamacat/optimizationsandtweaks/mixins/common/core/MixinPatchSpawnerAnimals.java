@@ -16,7 +16,8 @@ public class MixinPatchSpawnerAnimals {
      */
     @Overwrite
     public int findChunksForSpawning(WorldServer world, boolean spawnHostileMobs, boolean spawnPeacefulMobs,
-                                     boolean spawnAnimals) {
-        return SpawnCreaturesTask.findChunksForSpawningAsync(world, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals) ;
+        boolean spawnAnimals) {
+        return SpawnCreaturesTask.findChunksForSpawningAsync(world, spawnHostileMobs, spawnPeacefulMobs, spawnAnimals)
+            .join();
     }
 }
