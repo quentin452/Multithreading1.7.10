@@ -1075,7 +1075,8 @@ public abstract class MixinWorld {
                 continue;
             }
 
-            if (entity.ridingEntity != null && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
+            if (entity.ridingEntity != null
+                && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
                 entity.ridingEntity.riddenByEntity = null;
                 entity.ridingEntity = null;
             }
@@ -1093,7 +1094,8 @@ public abstract class MixinWorld {
                 int chunkX = entity.chunkCoordX;
                 int chunkZ = entity.chunkCoordZ;
                 if (entity.addedToChunk && this.chunkExists(chunkX, chunkZ)) {
-                    this.getChunkFromChunkCoords(chunkX, chunkZ).removeEntity(entity);
+                    this.getChunkFromChunkCoords(chunkX, chunkZ)
+                        .removeEntity(entity);
                 }
                 iterator.remove();
                 onEntityRemoved(entity);
@@ -1120,7 +1122,8 @@ public abstract class MixinWorld {
                 continue;
             }
 
-            if (!tileentity.isInvalid() && tileentity.hasWorldObj() && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
+            if (!tileentity.isInvalid() && tileentity.hasWorldObj()
+                && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
                 try {
                     tileentity.updateEntity();
                 } catch (Throwable throwable) {
@@ -1133,7 +1136,8 @@ public abstract class MixinWorld {
                 if (this.chunkExists(tileentity.xCoord >> 4, tileentity.zCoord >> 4)) {
                     Chunk chunk = this.getChunkFromChunkCoords(tileentity.xCoord >> 4, tileentity.zCoord >> 4);
                     if (chunk != null) {
-                        chunk.removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
+                        chunk
+                            .removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
                     }
                 }
             }

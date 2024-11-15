@@ -72,25 +72,22 @@ public class MixinTextureUtil {
     }
 
     /**
-     * @author
-     * @reason
+     * @author quentin452
+     * @reason Fix ArithmeticException: / by zero crash
      */
     @Overwrite
     public static int[][] generateMipmapData(int p_147949_0_, int p_147949_1_, int[][] p_147949_2_) {
         int[][] aint1 = new int[p_147949_0_ + 1][];
         aint1[0] = p_147949_2_[0];
-
         if (p_147949_0_ > 0) {
             boolean flag = false;
             int k;
-
             for (k = 0; k < p_147949_2_.length; ++k) {
                 if (p_147949_2_[0][k] >> 24 == 0) {
                     flag = true;
                     break;
                 }
             }
-
             for (k = 1; k <= p_147949_0_; ++k) {
                 if (p_147949_2_[k] != null) {
                     aint1[k] = p_147949_2_[k];
@@ -98,9 +95,13 @@ public class MixinTextureUtil {
                     int[] aint2 = aint1[k - 1];
                     int[] aint3 = new int[aint2.length >> 2];
                     int l = p_147949_1_ >> k;
+                    if (l == 0) {
+                        System.err.println(
+                            "[OptimizationsAndTweaks] Avoiding division by zero: p_147949_1_ >> " + k + " is 0.");
+                        l = 1;
+                    }
                     int i1 = aint3.length / l;
                     int j1 = l << 1;
-
                     for (int k1 = 0; k1 < l; ++k1) {
                         for (int l1 = 0; l1 < i1; ++l1) {
                             int i2 = 2 * (k1 + l1 * j1);
@@ -117,7 +118,6 @@ public class MixinTextureUtil {
                 }
             }
         }
-
         return aint1;
     }
 
@@ -209,12 +209,17 @@ public class MixinTextureUtil {
     }
 
     /**
-     * @author
-     * @reason
+     * @author quentin452
+     * @reason Fix ArithmeticException: / by zero crash
      */
     @Overwrite
     public static void uploadTextureSub(int p_147947_0_, int[] p_147947_1_, int p_147947_2_, int p_147947_3_,
         int p_147947_4_, int p_147947_5_, boolean p_147947_6_, boolean p_147947_7_, boolean p_147947_8_) {
+        if (p_147947_2_ == 0) {
+            System.err.println("[OptimizationsAndTweaks] Avoiding division by zero: p_147947_2_ is 0.");
+            return;
+        }
+
         int j1 = 4194304 / p_147947_2_;
         func_147954_b(p_147947_6_, p_147947_8_);
         setTextureClamped(p_147947_7_);
