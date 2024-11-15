@@ -271,26 +271,25 @@ public abstract class MixinWorldServer extends World {
         WorldServerTwo
             .func_147446_b(this, p_147446_1_, p_147446_2_, p_147446_3_, p_147446_4_, p_147446_5_, p_147446_6_);
     }
+
     /**
      * @author quentin452
      * @reason call findChunksForSpawning every 4 ticks instead of 1
      */
     @Overwrite
-    public void tick()
-    {
+    public void tick() {
         super.tick();
 
-        if (this.getWorldInfo().isHardcoreModeEnabled() && this.difficultySetting != EnumDifficulty.HARD)
-        {
+        if (this.getWorldInfo()
+            .isHardcoreModeEnabled() && this.difficultySetting != EnumDifficulty.HARD) {
             this.difficultySetting = EnumDifficulty.HARD;
         }
 
         this.provider.worldChunkMgr.cleanupCache();
 
-        if (this.areAllPlayersAsleep())
-        {
-            if (this.getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
-            {
+        if (this.areAllPlayersAsleep()) {
+            if (this.getGameRules()
+                .getGameRuleBooleanValue("doDaylightCycle")) {
                 long i = this.worldInfo.getWorldTime() + 24000L;
                 this.worldInfo.setWorldTime(i - i % 24000L);
             }
@@ -300,9 +299,14 @@ public abstract class MixinWorldServer extends World {
 
         this.theProfiler.startSection("mobSpawner");
 
-        if (this.getGameRules().getGameRuleBooleanValue("doMobSpawning")) {
+        if (this.getGameRules()
+            .getGameRuleBooleanValue("doMobSpawning")) {
             if (optimizationsAndTweaks$tickCounter % 4 == 0) {
-                this.animalSpawner.findChunksForSpawning((WorldServer)(Object)this, this.spawnHostileMobs, this.spawnPeacefulMobs, this.worldInfo.getWorldTotalTime() % 400L == 0L);
+                this.animalSpawner.findChunksForSpawning(
+                    (WorldServer) (Object) this,
+                    this.spawnHostileMobs,
+                    this.spawnPeacefulMobs,
+                    this.worldInfo.getWorldTotalTime() % 400L == 0L);
                 optimizationsAndTweaks$tickCounter = 0;
             }
             optimizationsAndTweaks$tickCounter++;
@@ -312,15 +316,14 @@ public abstract class MixinWorldServer extends World {
         this.chunkProvider.unloadQueuedChunks();
         int j = this.calculateSkylightSubtracted(1.0F);
 
-        if (j != this.skylightSubtracted)
-        {
+        if (j != this.skylightSubtracted) {
             this.skylightSubtracted = j;
         }
 
         this.worldInfo.incrementTotalWorldTime(this.worldInfo.getWorldTotalTime() + 1L);
 
-        if (this.getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
-        {
+        if (this.getGameRules()
+            .getGameRuleBooleanValue("doDaylightCycle")) {
             this.worldInfo.setWorldTime(this.worldInfo.getWorldTime() + 1L);
         }
 
@@ -335,50 +338,39 @@ public abstract class MixinWorldServer extends World {
         this.villageSiegeObj.tick();
         this.theProfiler.endStartSection("portalForcer");
         this.worldTeleporter.removeStalePortalLocations(this.getTotalWorldTime());
-        for (Teleporter tele : customTeleporters)
-        {
+        for (Teleporter tele : customTeleporters) {
             tele.removeStalePortalLocations(getTotalWorldTime());
         }
         this.theProfiler.endSection();
         this.func_147488_Z();
     }
+
     @Shadow
-    public boolean areAllPlayersAsleep()
-    {
-        if (this.allPlayersSleeping && !this.isRemote)
-        {
+    public boolean areAllPlayersAsleep() {
+        if (this.allPlayersSleeping && !this.isRemote) {
             Iterator iterator = this.playerEntities.iterator();
             EntityPlayer entityplayer;
 
-            do
-            {
-                if (!iterator.hasNext())
-                {
+            do {
+                if (!iterator.hasNext()) {
                     return true;
                 }
 
-                entityplayer = (EntityPlayer)iterator.next();
-            }
-            while (entityplayer.isPlayerFullyAsleep());
+                entityplayer = (EntityPlayer) iterator.next();
+            } while (entityplayer.isPlayerFullyAsleep());
 
             return false;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     @Shadow
-    protected void wakeAllPlayers()
-    {
-    }
+    protected void wakeAllPlayers() {}
+
     @Shadow
-    private void resetRainAndThunder()
-    {
-    }
+    private void resetRainAndThunder() {}
+
     @Shadow
-    private void func_147488_Z()
-    {
-    }
+    private void func_147488_Z() {}
 }

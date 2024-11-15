@@ -144,10 +144,12 @@ public class MixinFixNoSuchMethodException {
                     c.newInstance(message, value));
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-                System.err.println("[OptimizationsAndTweaks] Method not found while invoking sendMessage using reflection" + e);
+                System.err.println(
+                    "[OptimizationsAndTweaks] Method not found while invoking sendMessage using reflection" + e);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                System.err.println("[OptimizationsAndTweaks] Illegal access while invoking sendMessage using reflection" + e);
+                System.err
+                    .println("[OptimizationsAndTweaks] Illegal access while invoking sendMessage using reflection" + e);
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
                 System.err.println("[OptimizationsAndTweaks] Error invoking sendMessage using reflection" + e);

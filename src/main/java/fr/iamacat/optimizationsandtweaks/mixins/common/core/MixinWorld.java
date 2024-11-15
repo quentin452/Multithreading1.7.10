@@ -786,15 +786,14 @@ public abstract class MixinWorld {
         return x >= -30000000 && z >= -30000000 && x < 30000000 && z < 30000000;
     }
 
-
     @Unique
     private int optimizationsAndTweaks$getMaxNeighborLightValue(int x, int y, int z) {
         Stack<int[]> stack = new Stack<>();
-        stack.push(new int[]{x, y + 1, z});
-        stack.push(new int[]{x + 1, y, z});
-        stack.push(new int[]{x - 1, y, z});
-        stack.push(new int[]{x, y, z + 1});
-        stack.push(new int[]{x, y, z - 1});
+        stack.push(new int[] { x, y + 1, z });
+        stack.push(new int[] { x + 1, y, z });
+        stack.push(new int[] { x - 1, y, z });
+        stack.push(new int[] { x, y, z + 1 });
+        stack.push(new int[] { x, y, z - 1 });
         int max = 0;
         while (!stack.isEmpty()) {
             int[] pos = stack.pop();
@@ -1062,14 +1061,25 @@ public abstract class MixinWorld {
 
     @Unique
     private void optimizationsAndTweaks$updateLoadedEntities() {
+        if (this.loadedEntityList == null) {
+            System.err.println("[OptimizationsAndTweaks] loadedEntityList is null");
+            return;
+        }
+
         Iterator<Entity> iterator = this.loadedEntityList.iterator();
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
-            if (entity.ridingEntity != null
-                && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
+            if (entity == null) {
+                System.err.println("[OptimizationsAndTweaks] Encountered null entity in loadedEntityList");
+                iterator.remove();
+                continue;
+            }
+
+            if (entity.ridingEntity != null && (entity.ridingEntity.isDead || entity.ridingEntity.riddenByEntity != entity)) {
                 entity.ridingEntity.riddenByEntity = null;
                 entity.ridingEntity = null;
             }
+
             this.theProfiler.startSection("tick");
             if (!entity.isDead) {
                 try {
@@ -1078,41 +1088,52 @@ public abstract class MixinWorld {
                     optimizationsAndTweaks$handleEntityCrash(entity, throwable);
                 }
             }
+
             if (entity.isDead) {
                 int chunkX = entity.chunkCoordX;
                 int chunkZ = entity.chunkCoordZ;
                 if (entity.addedToChunk && this.chunkExists(chunkX, chunkZ)) {
-                    this.getChunkFromChunkCoords(chunkX, chunkZ)
-                        .removeEntity(entity);
+                    this.getChunkFromChunkCoords(chunkX, chunkZ).removeEntity(entity);
                 }
                 iterator.remove();
                 onEntityRemoved(entity);
             }
+
             this.theProfiler.endSection();
         }
     }
 
     @Unique
     private void optimizationsAndTweaks$updateTileEntities() {
+        if (this.loadedTileEntityList == null) {
+            System.err.println("[OptimizationsAndTweaks] loadedTileEntityList is null");
+            return;
+        }
+
         this.field_147481_N = true;
         Iterator<TileEntity> iterator = this.loadedTileEntityList.iterator();
         while (iterator.hasNext()) {
             TileEntity tileentity = iterator.next();
-            if (!tileentity.isInvalid() && tileentity.hasWorldObj()
-                && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
+            if (tileentity == null) {
+                System.err.println("[OptimizationsAndTweaks] Encountered null tile entity in loadedTileEntityList");
+                iterator.remove();
+                continue;
+            }
+
+            if (!tileentity.isInvalid() && tileentity.hasWorldObj() && this.blockExists(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)) {
                 try {
                     tileentity.updateEntity();
                 } catch (Throwable throwable) {
                     optimizationsAndTweaks$handleTileEntityCrash(tileentity, throwable);
                 }
             }
+
             if (tileentity.isInvalid()) {
                 iterator.remove();
                 if (this.chunkExists(tileentity.xCoord >> 4, tileentity.zCoord >> 4)) {
                     Chunk chunk = this.getChunkFromChunkCoords(tileentity.xCoord >> 4, tileentity.zCoord >> 4);
                     if (chunk != null) {
-                        chunk
-                            .removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
+                        chunk.removeInvalidTileEntity(tileentity.xCoord & 15, tileentity.yCoord, tileentity.zCoord & 15);
                     }
                 }
             }
