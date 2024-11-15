@@ -631,10 +631,6 @@ public class OptimizationsandTweaksConfig {
     @Config.RequiresWorldRestart
     public static boolean enableMixinRegisterOreDict;
 
-    @Config.Comment("Fix ClassCastException net.minecraft.block.BlockStaticLiquid cannot be cast to net.minecraftforge.fluids.BlockFluidBase")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableMixinBlockFluidBase;
     @Config.Comment("Fix null Crash when clicking on the Item from blockling")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

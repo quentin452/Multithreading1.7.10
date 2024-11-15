@@ -65,8 +65,6 @@ public enum Mixin implements IMixin {
     common_minestones_MixinMSEvents(Side.COMMON,
         require(TargetedMod.MINESTONES).and(m -> OptimizationsandTweaksConfig.enableMixinMinestoneSupportDecimalValue),
         "minestones.MixinMSEvents"),
-    common_core_MixinBlockFluidBase(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinBlockFluidBase,
-        "core.MixinBlockFluidBase"),
     common_core_MixinBlockFluidClassic(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinBlockFluidClassic,
         "core.MixinBlockFluidClassic"),
     common_core_MixinChunkProviderServer(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinChunkProviderServer,
