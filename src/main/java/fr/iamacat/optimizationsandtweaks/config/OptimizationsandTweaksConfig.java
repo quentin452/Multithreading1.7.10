@@ -1026,11 +1026,11 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinGLDebug;
-    @Config.Comment("Fix \"java.lang.NullPointerException: Unexpected error\" caused by onKeypress from ClientProxy class from Angelica Mod")
+    @Config.Comment("Fix Invalid framebuffer operation (1286) caused by Hud Caching from angelica mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinHUDCaching;
-    @Config.Comment("Fix Invalid framebuffer operation (1286) caused by Hud Caching from angelica mod")
+    @Config.Comment("Fix \"java.lang.NullPointerException: Unexpected error\" caused by onKeypress from ClientProxy class from Angelica Mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinClientProxy;
