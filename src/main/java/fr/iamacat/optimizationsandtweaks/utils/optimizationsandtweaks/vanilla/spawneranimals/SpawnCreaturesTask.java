@@ -173,7 +173,7 @@ public class SpawnCreaturesTask implements Callable<Integer> {
     }
 
     public static CompletableFuture<Integer> findChunksForSpawningAsync(WorldServer world, boolean spawnHostileMobs,
-                                                                        boolean spawnPeacefulMobs, boolean spawnAnimals) {
+        boolean spawnPeacefulMobs, boolean spawnAnimals) {
         return CompletableFuture.supplyAsync(() -> {
             if (!spawnHostileMobs && !spawnPeacefulMobs) {
                 return 0;
