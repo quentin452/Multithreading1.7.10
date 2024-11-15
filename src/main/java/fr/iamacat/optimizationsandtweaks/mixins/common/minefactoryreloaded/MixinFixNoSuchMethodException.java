@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import fr.iamacat.optimizationsandtweaks.OptimizationsLogger;
 import fr.iamacat.optimizationsandtweaks.config.OptimizationsandTweaksConfig;
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 
@@ -123,7 +122,7 @@ public class MixinFixNoSuchMethodException {
             try {
                 Class.forName("powercrystals.minefactoryreloaded.api.FactoryRegistry");
             } catch (ClassNotFoundException e) {
-                OptimizationsLogger.LOGGER.error("MFR not present, cannot override sendMessage");
+                System.err.println("[OptimizationsAndTweaks] MFR not present, cannot override sendMessage");
                 return; // MFR not present, exit early
             }
             if (!Loader.isModLoaded("minefactoryreloaded") || Loader.instance()
@@ -145,13 +144,13 @@ public class MixinFixNoSuchMethodException {
                     c.newInstance(message, value));
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-                OptimizationsLogger.LOGGER.error("Method not found while invoking sendMessage using reflection", e);
+                System.err.println("[OptimizationsAndTweaks] Method not found while invoking sendMessage using reflection" + e);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                OptimizationsLogger.LOGGER.error("Illegal access while invoking sendMessage using reflection", e);
+                System.err.println("[OptimizationsAndTweaks] Illegal access while invoking sendMessage using reflection" + e);
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
-                OptimizationsLogger.LOGGER.error("Error invoking sendMessage using reflection", e);
+                System.err.println("[OptimizationsAndTweaks] Error invoking sendMessage using reflection" + e);
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             }

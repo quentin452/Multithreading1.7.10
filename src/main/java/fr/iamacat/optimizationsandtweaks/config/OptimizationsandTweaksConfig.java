@@ -630,11 +630,14 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinRegisterOreDict;
-
     @Config.Comment("Fix null Crash when clicking on the Item from blockling")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinItemBlockling;
+    @Config.Comment("Fix NULL Crash on startup from the init method of DeepslateOreRegistry from Et Futurum Requiem with bad mods installed")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinDeepslateOreRegistry;
     @Config.Comment("Fix null Crash on startup caused by ColoredIron mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

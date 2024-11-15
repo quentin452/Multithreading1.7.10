@@ -66,7 +66,7 @@ public enum TargetedMod implements ITargetedMod {
 
     THAUMCRAFT4("Thaumcraft", false, startsWith("thaumcraft")),
     GEMSNJEWELS("gemsnjewels", false, startsWith("gemsnjewels")),
-    ETFUTURMREQUIEM("Et_Futurum_Requiem", false, startsWith("Et_Futurum_Requiem")),
+    ETFUTURMREQUIEM("etfuturum", false, startsWith("etfuturum")),
     FAMILIARSAPI("FamiliarsAPI", false, startsWith("FamiliarsAPI")),
     ADVANCEDGENETICS("advancedgenetics", false, startsWith("advancedgenetics")),
     NETHERLICIOUS("netherlicious", false, startsWith("netherlicious")),
