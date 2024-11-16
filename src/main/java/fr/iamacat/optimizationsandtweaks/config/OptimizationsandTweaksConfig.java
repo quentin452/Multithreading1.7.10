@@ -1039,7 +1039,7 @@ public class OptimizationsandTweaksConfig {
     @Config.RequiresWorldRestart
     public static boolean enableMixinClientProxy;
     @Config.Comment("Reduce tps lags caused by SpawnerAnimals(Can reduce spawn speed of entities)(Require MixinChunk)")
-    @Config.DefaultBoolean(false)
+    @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinPatchSpawnerAnimals;
 
@@ -1084,10 +1084,6 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinVersionInfo;
-    @Config.Comment("Improve logging during typing /cofh killall in chat")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableMixinCommandKillAll;
     @Config.Comment("Add a config to change frequency or Experience ore generation from Experience ore Mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
