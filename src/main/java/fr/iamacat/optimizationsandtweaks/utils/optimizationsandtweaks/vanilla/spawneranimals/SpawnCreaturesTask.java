@@ -127,11 +127,17 @@ public class SpawnCreaturesTask implements Callable<Integer> {
 
     public static int countEntities(WorldServer world, EnumCreatureType type, boolean forSpawnCount) {
         int totalEntities = 0;
-        List<Entity> loadedEntityList = world.loadedEntityList;
+        List<Entity> loadedEntityList;
+
+        synchronized (world.loadedEntityList) {
+            loadedEntityList = new ArrayList<>(world.loadedEntityList);
+        }
+
         if (loadedEntityList == null) {
             System.err.println("[OptimizationsAndTweaks] world.loadedEntityList is null");
             return totalEntities;
         }
+
         for (Entity entity : loadedEntityList) {
             if (entity == null) {
                 System.err.println("[OptimizationsAndTweaks] Encountered null entity in loadedEntityList");
@@ -143,6 +149,7 @@ public class SpawnCreaturesTask implements Callable<Integer> {
         }
         return totalEntities;
     }
+
 
     public static void populateEligibleChunksForSpawning(WorldServer world) {
         for (EntityPlayer player : (List<EntityPlayer>) world.playerEntities) {
