@@ -189,6 +189,9 @@ public enum Mixin implements IMixin {
 
     client_core_MixinRenderBlocks(Side.CLIENT, m -> OptimizationsandTweaksConfig.enableMixinRenderBlocks,
         "core.MixinRenderBlocks"),
+
+    common_core_MixinForgeHooksClient(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinForgeHooksClient,
+        "core.MixinForgeHooksClient"),
     common_core_MixinStringTranslate(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinStringTranslate,
         "core.MixinStringTranslate"),
     common_core_MixinBlockDynamicLiquid(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinBlockDynamicLiquid,

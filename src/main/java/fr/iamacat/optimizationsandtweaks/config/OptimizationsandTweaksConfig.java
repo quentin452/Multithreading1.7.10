@@ -166,10 +166,14 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinBiomeCache;
-    @Config.Comment("Optimize RenderBlocks Class(KEEP THIS DISABLED) cause issues ")
+    @Config.Comment("Optimize RenderBlocks Class(KEEP THIS DISABLED) cause issues")
     @Config.DefaultBoolean(false)
     @Config.RequiresWorldRestart
     public static boolean enableMixinRenderBlocks;
+    @Config.Comment("Fix null crashes from getSkyBlendColour from ForgeHooksClient")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinForgeHooksClient;
     @Config.Comment("Optimize BlockDynamicLiquid Class")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
