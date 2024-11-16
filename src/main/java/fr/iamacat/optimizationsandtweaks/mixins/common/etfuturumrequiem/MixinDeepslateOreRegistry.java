@@ -30,6 +30,7 @@ public class MixinDeepslateOreRegistry {
      * @author quentin452
      * @reason Fix java.lang.NullPointerException: Initializing game from the init method of DeepslateOreRegistry from
      *         Et Futurum Requiem with "bad" mods installed
+     *         // TODO DON'T USE @OVERWRITE
      */
     @Overwrite
     public static void init() {
