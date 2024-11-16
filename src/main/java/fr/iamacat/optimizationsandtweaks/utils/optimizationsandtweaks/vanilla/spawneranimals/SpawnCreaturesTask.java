@@ -23,7 +23,26 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import fr.iamacat.optimizationsandtweaks.utils.concurrentlinkedhashmap.ConcurrentHashMapV8;
+/* TODO FIX
 
+java.util.concurrent.CompletionException: java.lang.ArrayIndexOutOfBoundsException: 975
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:273)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:280)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1606)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1596)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:175)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 975
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.ArrayListThreadSafe.toArray(ArrayListThreadSafe.java:173)
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.collections.maps.ArrayListThreadSafe.<init>(ArrayListThreadSafe.java:38)
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask.countEntities(SpawnCreaturesTask.java:134)
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask.shouldSpawnCreature(SpawnCreaturesTask.java:125)
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.spawneranimals.SpawnCreaturesTask.lambda$findChunksForSpawningAsync$1(SpawnCreaturesTask.java:194)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1604)
+	... 5 more
+ */
 public class SpawnCreaturesTask implements Callable<Integer> {
 
     public static ConcurrentHashMapV8<ChunkCoordIntPair, Boolean> eligibleChunksForSpawning = new ConcurrentHashMapV8<>();
