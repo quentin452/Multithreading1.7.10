@@ -97,7 +97,7 @@ dependencies {
     implementation "curse.maven:portal-gun-229084:2480016-deobf-sources-api"
     implementation "curse.maven:industrial-upgrade-372007:3592456-deobf-sources-api"
     implementation "curse.maven:small-stairs-417155:3099752-deobf-sources-api"
-    implementation "curse.maven:et-futurum-requiem-441392:4769523-deobf-sources-api"
+    implementation "curse.maven:et-futurum-requiem-441392:5873837-deobf-sources-api"
     implementation "curse.maven:better-burning-353434:2919011-deobf-sources-api"
     implementation "curse.maven:hardcore-wither-237407:2282681-deobf-sources-api"
     implementation "curse.maven:jewelrycraft-2-229927:2271615-deobf-sources-api"
