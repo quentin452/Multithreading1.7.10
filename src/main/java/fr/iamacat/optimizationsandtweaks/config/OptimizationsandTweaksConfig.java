@@ -807,7 +807,7 @@ public class OptimizationsandTweaksConfig {
     @Config.RequiresWorldRestart
     public static boolean MixinLOTRWorldProvider;
 
-    @Config.Comment("Fix Server attempted to spawn an unknown entity caused by thread unsafety from NetHandlerPlayClient class")
+    @Config.Comment("Try to fix Default value cannot be lower than minimum value! + Fix Server attempted to spawn an unknown entity caused by thread unsafety from NetHandlerPlayClient class")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinNetHandlerPlayClient;
