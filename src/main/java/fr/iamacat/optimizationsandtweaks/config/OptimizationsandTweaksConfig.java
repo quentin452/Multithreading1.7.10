@@ -1038,7 +1038,7 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinClientProxy;
-    @Config.Comment("Reduce tps lags caused by SpawnerAnimals(Can reduce spawn speed of entities)(Require MixinChunk)")
+    @Config.Comment("Reduce tps lags caused by SpawnerAnimals(Can reduce spawn speed of entities)(Require MixinChunk)(DANGEROUS AND BUGGED)")
     @Config.DefaultBoolean(false)
     @Config.RequiresWorldRestart
     public static boolean enableMixinPatchSpawnerAnimals;
