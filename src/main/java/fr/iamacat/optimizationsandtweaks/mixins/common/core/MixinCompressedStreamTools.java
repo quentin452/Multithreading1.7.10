@@ -16,7 +16,57 @@ import org.spongepowered.asm.mixin.Shadow;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPOutputStream2;
 import fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.vanilla.CompressTask;
-
+/* @TODO FIX
+[16:19:11] [Client thread/ERROR] [FML/]: FMLIndexedMessageCodec exception caught
+io.netty.handler.codec.DecoderException: java.lang.RuntimeException: java.io.EOFException
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:99) ~[netty-all-4.0.10.Final.jar:?]
+	at io.netty.handler.codec.MessageToMessageCodec.channelRead(MessageToMessageCodec.java:111) ~[netty-all-4.0.10.Final.jar:?]
+	at io.netty.channel.DefaultChannelHandlerContext.invokeChannelRead(DefaultChannelHandlerContext.java:337) [netty-all-4.0.10.Final.jar:?]
+	at io.netty.channel.DefaultChannelHandlerContext.fireChannelRead(DefaultChannelHandlerContext.java:323) [netty-all-4.0.10.Final.jar:?]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:785) [netty-all-4.0.10.Final.jar:?]
+	at io.netty.channel.embedded.EmbeddedChannel.writeInbound(EmbeddedChannel.java:169) [netty-all-4.0.10.Final.jar:?]
+	at cpw.mods.fml.common.network.internal.FMLProxyPacket.func_148833_a(FMLProxyPacket.java:77) [FMLProxyPacket.class:?]
+	at net.minecraft.network.NetworkManager.func_74428_b(NetworkManager.java:212) [ej.class:?]
+	at net.minecraft.client.multiplayer.PlayerControllerMP.func_78765_e(PlayerControllerMP.java:273) [bje.class:?]
+	at net.minecraft.client.Minecraft.func_71407_l(Minecraft.java:1602) [bao.class:?]
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:973) [bao.class:?]
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:9006) [bao.class:?]
+	at net.minecraft.client.main.Main.main(SourceFile:148) [Main.class:?]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_432]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_432]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_432]
+	at java.lang.reflect.Method.invoke(Method.java:498) ~[?:1.8.0_432]
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135) [launchwrapper-1.12.jar:?]
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28) [launchwrapper-1.12.jar:?]
+Caused by: java.lang.RuntimeException: java.io.EOFException
+	at com.google.common.base.Throwables.propagate(Throwables.java:160) ~[guava-17.0.jar:?]
+	at cpw.mods.fml.common.network.ByteBufUtils.readTag(ByteBufUtils.java:210) ~[ByteBufUtils.class:?]
+	at tragicneko.tragicmc.network.MessageAmulet.fromBytes(MessageAmulet.java:25) ~[MessageAmulet.class:?]
+	at cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec.decodeInto(SimpleIndexedCodec.java:17) ~[SimpleIndexedCodec.class:?]
+	at cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec.decodeInto(SimpleIndexedCodec.java:7) ~[SimpleIndexedCodec.class:?]
+	at cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec.decode(FMLIndexedMessageToMessageCodec.java:77) ~[FMLIndexedMessageToMessageCodec.class:?]
+	at cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec.decode(FMLIndexedMessageToMessageCodec.java:17) ~[FMLIndexedMessageToMessageCodec.class:?]
+	at io.netty.handler.codec.MessageToMessageCodec$2.decode(MessageToMessageCodec.java:81) ~[netty-all-4.0.10.Final.jar:?]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:89) ~[netty-all-4.0.10.Final.jar:?]
+	... 18 more
+Caused by: java.io.EOFException
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2.readUByte(GZIPInputStream2.java:231) ~[GZIPInputStream2.class:?]
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2.readUShort(GZIPInputStream2.java:221) ~[GZIPInputStream2.class:?]
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2.readHeader(GZIPInputStream2.java:130) ~[GZIPInputStream2.class:?]
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2.<init>(GZIPInputStream2.java:44) ~[GZIPInputStream2.class:?]
+	at fr.iamacat.optimizationsandtweaks.utils.optimizationsandtweaks.resources.GZIPInputStream2.<init>(GZIPInputStream2.java:57) ~[GZIPInputStream2.class:?]
+	at net.minecraft.nbt.CompressedStreamTools.func_152457_a(CompressedStreamTools.java:559) ~[du.class:?]
+	at net.minecraft.network.PacketBuffer.func_150793_b(SourceFile:1463) ~[et.class:?]
+	at cpw.mods.fml.common.network.ByteBufUtils.readTag(ByteBufUtils.java:206) ~[ByteBufUtils.class:?]
+	at tragicneko.tragicmc.network.MessageAmulet.fromBytes(MessageAmulet.java:25) ~[MessageAmulet.class:?]
+	at cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec.decodeInto(SimpleIndexedCodec.java:17) ~[SimpleIndexedCodec.class:?]
+	at cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec.decodeInto(SimpleIndexedCodec.java:7) ~[SimpleIndexedCodec.class:?]
+	at cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec.decode(FMLIndexedMessageToMessageCodec.java:77) ~[FMLIndexedMessageToMessageCodec.class:?]
+	at cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec.decode(FMLIndexedMessageToMessageCodec.java:17) ~[FMLIndexedMessageToMessageCodec.class:?]
+	at io.netty.handler.codec.MessageToMessageCodec$2.decode(MessageToMessageCodec.java:81) ~[netty-all-4.0.10.Final.jar:?]
+	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:89) ~[netty-all-4.0.10.Final.jar:?]
+	... 18 more
+ */
 @Mixin(CompressedStreamTools.class)
 public abstract class MixinCompressedStreamTools {
 

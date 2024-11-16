@@ -524,8 +524,8 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinBlockGrass;
-    @Config.Comment("Optimize CompressedStreamTools")
-    @Config.DefaultBoolean(true)
+    @Config.Comment("Optimize CompressedStreamTools (CAN CAUSE CRASHES CAUSED BY GZIPInputStream2)")
+    @Config.DefaultBoolean(false)
     @Config.RequiresWorldRestart
     public static boolean enableMixinCompressedStreamTools;
     @Config.Comment("Optimize BiomeGenBase(not injected if DragonAPI is installed)")
