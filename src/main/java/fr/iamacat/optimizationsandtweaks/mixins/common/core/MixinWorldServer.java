@@ -91,20 +91,6 @@ public abstract class MixinWorldServer extends World {
     }
 
     /**
-     * @author iamacatfr
-     * @reason optimize getPendingBlockUpdates from WorldServer to reduce Tps lags
-     */
-    @Overwrite
-    public synchronized List<NextTickListEntry> getPendingBlockUpdates(Chunk p_72920_1_, boolean p_72920_2_) {
-        List<NextTickListEntry> pendingBlockUpdates = optimizationsAndTweaks$collectPendingBlockUpdates(
-            (WorldServer) (Object) this,
-            p_72920_1_,
-            p_72920_2_);
-        optimizationsAndTweaks$removeProcessedEntries(p_72920_2_);
-        return pendingBlockUpdates;
-    }
-
-    /**
      * @author
      * @reason
      */
@@ -151,19 +137,10 @@ public abstract class MixinWorldServer extends World {
         }
     }
 
-    @Overwrite
+    @Shadow
     public void scheduleBlockUpdate(int p_147464_1_, int p_147464_2_, int p_147464_3_, Block p_147464_4_,
         int p_147464_5_) {
         this.scheduleBlockUpdateWithPriority(p_147464_1_, p_147464_2_, p_147464_3_, p_147464_4_, p_147464_5_, 0);
-    }
-
-    /**
-     * @author
-     * @reason
-     */
-    @Overwrite
-    public boolean tickUpdates(boolean p_72955_1_) {
-        return WorldServerTwo.tickUpdates(p_72955_1_, this);
     }
 
     /**
@@ -250,26 +227,6 @@ public abstract class MixinWorldServer extends World {
                 break;
             }
         }
-    }
-
-    @Overwrite
-    public synchronized void scheduleBlockUpdateWithPriority(int p_147454_1_, int p_147454_2_, int p_147454_3_,
-        Block p_147454_4_, int p_147454_5_, int p_147454_6_) {
-        WorldServerTwo.scheduleBlockUpdateWithPriority(
-            this,
-            p_147454_1_,
-            p_147454_2_,
-            p_147454_3_,
-            p_147454_4_,
-            p_147454_5_,
-            p_147454_6_);
-    }
-
-    @Overwrite
-    public synchronized void func_147446_b(int p_147446_1_, int p_147446_2_, int p_147446_3_, Block p_147446_4_,
-        int p_147446_5_, int p_147446_6_) {
-        WorldServerTwo
-            .func_147446_b(this, p_147446_1_, p_147446_2_, p_147446_3_, p_147446_4_, p_147446_5_, p_147446_6_);
     }
 
     /**
