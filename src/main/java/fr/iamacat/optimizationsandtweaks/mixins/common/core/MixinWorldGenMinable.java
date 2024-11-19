@@ -119,13 +119,18 @@ public class MixinWorldGenMinable extends WorldGenerator {
         if (replaceBlock != null && oreGenBlock != null && world != null) {
             int currentBlockMeta = world.getBlockMetadata(x, y, z);
 
-            if (world.isAirBlock(x, y, z) || world.getBlock(x, y, z)
-                .isReplaceableOreGen(world, x, y, z, oreGenBlock)) {
+            Block currentBlock = world.getBlock(x, y, z);
+            if (currentBlock == null) {
+                return;
+            }
+
+            if (world.isAirBlock(x, y, z) || currentBlock.isReplaceableOreGen(world, x, y, z, oreGenBlock)) {
                 world.setBlock(x, y, z, replaceBlock, mineableBlockMeta, 2);
                 world.setBlockMetadataWithNotify(x, y, z, currentBlockMeta, 2);
             }
         }
     }
+
 
     @Unique
     private Block optimizationsAndTweaks$getField_150518_c() {
@@ -134,6 +139,9 @@ public class MixinWorldGenMinable extends WorldGenerator {
 
     @Unique
     private Block optimizationsAndTweaks$getBlock(World world, int x, int y, int z) {
+        if (world == null) {
+            return null;
+        }
         return world.getBlock(x, y, z);
     }
 
