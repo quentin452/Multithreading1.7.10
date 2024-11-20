@@ -262,7 +262,7 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinThreadedFileIOBase;
-    @Config.Comment("Optimize WorldServer(You should never disable this,if its disabled it can cause large issues caused by threading)")
+    @Config.Comment("Optimize WorldServer and call findChunksForSpawning every 4 ticks instead of 1")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinWorldServer;
