@@ -51,8 +51,7 @@ public abstract class MixinWorldServer extends World {
     private final PlayerManager thePlayerManager;
     @Shadow
     private final Teleporter worldTeleporter;
-    @Shadow
-    private IntHashMap entityIdMap;
+
     @Shadow
     public final SpawnerAnimals animalSpawner = new SpawnerAnimals();
     @Shadow
@@ -64,10 +63,6 @@ public abstract class MixinWorldServer extends World {
         this.mcServer = p_i45284_1_;
         this.theEntityTracker = new EntityTracker(optimizationsAndTweaks$worldServer);
         this.thePlayerManager = new PlayerManager(optimizationsAndTweaks$worldServer);
-
-        if (this.entityIdMap == null) {
-            this.entityIdMap = new IntHashMap();
-        }
 
         this.worldTeleporter = new Teleporter(optimizationsAndTweaks$worldServer);
         this.worldScoreboard = new ServerScoreboard(p_i45284_1_);
@@ -156,76 +151,6 @@ public abstract class MixinWorldServer extends World {
         for (Object o : this.activeChunkSet) {
             ChunkCoordIntPair chunkCoordIntPair = (ChunkCoordIntPair) o;
             optimizationsAndTweaks$processChunk(this, chunkCoordIntPair);
-        }
-    }
-
-    @Overwrite
-    public void initialize(WorldSettings p_72963_1_) {
-        if (this.entityIdMap == null) {
-            this.entityIdMap = new IntHashMap();
-        }
-
-        this.createSpawnPosition(p_72963_1_);
-        super.initialize(p_72963_1_);
-    }
-
-    @Shadow
-    public void createSpawnPosition(WorldSettings p_73052_1_) {
-        if (!this.provider.canRespawnHere()) {
-            this.worldInfo.setSpawnPosition(0, this.provider.getAverageGroundLevel(), 0);
-        } else {
-            if (net.minecraftforge.event.ForgeEventFactory.onCreateWorldSpawn(this, p_73052_1_)) return;
-            this.findingSpawnPoint = true;
-            WorldChunkManager worldchunkmanager = this.provider.worldChunkMgr;
-            List list = worldchunkmanager.getBiomesToSpawnIn();
-            Random random = new Random(this.getSeed());
-            ChunkPosition chunkposition = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
-            int i = 0;
-            int j = this.provider.getAverageGroundLevel();
-            int k = 0;
-
-            if (chunkposition != null) {
-                i = chunkposition.chunkPosX;
-                k = chunkposition.chunkPosZ;
-            } else {
-                logger.warn("Unable to find spawn biome");
-            }
-
-            int l = 0;
-
-            while (!this.provider.canCoordinateBeSpawn(i, k)) {
-                i += random.nextInt(64) - random.nextInt(64);
-                k += random.nextInt(64) - random.nextInt(64);
-                ++l;
-
-                if (l == 1000) {
-                    break;
-                }
-            }
-
-            this.worldInfo.setSpawnPosition(i, j, k);
-            this.findingSpawnPoint = false;
-
-            if (p_73052_1_.isBonusChestEnabled()) {
-                this.createBonusChest();
-            }
-        }
-    }
-
-    @Shadow
-    public void createBonusChest() {
-        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest(
-            ChestGenHooks.getItems(BONUS_CHEST, rand),
-            ChestGenHooks.getCount(BONUS_CHEST, rand));
-
-        for (int i = 0; i < 10; ++i) {
-            int j = this.worldInfo.getSpawnX() + this.rand.nextInt(6) - this.rand.nextInt(6);
-            int k = this.worldInfo.getSpawnZ() + this.rand.nextInt(6) - this.rand.nextInt(6);
-            int l = this.getTopSolidOrLiquidBlock(j, k) + 1;
-
-            if (worldgeneratorbonuschest.generate(this, this.rand, j, l, k)) {
-                break;
-            }
         }
     }
 
