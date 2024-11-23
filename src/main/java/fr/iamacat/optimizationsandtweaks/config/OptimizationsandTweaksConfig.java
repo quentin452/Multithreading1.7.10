@@ -1025,7 +1025,7 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinMobSpawnerGoblinLogic;
-    @Config.Comment("Fix Entity God From XTractCraft Causing Crash On Servers")
+    @Config.Comment("Fix Entity God From XTractCraft Causing Crash On Servers (by disabling his boss bar)")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinXCEntityGod;
