@@ -1025,7 +1025,10 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinMobSpawnerGoblinLogic;
-
+    @Config.Comment("Fix Entity God From XTractCraft Causing Crash On Servers")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinXCEntityGod;
     @Config.Comment("Fix Stack overflow crash when angelica is loaded by disabling some methods from GLDebug class from angelica")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

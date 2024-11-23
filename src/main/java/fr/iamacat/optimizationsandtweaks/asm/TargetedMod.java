@@ -174,6 +174,7 @@ public enum TargetedMod implements ITargetedMod {
     TUMBLEWEED("tumbleweed", false, startsWith("tumbleweed")),
     MYTICALCREATURES("MythicalC", false, startsWith("MythicalC")),
     APPLIEDENERGISTICS("appliedenergistics2", false, startsWith("appliedenergistics2")),
+    XTRACRAFT("xtracraft", false, startsWith("xtracraft")),
     AETHER("aether", false, startsWith("aether")),;
 
     @Getter

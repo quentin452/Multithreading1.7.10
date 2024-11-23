@@ -148,6 +148,7 @@ dependencies {
     implementation "curse.maven:automagy-222153:2285272-deobf-sources-api"
     implementation "curse.maven:tumbleweed-245028:2299772-deobf-sources-api"
     implementation "curse.maven:gtnhlib-688894:5850851-deobf-sources-api"
+    implementation "curse.maven:xtracraft-mod-235322:2271385-deobf-sources-api"
     implementation "curse.maven:mlp-mythical-creatures-updated-to-1-7-10-226048:2277522-deobf-sources-api"
 
     runtimeOnly('com.github.GTNewHorizons:BuildCraft:7.1.36:dev')
