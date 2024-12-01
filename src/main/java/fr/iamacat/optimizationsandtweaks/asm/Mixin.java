@@ -850,12 +850,6 @@ public enum Mixin implements IMixin {
         require(TargetedMod.PRACTICALLOGISTICS).and(m -> OptimizationsandTweaksConfig.enableMixinEventRegistry),
         "practicallogistics.MixinEventRegistry"),
 
-    common_angelica_MixinGLDebug(Side.COMMON,
-        require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinGLDebug),
-        "angelica.MixinGLDebug"),
-    common_angelica_MixinHUDCaching(Side.COMMON,
-        require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinHUDCaching),
-        "angelica.MixinHUDCaching"),
     common_angelica_MixinClientProxy(Side.COMMON,
         require(TargetedMod.ANGELICA).and(m -> OptimizationsandTweaksConfig.enableMixinClientProxy),
         "angelica.MixinClientProxy"),

@@ -1029,14 +1029,6 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinXCEntityGod;
-    @Config.Comment("Fix Stack overflow crash when angelica is loaded by disabling some methods from GLDebug class from angelica")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableMixinGLDebug;
-    @Config.Comment("Fix Invalid framebuffer operation (1286) caused by Hud Caching from angelica mod")
-    @Config.DefaultBoolean(true)
-    @Config.RequiresWorldRestart
-    public static boolean enableMixinHUDCaching;
     @Config.Comment("Fix \"java.lang.NullPointerException: Unexpected error\" caused by onKeypress from ClientProxy class from Angelica Mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
