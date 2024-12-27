@@ -209,12 +209,11 @@ public enum Mixin implements IMixin {
      * common_core_pathfinding_MixinPathNavigate(Side.COMMON, m ->
      * OptimizationsandTweaksConfig.enablePathfinderOptimizations,
      * "core.pathfinding.MixinPathNavigate"),
+     * common_core_pathfinding_MixinPathPoint(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
+     * "core.pathfinding.MixinPathPoint"),
      */
-    common_core_pathfinding_MixinPathFinder(Side.COMMON,
-        m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations, "core.pathfinding.MixinPathFinder"),
-
-    common_core_pathfinding_MixinPathPoint(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
-        "core.pathfinding.MixinPathPoint"),
+    common_core_entity_MixinEntityAIControlledByPlayer(Side.COMMON, m -> OptimizationsandTweaksConfig.enablePathfinderOptimizations,
+        "core.entity.MixinEntityAIControlledByPlayer"),
     common_core_MixinWorldServer(Side.COMMON,
         avoid(TargetedMod.LAGGOOGLES).and(m -> OptimizationsandTweaksConfig.enableMixinWorldServer),
         "core.MixinWorldServer"),
