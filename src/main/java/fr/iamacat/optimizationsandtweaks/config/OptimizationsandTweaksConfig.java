@@ -986,6 +986,10 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinFixUnableToPlayUnknowSoundEventFromFarlandersmod;
+    @Config.Comment("Fix infinite loop when trying to generate VillageRoad from Farlanders mod")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinMixinVillageRoad;
     @Config.Comment("Fix Some Cascading Worldgen caused by WorldGenBrassTree from Steamcraft 2 mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

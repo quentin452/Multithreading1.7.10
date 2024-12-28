@@ -634,6 +634,10 @@ public enum Mixin implements IMixin {
     common_gemsnjewels_MixinModBlocksGemsNJewels(Side.COMMON,
         require(TargetedMod.GEMSNJEWELS).and(m -> OptimizationsandTweaksConfig.enableMixinModBlocksGemsNJewels),
         "gemsnjewels.MixinModBlocksGemsNJewels"),
+    common_farlanders_MixinVillageRoad(Side.COMMON,
+        require(TargetedMod.FARLANDERS)
+            .and(m -> OptimizationsandTweaksConfig.enableMixinMixinVillageRoad),
+        "farlanders.MixinVillageRoad"),
     common_farlanders_MixinEntityEnderGolem(Side.COMMON,
         require(TargetedMod.FARLANDERS)
             .and(m -> OptimizationsandTweaksConfig.enableMixinFixUnableToPlayUnknowSoundEventFromFarlandersmod),
