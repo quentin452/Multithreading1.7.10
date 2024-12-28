@@ -61,13 +61,13 @@ public class MixinForgeHooksClient {
             for (int z = -distance; z <= distance; ++z) {
                 BiomeGenBase biome = world.getBiomeGenForCoords(playerX + x, playerZ + z);
                 if (biome == null) {
-                    System.err.println("[OptimizationsAndTweaks] Biome is null at coordinates: " + (playerX + x) + ", " + (playerZ + z));
+                    // System.err.println("[OptimizationsAndTweaks] Biome is null at coordinates: " + (playerX + x) + ", " + (playerZ + z));
                     continue;
                 }
 
                 Float temperature = biome.getFloatTemperature(playerX + x, playerY, playerZ + z);
                 if (temperature == null) {
-                    System.err.println("[OptimizationsAndTweaks] Temperature is null for biome at coordinates: " + (playerX + x) + ", " + (playerZ + z));
+                    //System.err.println("[OptimizationsAndTweaks] Temperature is null for biome at coordinates: " + (playerX + x) + ", " + (playerZ + z));
                     continue;
                 }
 
@@ -80,7 +80,7 @@ public class MixinForgeHooksClient {
         }
 
         if (divider == 0) {
-            System.err.println("[OptimizationsAndTweaks] Divider is zero, returning default sky color");
+            //System.err.println("[OptimizationsAndTweaks] Divider is zero, returning default sky color");
             return 0;
         }
 
