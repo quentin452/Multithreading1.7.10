@@ -21,8 +21,8 @@ public class MixinAppleFuelHandler {
         if (fuel != null) {
             Item item = fuel.getItem();
             if (item != null && GrowthCraftApples.blocks.appleSapling != null
-                && GrowthCraftApples.blocks.appleSapling.getItem()
-                    .equals(item)) {
+                && GrowthCraftApples.blocks.appleSapling.getItem() != null
+                && GrowthCraftApples.blocks.appleSapling.getItem().equals(item)) {
                 return 100;
             }
         }
