@@ -799,6 +799,10 @@ public enum Mixin implements IMixin {
         require(TargetedMod.MINEFACTORYRELOADED)
             .and(m -> OptimizationsandTweaksConfig.enableMixinFixNoSuchMethodException),
         "minefactoryreloaded.MixinFixNoSuchMethodException"),
+    common_entityculling_MixinCullTask(Side.COMMON,
+        require(TargetedMod.ENTITYCULLING)
+            .and(m -> OptimizationsandTweaksConfig.enableMixinCullTask),
+        "entityculling.MixinCullTask"),
 
     common_core_MixinGodZillaFix(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinGodZillaFix,
         "core.MixinGodZillaFix"),

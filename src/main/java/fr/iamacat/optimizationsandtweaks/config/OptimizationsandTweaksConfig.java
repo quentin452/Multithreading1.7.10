@@ -810,7 +810,10 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean MixinLOTRWorldProvider;
-
+    @Config.Comment("Avoid NullPointerException spam log caused by run() from CullTask from EntityCulling mod")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinCullTask;
     @Config.Comment("Try to fix Default value cannot be lower than minimum value! + Fix Server attempted to spawn an unknown entity caused by thread unsafety from NetHandlerPlayClient class")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart

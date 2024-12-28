@@ -139,6 +139,7 @@ public enum TargetedMod implements ITargetedMod {
     ALFHEIM("Alfheim", false, startsWith("Alfheim")),
     AUTOMAGY("Automagy", false, startsWith("Automagy")),
     XTRACRAFT("xtracraft", false, startsWith("xtracraft")),
+    ENTITYCULLING("entityculling", false, startsWith("entityculling")),
     AETHER("aether", false, startsWith("aether")),;
 
     @Getter

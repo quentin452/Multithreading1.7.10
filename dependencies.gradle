@@ -198,6 +198,7 @@ dependencies {
     implementation files("libs/animalsPlus_1.2.jar")
     implementation files("libs/Treasure-3.0.8-mc1.7.10.jar")
     implementation files("libs/Ununquadium_mod_1.7.10.jar")
+    implementation files("libs/entityculling-1.6.4-mc1.7.10.jar")
 
     compileOnly("com.github.GTNewHorizons:ThaumicHorizons:1.6.3:dev")
     compileOnly("com.github.GTNewHorizons:HoloInventory:2.4.12-GTNH:dev")
