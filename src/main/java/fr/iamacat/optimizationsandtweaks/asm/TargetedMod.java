@@ -118,7 +118,6 @@ public enum TargetedMod implements ITargetedMod {
     OPIS("Opis", false, startsWith("Opis")),
     KORINBLUEBEDROCK("1-7-10-005-KoRIN", false, startsWith("1-7-10-005-KoRIN")),
     OBSGREENERY("obsgreenery", false, startsWith("obsgreenery")),
-    SIGNPOST("signpost", false, startsWith("signpost")),
     MOWZIESMOBS("MowziesMobs", false, startsWith("MowziesMobs")),
     PPAPMOD("PPAP", false, startsWith("PPAP")),
     TOOMUCHTNT("Too-Much-TNT", false, startsWith("Too-Much-TNT")),
