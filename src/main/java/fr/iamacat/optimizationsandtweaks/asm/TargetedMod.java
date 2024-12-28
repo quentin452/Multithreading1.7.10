@@ -11,6 +11,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum TargetedMod implements ITargetedMod {
+    MOVINGWORLD("movingworld", false, startsWith("movingworld")), // DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    ESSENCEOFTHEGOD("Essence_of_the_Gods", false, startsWith("Essence_of_the_Gods")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    ESSENCEOFTHEGODFORK("eotg", false, startsWith("eotg")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    WITCHERY("witchery-", false, startsWith("witchery-")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    WITCHERYY("witchery", false, startsWith("witchery")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    ZOMBIEAWARENESS("zombieawareness", false, startsWith("zombieawareness")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    GANYSNETHER("Ganys_Nether", false, startsWith("Ganys_Nether")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    LOTRIMPROVEMENTS("LOTR Improvements", false, startsWith("LOTR Improvements")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    BUILDCRAFTOILTWEAK("BuildCraftOilTweak", false, startsWith("BuildCraftOilTweak")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+    MYTICALCREATURES("MythicalC", false, startsWith("MythicalC")),// DO NOT REMOVE , EVEN IF THE IDE SAY "no usage" , if you remove it a crash ClassNotFoundException can appear when launching with moving worl mod
+
     SMOOTHFONT("SmoothFont", false, startsWith("SmoothFont")),
     EXTRAUTILS("ExtraUtilities", false, startsWith("extrautilities")),
     COLOREDIRON("Colored+Iron", false, startsWith("Colored+Iron")),
