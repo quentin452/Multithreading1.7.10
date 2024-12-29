@@ -1110,7 +1110,7 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableMixinGrimModule;
-    @Config.Comment("Tidy Chunk Backport feature(EntityItem remover at first chunk generation to reduce tps lags)")
+    @Config.Comment("Tidy Chunk Backport feature(EntityItem remover at first chunk generation to reduce tps lags)(require MixinWorld)")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean enableTidyChunkBackport;
