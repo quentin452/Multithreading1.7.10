@@ -1,11 +1,14 @@
 package fr.iamacat.optimizationsandtweaks.mixins.common.core;
 
 import fr.iamacat.optimizationsandtweaks.utilsformods.entity.pathfinding.PathFinder2;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,5 +85,39 @@ public abstract class MixinWorld {
         PathEntity pathentity = (new PathFinder2(chunkcache, p_72844_6_, p_72844_7_, p_72844_8_, p_72844_9_)).createEntityPathTo(p_72844_1_, p_72844_2_, p_72844_3_, p_72844_4_, p_72844_5_);
         this.theProfiler.endSection();
         return pathentity;
+    }
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public Block getBlock(int p_147439_1_, int p_147439_2_, int p_147439_3_) {
+        if (p_147439_1_ >= -30000000 && p_147439_3_ >= -30000000
+            && p_147439_1_ < 30000000
+            && p_147439_3_ < 30000000
+            && p_147439_2_ >= 0
+            && p_147439_2_ < 256
+            && this.blockExists(p_147439_1_, p_147439_2_, p_147439_3_)) {
+            Chunk chunk = this.getChunkFromChunkCoords(p_147439_1_ >> 4, p_147439_3_ >> 4);
+            if (chunk != null) {
+                return chunk.getBlock(p_147439_1_ & 15, p_147439_2_, p_147439_3_ & 15);
+            }
+        }
+        return Blocks.air;
+    }
+    @Shadow
+    public boolean blockExists(int p_72899_1_, int p_72899_2_, int p_72899_3_)
+    {
+        return p_72899_2_ >= 0 && p_72899_2_ < 256 ? this.chunkExists(p_72899_1_ >> 4, p_72899_3_ >> 4) : false;
+    }
+    @Shadow
+    public Chunk getChunkFromChunkCoords(int p_72964_1_, int p_72964_2_)
+    {
+        return this.chunkProvider.provideChunk(p_72964_1_, p_72964_2_);
+    }
+    @Shadow
+    protected boolean chunkExists(int p_72916_1_, int p_72916_2_)
+    {
+        return this.chunkProvider.chunkExists(p_72916_1_, p_72916_2_);
     }
 }
