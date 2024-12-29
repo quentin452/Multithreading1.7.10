@@ -806,9 +806,10 @@ public enum Mixin implements IMixin {
 
     common_core_MixinGodZillaFix(Side.COMMON, m -> OptimizationsandTweaksConfig.enableMixinGodZillaFix,
         "core.MixinGodZillaFix"),
-
     common_witchery_MixinGenericEventsWitchery(Side.COMMON,
         m -> OptimizationsandTweaksConfig.enableMixinGenericEventsWitchery, "witchery.MixinGenericEventsWitchery"),
+    common_witchery_MixinWorldProviderTorment(Side.COMMON,
+        m -> OptimizationsandTweaksConfig.enableMixinWorldProviderTorment, "witchery.MixinWorldProviderTorment"),
     common_opis_MixinopisProfilerEvent(Side.COMMON,
         require(TargetedMod.OPIS).and(m -> OptimizationsandTweaksConfig.enableMixinopisProfilerEvent),
         "opis.MixinopisProfilerEvent"),

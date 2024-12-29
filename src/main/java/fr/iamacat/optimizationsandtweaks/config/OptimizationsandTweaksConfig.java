@@ -810,6 +810,10 @@ public class OptimizationsandTweaksConfig {
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
     public static boolean MixinLOTRWorldProvider;
+    @Config.Comment("Fix Crash between Endlessids and dimensions from Witchery mod")
+    @Config.DefaultBoolean(true)
+    @Config.RequiresWorldRestart
+    public static boolean enableMixinWorldProviderTorment;
     @Config.Comment("Avoid NullPointerException spam log caused by run() from CullTask from EntityCulling mod")
     @Config.DefaultBoolean(true)
     @Config.RequiresWorldRestart
